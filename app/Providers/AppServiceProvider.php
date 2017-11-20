@@ -32,5 +32,8 @@ class AppServiceProvider extends ServiceProvider
       if (!Storage::disk('local')->exists('public/announcement/images')) {
         Storage::makeDirectory('public/announcement/images');
       }
+      if (!Storage::disk('local')->exists('public/event/images')) {
+        Storage::makeDirectory('public/event/images');
+      }
     }
 }

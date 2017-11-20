@@ -29,6 +29,16 @@ class UpdateAnnouncementPost extends FormRequest
           'editimage'         => 'nullable',
         ];
     }
+
+    public function messages()
+    {
+      return [
+        'edittitle.required' => 'Judul Announcement dibutuhkan.',
+        // 'image.max' => 'Thumnail Announcement dibutuhkan.',
+        'editdescription.required' => 'Deskripsi Announcement dibutuhkan.',
+      ];
+    }
+
     public function withValidator($validator)
     {
       if ($validator->fails()) {

@@ -47,30 +47,30 @@
                         @endif
                         <div class="block full">
                             <div class="table-responsive">
-                              <button class="btn btn-rounded btn-warning pull-right" data-toggle="modal" data-target="#tambah-announcement"><i class="fa fa-plus-circle"></i>Tambah Announcement</button><br><br><br>
-                                <table id="example-datatable" class="table table-striped table-bordered table-vcenter">
+                              <button class="btn btn-rounded btn-warning pull-right" data-toggle="modal" data-target="#tambah-event"><i class="fa fa-plus-circle"></i>Tambah Event</button><br><br><br>
+                                <table class="table table-borderless table-hover">
                                   <thead>
                                         <tr>
-                                            <th>NO</th>
+                                            <th class="text-center" style="width: 50px;">NO</th>
                                             <th>Judul</th>
-                                            <th>Penerbit</th>
                                             <th>Deskripsi</th>
-                                            <th>Tanggal diterbitkan</th>
-                                            <th></th>
+                                            <th class="text-center" style="width: 100px;">Penerbit</th>
+                                            <th class="text-center" style="width: 150px;">Tanggal diterbitkan</th>
+                                            <th class="text-center" style="width: 230px;"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                      @foreach ($announcements as $index=> $announcement)
+                                      @foreach ($events as $index=> $event)
                                           <tr>
-                                            <td> {{ $index+1 }} </td>
-                                            <td> {{ $announcement->title }} </td>
-                                            <td> {{ $announcement->user->name }} </td>
-                                            <th> {{ $announcement->description }} </th>
-                                            <td> {{ $announcement->created_at  }} </td>
-                                            <td><div class="btn-group pull-right" role="group">
-                                            <button type="button" class="edit-announcement btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-announcement" data-edit-id="{{$announcement->id}}" data-edit-title="{{$announcement->title}}" data-edit-description="{{$announcement->description}}"><i class="fa fa-edit"></i>Edit</button>
-                                            <button type="button" class="hapus-announcement btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-announcement" data-hapus-id="{{$announcement->id}}" data-hapus-title="{{$announcement->title}}"><i class="fa fa-trash"></i>Hapus</button>
-                                            <button type="button" class="view-announcement btn btn-inline btn-success" data-toggle="modal" data-target="#view-announcement" data-view-id="{{$announcement->id}}"  data-view-image="{{$announcement->image}}" data-view-admin="{{ $announcement->user->name }}" data-view-title="{{ $announcement->title }}" data-view-created-at="{{ $announcement->created_at}}" data-view-description="{{ $announcement->description }}"><i class="fa fa-eye"></i>View</button>
+                                            <td class="text-center" style="width: 50px;"> {{ $index+1 }} </td>
+                                            <td> {{ $event->title }} </td>
+                                            <td> {{ $event->description }} </td>
+                                            <td class="text-center" style="width: 100px;"> {{ $event->user->name }} </td>
+                                            <td class="text-center" style="width: 150px;"> {{ $event->created_at  }} </td>
+                                            <td class="text-center" style="width: 280px;"><div class="btn-group pull-right" role="group">
+                                            <button type="button" class="edit-event btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-event" data-edit-id="{{$event->id}}" data-edit-title="{{$event->title}}" data-edit-user="{{$event->user->name}}" data-edit-penerbit="{{$event->user->id}}" data-edit-description="{{$event->description}}"><i class="fa fa-edit"></i>Ubah</button>
+                                            <button type="button" class="hapus-event btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-event" data-hapus-id="{{$event->id}}" data-hapus-title="{{$event->title}}" data-hapus-user="{{$event->user->name}}" data-hapus-image="{{$event->image}}"><i class="fa fa-trash"></i>Hapus</button>
+                                            <button type="button" class="view-event btn btn-inline btn-success" data-toggle="modal" data-target="#view-event" data-view-id="{{$event->id}}"  data-view-image="{{$event->image}}" data-view-admin="{{ $event->user->name }}" data-view-title="{{ $event->title }}" data-view-created-at="{{ $event->created_at}}" data-view-description="{{ $event->description }}"><i class="fa fa-eye"></i>Lihat</button>
                                           </div>
                                             </td>
                                           </tr>
@@ -86,15 +86,15 @@
                 <!-- END Main Container -->
             </div>
             <!-- END Page Container -->
-            <div class="modal fade" id="tambah-announcement">
+            <div class="modal fade" id="tambah-event">
               <div class="modal-dialog">
                   <div class="modal-content">
                       <div class="modal-header">
                           <div class="modal-body">
-              <form class="fieldset-form" action="{{ url('/announcement')}}" method="post" enctype="multipart/form-data">
+              <form class="fieldset-form" action="{{ url('/event')}}" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                         <fieldset>
-                          <legend class="text-center" style="color: #33577A; font-size: 21px !important;">TAMBAH ANOUNCEMENT</legend>
+                          <legend class="text-center" style="color: #33577A; font-size: 21px !important;">TAMBAH EVENT</legend>
                                 @foreach ($errors->add->all() as $error)
                                   <div class="alert alert-danger display-show">
                                     {{ $error }}
@@ -103,7 +103,7 @@
                                 @endforeach
                           <div class="form-group">
                             <label class="form-label">Judul</label>
-                            <input type="text" class="form-control" name="title" placeholder="Judul Announcement" value="">
+                            <input type="text" class="form-control" name="title" placeholder="Judul Event" value="{{old('title')}}">
                           </div>
                           <div class="form-group">
                             <label class="form-label">Thumnail</label>
@@ -111,7 +111,7 @@
                           </div>
                           <div class="form-group">
                             <label class="form-label">Description</label>
-                            <textarea class="form-control" rows="3" name="description" placeholder="Type your description..."></textarea>
+                            <textarea class="form-control" rows="3" name="description" placeholder="Type your description...">{{old('description')}}</textarea>
                           </div>
                           <button type="button" class="btn btn-inline btn-primary pull-right" data-dismiss="modal">Batal</button>
                             <input type="submit" class="btn btn-inline btn-secondary pull-right" name="submit" value="TAMBAH" />
@@ -122,15 +122,15 @@
                   </div>
               </div>
             </div>
-            <div class="modal fade" id="edit-announcement">
+            <div class="modal fade" id="edit-event">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <div class="modal-body">
-                <form class="fieldset-form" action="{{ url('/announcement/update')}}" method="post" enctype="multipart/form-data">
+                <form class="fieldset-form" action="{{ url('/event/update')}}" method="post" enctype="multipart/form-data">
                   {{ csrf_field() }}
                           <fieldset>
-                            <legend class="text-center" style="color: #33577A; font-size: 21px !important;">EDIT ANOUNCEMENT</legend>
+                            <legend class="text-center" style="color: #33577A; font-size: 21px !important;">UBAH EVENT</legend>
                                   @foreach ($errors->edit->all() as $error)
                                     <div class="alert alert-danger display-show">
                                       {{ $error }}
@@ -150,8 +150,10 @@
                               <textarea class="form-control" rows="3" name="editdescription" id="input-description-edit">{{old('editdescription')}}</textarea>
                             </div>
                             <input type="hidden" id="input-edit-id" name="edit_id" value="{{old('edit_id')}}">
+                            <input type="hidden" id="input-edit-penerbit" name="editpenerbit" value="{{old('editpenerbit')}}">
+                            <input type="hidden" id="input-edit-user" name="edituser" value="{{old('edituser')}}">
                             <button type="button" class="btn btn-inline btn-primary pull-right" data-dismiss="modal">Batal</button>
-                              <input type="submit" class="btn btn-inline btn-secondary pull-right" name="submit" value="EDIT" />
+                              <input type="submit" class="btn btn-inline btn-secondary pull-right" name="submit" value="UBAH" />
                           </fieldset>
                         </form>
                             </div>
@@ -159,30 +161,32 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="hapus-announcement">
-          <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
+            <div class="modal fade" id="hapus-event">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
                     <div class="modal-body">
-        <form class="fieldset-form" action="{{ url('/announcement/delete')}}" method="post">
-          {{ csrf_field() }}
+                      <form class="fieldset-form" action="{{ url('/event/delete')}}" method="post">
+                          {{ csrf_field() }}
                   <fieldset>
-                    <legend class="text-center" style="color: #33577A; font-size: 21px !important;">HAPUS ANNOUNCEMENT</legend>
+                    <legend class="text-center" style="color: #33577A; font-size: 21px !important;">HAPUS EVENT</legend>
                     <div class="col-md-12">
                       <span>Apakah Anda Ingin Menghapus "<span id="input-hapus-title"></span>"</span>
                     </div>
                     <br /><br />
                     <input type="hidden" id="input-hapus-id" name="hapus_id" value="">
+                    <input type="hidden" id="input-hapus-user" name="hapususer" value="">
+                    <input type="hidden" id="input-hapus-image" name="hapusimage" value="">
                     <button type="button" class="btn btn-inline btn-primary pull-right" data-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-inline btn-secondary pull-right" >HAPUS</button>
                   </fieldset>
-                </form>
+                    </form>
                     </div>
                 </div>
-            </div>
-        </div>
-      </div>
-            <div class="modal fade" id="view-announcement">
+                </div>
+                </div>
+              </div>
+            <div class="modal fade" id="view-event">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -196,8 +200,9 @@
                                   <div class="who clearfix">
                                     <span class="name"><b><span id="input-view-admin"></span></b> posted an "<i><span id="input-view-title"></span></i>"</span>
                                     <span class="from"><b><span id="input-view-created-at"></span></b></span>
-                                  </div>
-                                  <div class="image"><img id="something" src="" alt="img"></div>
+                                  </div><br />
+                                  <div class="image"><center><img id="something" alt="img" style="width:70%; height:70%"></div> </center>
+                                  <br />
                                   <ul class="comments">
                                     <span id="input-view-description"></span>
                                   </ul>
@@ -216,60 +221,46 @@
         @include('partials.footer')
 
       @if (count($errors->add) > 0)
-        <script type="text/javascript"> $('#tambah-announcement').modal('show');</script>
+        <script type="text/javascript"> $('#tambah-event').modal('show');</script>
       @endif
 
       @if (count($errors->edit) > 0)
-        <script type="text/javascript"> $('#edit-announcement').modal('show');</script>
+        <script type="text/javascript"> $('#edit-event').modal('show');</script>
       @endif
 
       <script type="text/javascript">
-        $(document).on('click' , '.edit-announcement', function(){
+        $(document).on('click' , '.edit-event', function(){
           $('#input-title-edit').val($(this).data('edit-title'));
           $('#input-image-edit').val($(this).data('edit-image'));
           $('#input-description-edit').html($(this).data('edit-description'));
           // console.log($(this).data('edit-description'));
           $('#input-edit-id').val($(this).data('edit-id'));
+          $('#input-edit-user').val($(this).data('edit-user'));
+          $('#input-edit-penerbit').val($(this).data('edit-penerbit'));
         });
       </script>
 
       <script type="text/javascript">
-        $(document).on('click' , '.hapus-announcement', function(){
+        $(document).on('click' , '.hapus-event', function(){
           $('#input-hapus-title').html($(this).data('hapus-title'));
           $('#input-hapus-id').val($(this).data('hapus-id'));
+          $('#input-hapus-user').val($(this).data('hapus-user'));
+          $('#input-hapus-image').val($(this).data('hapus-image'));
         });
       </script>
 
       <script type="text/javascript">
-        $(document).on('click' , '.view-announcement', function(){
+        $(document).on('click' , '.view-event', function(){
           $('#input-view-title').html($(this).data('view-title'));
           $('#input-view-description').html($(this).data('view-description'));
           $('#input-view-admin').html($(this).data('view-admin'));
           $('#input-view-created-at').html($(this).data('view-created-at'));
           $('#input-view-image').html($(this).data('view-image'));
           // var images = $('#input-view-image').html($(this).data('view-image'));
-          console.log($(this).data('view-image'));
-          var urls      = window.location.href+'images/'+$(this).data('view-image');
+          // console.log($(this).data('view-image'));
+          var urls      = window.location.href+'/images/'+$(this).data('view-image');
+          // console.log(urls);
           $("#something").attr('src', urls);
-          //
-          // $.ajax({
-          //     type: "GET",
-          //     url: urls+"images/3d94fbf2fedf84cc85729f2b9d803aad",
-          //     success: function(response) {
-          //       $('.something').html('<img src="data:image/png;base64,' + base64encode(response) + '" />');
-          //     }
-          // });
-          //
-          // var img = $("<img />").attr('src', 'public/announcement/images/'+$(this).data('view-image'));
-          // console.log(img);
-          // .on('load', function() {
-          //     if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
-          //         alert('broken image!');
-          //     } else {
-          //         $("#something").append(img);
-          //     }
-          // });
-
         });
       </script>
     </body>

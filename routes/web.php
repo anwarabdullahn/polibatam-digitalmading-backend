@@ -17,10 +17,22 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware' => 'auth'], function(){
+  Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/announcement', 'AnnouncementController@index')->name('announcement');
-Route::get('/announcement/images/{id}', 'AnnouncementController@getImage');
-Route::post('/announcement', 'AnnouncementController@create');
-Route::post('/announcement/delete', 'AnnouncementController@delete');
-Route::post('/announcement/update', 'AnnouncementController@update');
+  Route::prefix('announcement')->group(function() {
+    Route::get('', 'AnnouncementController@index')->name('announcement');
+    Route::post('', 'AnnouncementController@create');
+    Route::post('/delete', 'AnnouncementController@delete');
+    Route::post('/update', 'AnnouncementController@update');
+    Route::get('/images/{id}', 'AnnouncementController@getImage');
+  });
+
+  Route::prefix('event')->group(function() {
+    Route::get('', 'EventController@index')->name('event');
+    Route::post('', 'EventController@create');
+    Route::post('/update', 'EventController@update');
+    Route::post('/delete', 'EventController@delete');
+    Route::get('/images/{id}', 'EventController@getImage');
+  });
+});

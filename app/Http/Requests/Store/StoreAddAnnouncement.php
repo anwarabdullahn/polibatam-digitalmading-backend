@@ -28,12 +28,21 @@ class StoreAddAnnouncement extends FormRequest
         'image'     => 'required',
         'description'     => 'required',
       ];
-  }
-
-  public function withValidator($validator)
-  {
-    if ($validator->fails()) {
-      return redirect()->route('announcement')->withErrors($validator, 'add');
     }
-  }
+
+    public function messages()
+    {
+      return [
+        'title.required' => 'Judul Announcement dibutuhkan.',
+        'image.required' => 'Thumnail Announcement dibutuhkan.',
+        'description.required' => 'Deskripsi Announcement dibutuhkan.',
+      ];
+    }
+
+    public function withValidator($validator)
+    {
+      if ($validator->fails()) {
+        return redirect()->route('announcement')->withErrors($validator, 'add');
+      }
+    }
 }

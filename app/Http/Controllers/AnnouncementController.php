@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Announcement;
 use App\Http\Requests\Store\StoreAddAnnouncement;
 use App\Http\Requests\Update\UpdateAnnouncementPost;
-use File;
 use Illuminate\Support\Facades\Response;
+// use File;
 use Auth;
 use Storage;
 
@@ -17,74 +17,73 @@ class AnnouncementController extends Controller
 
     public function __construct()
     {
-        // $this->middleware('auth');
-        $this->announcements = Announcement::all();
+      $this->announcements = Announcement::all();
     }
 
     public function index()
     {
-      return view ('layouts.admins.announcement.announcement')->with('announcements' , $this->announcements);
+      if (Auth::user()->role =='admin') {
+        return view ('layouts.admins.announcements.announcement')->with('announcements' , $this->announcements);
+      }return redirect()->route('home')->with('gagal','Invalid Credential !!');
     }
 
     public function create(StoreAddAnnouncement $request, Announcement $announcement)
     {
-      $adminID = Auth::user()->id;
-      // dd($admin);
-      $announcement->title = $request->title;
-      $announcement->description = $request->description;
-      $announcement->id_user = $adminID;
-
-      if (isset($request->image)) {
-        $byscryptAttachmentFile =  md5(str_random(64));
-        $announcement->image = $byscryptAttachmentFile;
-        // dd($byscryptAttachmentFile);
-      } if ($announcement->save()) {
-      if (isset($request->image)) {
-        $request->image->storeAs('public/announcement/images' , $byscryptAttachmentFile );
-        return redirect()->route('announcement')->with('info','Announcement Berhasil Di Tambahkan');
-      }
-      }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Tambahkan');
+      if (Auth::user()->role =='admin'){
+        $adminID = Auth::user()->id;
+        $announcement->title = $request->title;
+        $announcement->description = $request->description;
+        $announcement->id_user = $adminID;
+        if (isset($request->image)) {
+          $byscryptAttachmentFile =  md5(str_random(64));
+          $announcement->image = $byscryptAttachmentFile;
+          // dd($byscryptAttachmentFile);
+        }
+        if ($announcement->save()) {
+          if (isset($request->image)) {
+            $request->image->storeAs('public/announcement/images' , $byscryptAttachmentFile );
+            return redirect()->route('announcement')->with('info','Announcement Berhasil Di Tambahkan');
+          }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Tambahkan');
+        }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Tambahkan');
+      }return redirect()->route('announcement')->with('gagal','Invalid Credential !!');
     }
 
     public function update(UpdateAnnouncementPost $request)
     {
-      $adminID = Auth::user()->id;
-      // dd($adminID);
-      $announcement = $this->announcements->where('id', $request->edit_id)->first();
-
-      if ($announcement) {
-        $announcement->title = $request->edittitle;
-        $announcement->description = $request->editdescription;
-        $announcement->id_user = $adminID;
-
-        // dd($request->editdescription);
-
-        if (isset($request->editimage)) {
-          $byscryptAttachmentFile =  md5(str_random(64));
-          $announcement->image = $byscryptAttachmentFile;
-          // dd($announcement->image);
-        }
-
-        if ($announcement->save()) {
+      if (Auth::user()->role =='admin') {
+        $adminID = Auth::user()->id;
+        $announcement = $this->announcements->where('id', $request->edit_id)->first();
+        if ($announcement) {
+          $announcement->title = $request->edittitle;
+          $announcement->description = $request->editdescription;
+          $announcement->id_user = $adminID;
           if (isset($request->editimage)) {
-            $request->editimage->storeAs('public/announcement/images' , $byscryptAttachmentFile );
-            return redirect()->route('announcement')->with('info', 'Announcement Berhasil Di Ubah');
-            }
-          return redirect()->route('announcement')->with('info', 'Announcement Berhasil Di Ubah');
+            $byscryptAttachmentFile =  md5(str_random(64));
+            $announcement->image = $byscryptAttachmentFile;
           }
-      }
-      return redirect()->route('announcement')->with('gagal', 'Announcement Gagal Di Ubah');
+          if ($announcement->save()) {
+            if (isset($request->editimage)) {
+              $request->editimage->storeAs('public/announcement/images' , $byscryptAttachmentFile );
+              return redirect()->route('announcement')->with('info', 'Announcement Berhasil Di Ubah');
+            }return redirect()->route('announcement')->with('info', 'Announcement Berhasil Di Ubah');
+          }return redirect()->route('announcement')->with('gagal', 'Announcement Gagal Di Ubah');
+        }return redirect()->route('announcement')->with('gagal', 'Announcement Gagal Di Ubah');
+      }return redirect()->route('announcement')->with('gagal','Invalid Credential !!');
     }
 
     public function delete(Request $request)
     {
-      if ($announcement = $this->announcements->where('id',$request->hapus_id)->first()) {
-        // dd($announcement);
-        if ($announcement->delete()) {
-          return redirect()->route('announcement')->with('info','Announcement Berhasil Di Hapus');
-        }
-      }
-      return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Hapus');
+      $id = $request->hapusimage;
+      if (Auth::user()->role =='admin') {
+        $announcement = $this->announcements->where('id',$request->hapus_id)->first();
+        if ($announcement) {
+          if ($announcement->delete()) {
+            if (Storage::delete('public/announcement/images/'.$id)) {
+              return redirect()->route('announcement')->with('info','Announcement Berhasil Di Hapus');
+            }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Hapus');
+          }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Hapus');
+        }return redirect()->route('announcement')->with('gagal','Announcement Tidak Ditemukan');
+      }return redirect()->route('announcement')->with('gagal','Invalid Credential !!');
     }
 
     public function getImage($id) {

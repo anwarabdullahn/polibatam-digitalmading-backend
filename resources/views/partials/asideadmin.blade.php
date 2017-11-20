@@ -10,12 +10,11 @@
 <div id="sidebar">
     <!-- Sidebar Brand -->
     <div id="sidebar-brand" class="themed-background">
-        <a href="index.html" class="sidebar-title">
+        <a href="{{ url('/home') }}" class="sidebar-title">
             <i class="fa fa-cube"></i> <span class="sidebar-nav-mini-hide">Digital<strong>Mading</strong></span>
         </a>
     </div>
     <!-- END Sidebar Brand -->
-
     <!-- Wrapper for scrolling functionality -->
     <div id="sidebar-scroll">
         <!-- Sidebar Content -->
@@ -23,19 +22,24 @@
             <!-- Sidebar Navigation -->
             <ul class="sidebar-nav">
                 <li>
-                    <a href="index.html" class="active"><i class="gi gi-compass sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Admin</span></a>
+                    <a href="{{ url('/home') }}" class="active"><i class="hi hi-home sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Admin</span></a>
                 </li>
                 <li class="sidebar-separator">
                     <i class="fa fa-ellipsis-h"></i>
                 </li>
                 <li>
-                    <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-cog sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Announcement</span></a>
+                    <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-pencil sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Pengumuman</span></a>
                     <ul>
                         <li>
-                            <a href="{{url('/announcement')}}">announcement</a>
+                            <a href="{{url('/announcement')}}">Pengumuman</a>
                         </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-gift sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Management Event</span></a>
+                    <ul>
                         <li>
-                            <a href="javascript:void(0)">Link #2</a>
+                            <a href="{{url('/event')}}">Event</a>
                         </li>
                     </ul>
                 </li>
@@ -43,15 +47,13 @@
                   <a href="{{ route('logout') }}"
                       onclick="event.preventDefault();
                                document.getElementById('logout-form').submit();">
-                      <i class="fa fa-cog sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Logout</span>
+                      <i class="hi hi-off sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Logout</span>
                   </a>
-
                   <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                       {{ csrf_field() }}
                   </form>
                 </li>
             </ul>
-
             <!-- END Sidebar Navigation -->
         </div>
         <!-- END Sidebar Content -->
