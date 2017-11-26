@@ -44,6 +44,20 @@
                     </ul>
                 </li>
                 <li>
+                    <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-group sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Management Akun</span></a>
+                    <ul>
+                        <li>
+                            <a href="{{url('/ormawa')}}">Ormawa</a>
+                        </li>
+                        <li>
+                            <a href="{{url('/mahasiswa')}}">Mahasiswa</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{{url('/banner')}}"><i class="fa fa-newspaper-o sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Banner</span></a>
+                </li>
+                <li>
                   <a href="{{ route('logout') }}"
                       onclick="event.preventDefault();
                                document.getElementById('logout-form').submit();">

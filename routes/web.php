@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('/delete', 'AnnouncementController@delete');
     Route::post('/update', 'AnnouncementController@update');
     Route::get('/images/{id}', 'AnnouncementController@getImage');
+    Route::get('/tables', 'AnnouncementController@getTable');
   });
 
   Route::prefix('event')->group(function() {
@@ -34,5 +35,21 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('/update', 'EventController@update');
     Route::post('/delete', 'EventController@delete');
     Route::get('/images/{id}', 'EventController@getImage');
+  });
+
+  Route::prefix('ormawa')->group(function() {
+    Route::get('', 'UserController@index')->name('ormawa');
+    Route::post('', 'UserController@create');
+    Route::post('/update', 'UserController@update');
+    Route::post('/delete', 'UserController@delete');
+    // Route::get('/images/{id}', 'EventController@getImage');
+  });
+
+  Route::prefix('banner')->group(function() {
+    Route::get('', 'BannerController@index')->name('banner');
+    Route::post('', 'BannerController@create');
+    // Route::post('/update', 'UserController@update');
+    // Route::post('/delete', 'UserController@delete');
+    // Route::get('/images/{id}', 'EventController@getImage');
   });
 });

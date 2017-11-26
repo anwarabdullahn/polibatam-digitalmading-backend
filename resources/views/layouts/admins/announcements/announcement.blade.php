@@ -10,7 +10,10 @@
                 </div>
             </div>
             <div id="page-container" class="header-fixed-top sidebar-visible-lg-full">
+              @if (Auth::user()->role == 'admin')
               @include('partials.asideadmin')
+              @else @include('partials.asideormawa')
+              @endif
                 </div>
                 <!-- Main Container -->
                 <div id="main-container">
@@ -32,6 +35,20 @@
 
                     <!-- Page content -->
                     <div id="page-content">
+                      <div class="content-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="header-section">
+                                        <h1>Pengumuman</h1>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 hidden-xs">
+                                    <div class="header-section">
+                                        <button class="btn btn-rounded btn-warning pull-right" data-toggle="modal" data-target="#tambah-announcement"><i class="fa fa-plus-circle"></i> Tambah Pengumuman</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         @if (session('info'))
                           <div class="row">
                             <div class="alert alert-success display-show" class="close" data-dismiss="alert">
@@ -47,8 +64,7 @@
                         @endif
                         <div class="block full">
                             <div class="table-responsive">
-                              <button class="btn btn-rounded btn-warning pull-right" data-toggle="modal" data-target="#tambah-announcement"><i class="fa fa-plus-circle"></i>Tambah Announcement</button><br><br><br>
-                                <table class="table table-borderless table-hover">
+                                <table id="example" class="table table-borderless table-hover">
                                   <thead>
                                         <tr>
                                             <th class="text-center" style="width: 50px;">NO</th>
@@ -257,5 +273,7 @@
           $("#something").attr('src', urls);
         });
       </script>
+
+
     </body>
 </html>

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Response;
 use Auth;
 use Storage;
 
+
 class AnnouncementController extends Controller
 {
     protected $announcements;
@@ -45,7 +46,7 @@ class AnnouncementController extends Controller
             return redirect()->route('announcement')->with('info','Announcement Berhasil Di Tambahkan');
           }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Tambahkan');
         }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Tambahkan');
-      }return redirect()->route('announcement')->with('gagal','Invalid Credential !!');
+      }return redirect()->route('home')->with('gagal','Invalid Credential !!');
     }
 
     public function update(UpdateAnnouncementPost $request)
@@ -68,7 +69,7 @@ class AnnouncementController extends Controller
             }return redirect()->route('announcement')->with('info', 'Announcement Berhasil Di Ubah');
           }return redirect()->route('announcement')->with('gagal', 'Announcement Gagal Di Ubah');
         }return redirect()->route('announcement')->with('gagal', 'Announcement Gagal Di Ubah');
-      }return redirect()->route('announcement')->with('gagal','Invalid Credential !!');
+      }return redirect()->route('home')->with('gagal','Invalid Credential !!');
     }
 
     public function delete(Request $request)
@@ -83,7 +84,7 @@ class AnnouncementController extends Controller
             }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Hapus');
           }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Hapus');
         }return redirect()->route('announcement')->with('gagal','Announcement Tidak Ditemukan');
-      }return redirect()->route('announcement')->with('gagal','Invalid Credential !!');
+      }return redirect()->route('home')->with('gagal','Invalid Credential !!');
     }
 
     public function getImage($id) {

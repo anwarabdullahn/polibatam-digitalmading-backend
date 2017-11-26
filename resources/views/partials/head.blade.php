@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ asset ('assets/css/plugins.css') }}">
     <link rel="stylesheet" href="{{ asset ('assets/css/main.css') }}">
     <link rel="stylesheet" href="{{ asset ('assets/css/themes.css') }}">
+    <link rel="stylesheet" href="{{ asset ('assets/lib/css/jquery.dataTables.min.css') }}">
     <script src="{{ asset ('assets/js/vendor/modernizr-3.3.1.min.js') }}"></script>
 
 </head>

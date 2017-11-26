@@ -23,7 +23,7 @@
             <!-- Sidebar Navigation -->
             <ul class="sidebar-nav">
                 <li>
-                    <a href="index.html" class="active"><i class="gi gi-compass sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Ormawa</span></a>
+                    <a href="{{ url('/home') }}" class="active"><i class="hi hi-home sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Ormawa</span></a>
                 </li>
                 <li class="sidebar-separator">
                     <i class="fa fa-ellipsis-h"></i>
@@ -38,6 +38,17 @@
                             <a href="javascript:void(0)">Link #2</a>
                         </li>
                     </ul>
+                </li>
+
+                <li>
+                  <a href="{{ route('logout') }}"
+                      onclick="event.preventDefault();
+                               document.getElementById('logout-form').submit();">
+                      <i class="hi hi-off sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Logout</span>
+                  </a>
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                      {{ csrf_field() }}
+                  </form>
                 </li>
             </ul>
             <!-- END Sidebar Navigation -->
