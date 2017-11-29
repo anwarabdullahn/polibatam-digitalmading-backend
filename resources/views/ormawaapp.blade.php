@@ -33,7 +33,19 @@
 
                     <!-- Page content -->
                     <div id="page-content">
-
+                      @if (session('info'))
+                        <div class="row">
+                          <div class="alert alert-success display-show" class="close" data-dismiss="alert">
+                            {{session('info')}}
+                          </div>
+                        </div>
+                      @elseif (session('gagal'))
+                          <div class="row">
+                            <div class="alert alert-danger display-show" class="close" data-dismiss="alert">
+                              {{session('gagal')}}
+                            </div>
+                          </div>
+                      @endif
                     </div>
                     <!-- END Page Content -->
                 </div>

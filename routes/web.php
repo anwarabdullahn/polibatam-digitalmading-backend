@@ -26,7 +26,6 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('/delete', 'AnnouncementController@delete');
     Route::post('/update', 'AnnouncementController@update');
     Route::get('/images/{id}', 'AnnouncementController@getImage');
-    Route::get('/tables', 'AnnouncementController@getTable');
   });
 
   Route::prefix('event')->group(function() {
@@ -48,8 +47,8 @@ Route::group(['middleware' => 'auth'], function(){
   Route::prefix('banner')->group(function() {
     Route::get('', 'BannerController@index')->name('banner');
     Route::post('', 'BannerController@create');
-    // Route::post('/update', 'UserController@update');
-    // Route::post('/delete', 'UserController@delete');
+    Route::post('/update', 'BannerController@update');
+    Route::post('/delete', 'BannerController@delete');
     // Route::get('/images/{id}', 'EventController@getImage');
   });
 });

@@ -84,7 +84,7 @@
                                             <td class="text-center" style="width: 100px;"> {{ $announcement->user->name }} </td>
                                             <td class="text-center" style="width: 150px;"> {{ $announcement->created_at  }} </td>
                                             <td class="text-center" style="width: 230px;"><div class="btn-group pull-right" role="group">
-                                            <button type="button" class="edit-announcement btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-announcement" data-edit-id="{{$announcement->id}}" data-edit-title="{{$announcement->title}}" data-edit-description="{{$announcement->description}}"><i class="fa fa-edit"></i>Ubah</button>
+                                            <button type="button" class="edit-announcement btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-announcement" data-edit-id="{{$announcement->id}}" data-edit-title="{{$announcement->title}}" data-edit-description="{{$announcement->description}}" data-edit-image="{{$announcement->image}}"><i class="fa fa-edit"></i>Ubah</button>
                                             <button type="button" class="hapus-announcement btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-announcement" data-hapus-id="{{$announcement->id}}" data-hapus-title="{{$announcement->title}}" data-hapus-image="{{$announcement->image}}"><i class="fa fa-trash"></i>Hapus</button>
                                             <button type="button" class="view-announcement btn btn-inline btn-success" data-toggle="modal" data-target="#view-announcement" data-view-id="{{$announcement->id}}"  data-view-image="{{$announcement->image}}" data-view-admin="{{ $announcement->user->name }}" data-view-title="{{ $announcement->title }}" data-view-created-at="{{ $announcement->created_at}}" data-view-description="{{ $announcement->description }}"><i class="fa fa-eye"></i>Lihat</button>
                                           </div>
@@ -159,13 +159,15 @@
                             </div>
                             <div class="form-group">
                               <label class="form-label">Thumnail</label>
-                              <input type="file" name="editimage" accept="image/*" id="input-image-edit"/>
+                              <input type="file" name="editimage" accept="image/*"/>
+
                             </div>
                             <div class="form-group">
                               <label class="form-label">Description</label>
                               <textarea class="form-control" rows="3" name="editdescription" id="input-description-edit">{{old('editdescription')}}</textarea>
                             </div>
                             <input type="hidden" id="input-edit-id" name="edit_id" value="{{old('edit_id')}}">
+                            <input type="hidden" id="input-image-edit" name="editimagefordelete">
                             <button type="button" class="btn btn-inline btn-primary pull-right" data-dismiss="modal">Batal</button>
                               <input type="submit" class="btn btn-inline btn-secondary pull-right" name="submit" value="UBAH" />
                           </fieldset>

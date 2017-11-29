@@ -51,6 +51,7 @@ class AnnouncementController extends Controller
 
     public function update(UpdateAnnouncementPost $request)
     {
+      $id = $request->editimagefordelete;
       if (Auth::user()->role =='admin') {
         $adminID = Auth::user()->id;
         $announcement = $this->announcements->where('id', $request->edit_id)->first();
@@ -64,11 +65,12 @@ class AnnouncementController extends Controller
           }
           if ($announcement->save()) {
             if (isset($request->editimage)) {
+              Storage::delete('public/announcement/images/'.$id);
               $request->editimage->storeAs('public/announcement/images' , $byscryptAttachmentFile );
               return redirect()->route('announcement')->with('info', 'Announcement Berhasil Di Ubah');
             }return redirect()->route('announcement')->with('info', 'Announcement Berhasil Di Ubah');
           }return redirect()->route('announcement')->with('gagal', 'Announcement Gagal Di Ubah');
-        }return redirect()->route('announcement')->with('gagal', 'Announcement Gagal Di Ubah');
+        }return redirect()->route('announcement')->with('gagal','Announcement Tidak Ditemukan');
       }return redirect()->route('home')->with('gagal','Invalid Credential !!');
     }
 
