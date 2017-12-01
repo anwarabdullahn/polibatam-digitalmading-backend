@@ -57,9 +57,10 @@ class BannerController extends Controller
         }
         if ($banner->save()) {
           if (isset($request->editimage)) {
-            Storage::delete('public/banner/images/'.$id);
-            $request->editimage->storeAs('public/banner/images' , $byscryptAttachmentFile );
-            return redirect()->route('banner')->with('info', 'Banner Berhasil Di Ubah');
+            if ($request->editimage->storeAs('public/banner/images' , $byscryptAttachmentFile )) {
+              Storage::delete('public/banner/images/'.$id);
+              return redirect()->route('banner')->with('info', 'Banner Berhasil Di Ubah');
+            }return redirect()->route('banner')->with('gagal', 'Banner Gagal Di Ubah');
           }return redirect()->route('banner')->with('info', 'Banner Berhasil Di Ubah');
         }return redirect()->route('banner')->with('gagal', 'Banner Gagal Di Ubah');
       }return redirect()->route('banner')->with('gagal', 'Banner Gagal Di Temukan!!');

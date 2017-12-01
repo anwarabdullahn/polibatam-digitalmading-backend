@@ -52,3 +52,7 @@ Route::group(['middleware' => 'auth'], function(){
     // Route::get('/images/{id}', 'EventController@getImage');
   });
 });
+
+Route::get('register', function(){
+  return redirect('/page-not-found');
+});

@@ -122,6 +122,16 @@
                             <input type="text" class="form-control" name="title" placeholder="Judul Announcement"  value="{{old('title')}}">
                           </div>
                           <div class="form-group">
+                            <label class="form-label">Kategori</label>
+                            <select id="example-select" name="example-select" class="form-control" size="1">
+                                                    <option value="" selected>Pilih Kategori</option>
+                                                    <option value="1">HTML</option>
+                                                    <option value="2">CSS</option>
+                                                    <option value="3">Javascript</option>
+                                                </select>
+                          </div>
+
+                          <div class="form-group">
                             <label class="form-label">Thumnail</label>
                             <input type="file" name="image" accept="image/*" />
                           </div>

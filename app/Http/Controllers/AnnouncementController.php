@@ -65,9 +65,10 @@ class AnnouncementController extends Controller
           }
           if ($announcement->save()) {
             if (isset($request->editimage)) {
-              Storage::delete('public/announcement/images/'.$id);
-              $request->editimage->storeAs('public/announcement/images' , $byscryptAttachmentFile );
-              return redirect()->route('announcement')->with('info', 'Announcement Berhasil Di Ubah');
+              if ($request->editimage->storeAs('public/announcement/images' , $byscryptAttachmentFile )) {
+                Storage::delete('public/announcement/images/'.$id);
+                return redirect()->route('announcement')->with('info', 'Announcement Berhasil Di Ubah');
+              }return redirect()->route('announcement')->with('gagal', 'Announcement Gagal Di Ubah');
             }return redirect()->route('announcement')->with('info', 'Announcement Berhasil Di Ubah');
           }return redirect()->route('announcement')->with('gagal', 'Announcement Gagal Di Ubah');
         }return redirect()->route('announcement')->with('gagal','Announcement Tidak Ditemukan');

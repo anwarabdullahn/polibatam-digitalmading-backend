@@ -48,6 +48,7 @@ class EventController extends Controller
       if (Auth::user()->name == $request->edituser || Auth::user()->role =='admin'){
         $event = $this->events->where('id', $request->edit_id)->first();
         if ($event) {
+          $id = $event->image;
           $event->title = $request->edittitle;
           $event->description = $request->editdescription;
           $event->id_user = $request->editpenerbit;
@@ -57,8 +58,10 @@ class EventController extends Controller
           }
           if ($event->save()) {
             if (isset($request->editimage)) {
-              $request->editimage->storeAs('public/event/images' , $byscryptAttachmentFile );
-              return redirect()->route('event')->with('info', 'Event Berhasil Di Ubah');
+              if ($request->editimage->storeAs('public/event/images' , $byscryptAttachmentFile )) {
+                Storage::delete('public/event/images/'.$id);
+                return redirect()->route('event')->with('info', 'Event Berhasil Di Ubah');
+              }return redirect()->route('event')->with('gagal', 'Event Gagal Di Ubah');
             }return redirect()->route('event')->with('info', 'Event Berhasil Di Ubah');
           }return redirect()->route('event')->with('gagal', 'Event Gagal Di Ubah');
         }return redirect()->route('event')->with('gagal', 'Event Gagal Di Ubah');
