@@ -24,8 +24,9 @@ class StoreAddAnnouncement extends FormRequest
     public function rules()
     {
       return [
-        'title'      => 'required',
-        'image'     => 'required',
+        'title'           => 'required',
+        'id_category'     => 'required',
+        'image'           => 'required',
         'description'     => 'required',
       ];
     }
@@ -33,9 +34,10 @@ class StoreAddAnnouncement extends FormRequest
     public function messages()
     {
       return [
-        'title.required' => 'Judul Announcement dibutuhkan.',
-        'image.required' => 'Thumnail Announcement dibutuhkan.',
-        'description.required' => 'Deskripsi Announcement dibutuhkan.',
+        'title.required' => 'Judul Pengumuman dibutuhkan.',
+        'id_category.required'  => 'Silahkan Pilih Kategori',
+        'image.required' => 'Thumnail Pengumuman dibutuhkan.',
+        'description.required' => 'Deskripsi Pengumuman dibutuhkan.',
       ];
     }
 

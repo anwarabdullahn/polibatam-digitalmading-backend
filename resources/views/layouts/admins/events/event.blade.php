@@ -122,7 +122,7 @@
                             <input type="text" class="form-control" name="title" placeholder="Judul Event" value="{{old('title')}}">
                           </div>
                           <div class="form-group">
-                            <label class="form-label">Thumnail</label>
+                            <label class="form-label">Thumbnail</label>
                             <input type="file" name="image" accept="image/*" />
                           </div>
                           <div class="form-group">
@@ -158,7 +158,7 @@
                               <input type="text" id="input-title-edit" class="form-control" name="edittitle" value="{{old('edittitle')}}" >
                             </div>
                             <div class="form-group">
-                              <label class="form-label">Thumnail</label>
+                              <label class="form-label">Thumbnail</label>
                               <input type="file" name="editimage" accept="image/*" id="input-image-edit"/>
                             </div>
                             <div class="form-group">

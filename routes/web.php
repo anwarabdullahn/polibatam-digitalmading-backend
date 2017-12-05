@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 Auth::routes();
@@ -26,6 +26,11 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('/delete', 'AnnouncementController@delete');
     Route::post('/update', 'AnnouncementController@update');
     Route::get('/images/{id}', 'AnnouncementController@getImage');
+
+    Route::get('/category', 'AnnouncementCategoriesController@index')->name('category');
+    Route::post('/category', 'AnnouncementCategoriesController@create');
+    Route::post('/category/update', 'AnnouncementCategoriesController@update');
+    Route::post('/category/delete', 'AnnouncementCategoriesController@delete');
   });
 
   Route::prefix('event')->group(function() {

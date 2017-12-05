@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Announcement;
+use App\AnnouncementCategories;
 use App\Http\Requests\Store\StoreAddAnnouncement;
 use App\Http\Requests\Update\UpdateAnnouncementPost;
 use Illuminate\Support\Facades\Response;
@@ -15,16 +16,18 @@ use Storage;
 class AnnouncementController extends Controller
 {
     protected $announcements;
+    protected $categories;
 
     public function __construct()
     {
       $this->announcements = Announcement::all();
+      $this->categories = AnnouncementCategories::all();
     }
 
     public function index()
     {
       if (Auth::user()->role =='admin') {
-        return view ('layouts.admins.announcements.announcement')->with('announcements' , $this->announcements);
+        return view ('layouts.admins.announcements.announcement')->with('announcements' , $this->announcements)->with('categories' , $this->categories);
       }return redirect()->route('home')->with('gagal','Invalid Credential !!');
     }
 
@@ -35,6 +38,7 @@ class AnnouncementController extends Controller
         $announcement->title = $request->title;
         $announcement->description = $request->description;
         $announcement->id_user = $adminID;
+        $announcement->id_category = $request->id_category;
         if (isset($request->image)) {
           $byscryptAttachmentFile =  md5(str_random(64));
           $announcement->image = $byscryptAttachmentFile;
@@ -58,7 +62,8 @@ class AnnouncementController extends Controller
         if ($announcement) {
           $announcement->title = $request->edittitle;
           $announcement->description = $request->editdescription;
-          $announcement->id_user = $adminID;
+          $announcement->id_user = $request->edit_penerbit;
+          $announcement->id_category = $request->id_categoryedit;
           if (isset($request->editimage)) {
             $byscryptAttachmentFile =  md5(str_random(64));
             $announcement->image = $byscryptAttachmentFile;

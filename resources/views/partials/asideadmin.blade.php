@@ -33,6 +33,9 @@
                         <li>
                             <a href="{{url('/announcement')}}">Pengumuman</a>
                         </li>
+                        <li>
+                            <a href="{{url('/announcement/category')}}">Kategori</a>
+                        </li>
                     </ul>
                 </li>
                 <li>

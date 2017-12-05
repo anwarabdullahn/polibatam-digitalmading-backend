@@ -233,6 +233,7 @@
 
         <script type="text/javascript">
           $(document).on('click' , '.edit-banner', function(){
+
             $('#input-banner-title').val($(this).data('edit-title'));
             // $('#input-banner-status').val($(this).data('edit-status'));
             console.log($(this).data('edit-status'));

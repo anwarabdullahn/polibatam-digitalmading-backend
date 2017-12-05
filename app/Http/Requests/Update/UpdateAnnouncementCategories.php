@@ -4,7 +4,7 @@ namespace App\Http\Requests\Update;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateAnnouncementPost extends FormRequest
+class UpdateAnnouncementCategories extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,21 +23,15 @@ class UpdateAnnouncementPost extends FormRequest
      */
     public function rules()
     {
-        return [
-          'edittitle'         => 'required',
-          'id_categoryedit'   => 'required',
-          'editimage'         => 'nullable',
-          'editdescription'   => 'required',
-        ];
+      return [
+        'editname'         => 'required|alpha',
+      ];
     }
-
     public function messages()
     {
       return [
-        'edittitle.required' => 'Judul Pengumuman dibutuhkan.',
-        'id_categoryedit.required' => 'Pilih Kategori',
-        // 'image.max' => 'Thumnail Announcement dibutuhkan.',
-        'editdescription.required' => 'Deskripsi Pengumuman dibutuhkan.',
+        'editname.required' => 'Judul Pengumuman dibutuhkan.',
+        'editname.alpha' => 'Judul Pengumuman hanya Karakter Alphabet'
       ];
     }
 
