@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Response;
 // use File;
 use Auth;
 use Storage;
+use App\AuthMahasiswa;
+use App\Transformers\AnnouncementTransformer;
 
 
 class AnnouncementController extends Controller
@@ -99,5 +101,45 @@ class AnnouncementController extends Controller
       $path = Storage::get('public/announcement/images/'.$id);
       $mimetype = Storage::mimeType('public/announcement/images/'.$id);
       return response($path, 200)->header('Content-Type', $mimetype);
+    }
+
+    public function getAPI(Request $request)
+    {
+      $authorization = $request->header('Authorization');
+      $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
+
+      if ($authMahasiswa) {
+        $announcements = Announcement::get()->sortByDesc('created_at');
+        // dd($announcements);
+        $response = fractal()
+        ->item($announcements)
+        ->transformWith(new AnnouncementTransformer)
+        ->toArray();
+
+        return response()->json($response, 201);
+      }
+      $messageResponse['message'] = 'Invalid Credentials';
+         return response($messageResponse, 401);
+    }
+
+    public function byCategoryAPI(Request $request,$id)
+    {
+      $authorization = $request->header('Authorization');
+      $authMahasiswa = AuthMahasiswa::where('api_token' ,$authorization)->first();
+      if ($authMahasiswa) {
+        $announcements = Announcement::where('id_category', $id)->get()->sortByDesc('created_at');
+        if ($announcements) {
+          $response = fractal()
+          ->item($announcements)
+          ->transformWith(new AnnouncementTransformer)
+          ->toArray();
+
+          return response()->json($response, 201);
+        }
+        $messageResponse['message'] = 'Kategori Tidak Tersedia';
+        return response($messageResponse, 406);
+      }
+      $messageResponse['message'] = 'Invalid Credentials';
+      return response($messageResponse, 401);
     }
 }

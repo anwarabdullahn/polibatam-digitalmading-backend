@@ -13,6 +13,25 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::prefix('v1')->group(function () {
+  Route::prefix('mhs')->group(function (){
+
+    Route::prefix('auth')->group(function(){
+      Route::post('register' , 'AuthAPI@register');
+      Route::post('login' , 'AuthAPI@login');
+    });
+
+    Route::get('banner' , 'BannerController@getAPI');
+
+    Route::prefix('announcement')->group(function(){
+      Route::get('' , 'AnnouncementController@getAPI');
+      Route::get('category' , 'AnnouncementCategoriesController@getAPI');
+      Route::get('category/{id}' , 'AnnouncementController@byCategoryAPI');
+    });
+
+  });
 });

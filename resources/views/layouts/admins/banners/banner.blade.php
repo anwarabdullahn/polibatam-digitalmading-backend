@@ -85,7 +85,7 @@
                                             <td class="text-center" style="width: 100px;"> {{ $banner->status }} </td>
                                             <td class="text-center" style="width: 230px;"><div class="btn-group pull-right" role="group"><button type="button" class="edit-banner btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-banner" data-edit-id="{{$banner->id}}" data-edit-title="{{$banner->title}}" data-edit-status="{{$banner->status}}" data-edit-user="{{$banner->user->name}}" data-edit-penerbit="{{$banner->user->id}}" data-edit-image="{{$banner->image}}"><i class="fa fa-edit"></i>Ubah</button>
                                             <button type="button" class="hapus-banner btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-banner" data-hapus-id="{{ $banner->id }}" data-hapus-title="{{ $banner->title }}" data-hapus-user="{{$banner->user->name}}" data-hapus-image="{{$banner->image}}"><i class="fa fa-trash"></i>Hapus</button>
-                                            <button type="button" class="view-banner btn btn-inline btn-success" data-toggle="modal" data-target="#view-banner" ><i class="fa fa-eye"></i>Lihat</button>
+                                            <button type="button" class="view-banner btn btn-inline btn-success" data-toggle="modal" data-target="#view-banner" data-view-image="{{$banner->image}}"><i class="fa fa-eye"></i>Lihat</button>
                                           </div>
                                             </td>
                                           </tr>
@@ -221,6 +221,33 @@
                 </div>
                 </div>
               </div>
+
+              <div class="modal fade" id="view-banner">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <div class="modal-body">
+                  <form class="fieldset-form">
+                            <fieldset>
+                              <legend class="text-center" style="color: #33577A; font-size: 21px !important;">VIEW ANOUNCEMENT</legend>
+                              <!-- Start Post -->
+                                <div class="panel panel-default">
+                                  <div class="panel-body status">
+                                    <div class="who clearfix">
+                                    </div><br />
+                                    <div class="image"><center><img id="something" alt="img" style="width:70%; height:70%"></div> </center>
+                                    <br />
+                                  </div>
+                                </div>
+                              <!-- End Post -->
+                              </fieldset>
+                                </form>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
         @include('partials.footer')
 
         @if (count($errors->add) > 0)
@@ -256,6 +283,13 @@
             $('#input-hapus-user').val($(this).data('hapus-user'));
             $('#input-hapus-title').html($(this).data('hapus-title'));
 
+          });
+        </script>
+
+        <script type="text/javascript">
+          $(document).on('click' , '.view-banner', function(){
+            var urls      = window.location.href+'/images/'+$(this).data('view-image');
+            $("#something").attr('src', urls);
           });
         </script>
 

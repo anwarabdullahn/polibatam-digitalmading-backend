@@ -54,7 +54,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('', 'BannerController@create');
     Route::post('/update', 'BannerController@update');
     Route::post('/delete', 'BannerController@delete');
-    // Route::get('/images/{id}', 'EventController@getImage');
+    Route::get('/images/{id}', 'BannerController@getImage');
   });
 });
 

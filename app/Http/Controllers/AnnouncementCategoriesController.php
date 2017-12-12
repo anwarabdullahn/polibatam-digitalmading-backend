@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Announcement;
 use App\AnnouncementCategories;
+use App\AuthMahasiswa;
+use App\Transformers\AnnouncementCategoriesTransformer;
 use App\Http\Requests\Store\StoreAddAnnouncementCategories;
 use App\Http\Requests\Update\UpdateAnnouncementCategories;
 
@@ -59,5 +61,23 @@ class AnnouncementCategoriesController extends Controller
         }return redirect()->route('category')->with('gagal','Kategori Gagal di Hapus !!');
       }return redirect()->route('category')->with('gagal','Kategori Tidak di Temukan !!');
     }return redirect()->route('home')->with('gagal','Invalid Credential !!');
+  }
+  public function getAPI(Request $request)
+  {
+    $authorization = $request->header('Authorization');
+    $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
+
+    if ($authMahasiswa) {
+      $categories = AnnouncementCategories::all()->sortBy('id');
+      // dd($category);
+      $response = fractal()
+      ->item($categories)
+      ->transformWith(new AnnouncementCategoriesTransformer)
+      ->toArray();
+
+      return response()->json($response, 201);
+    }
+    $messageResponse['message'] = 'Invalid Credentials';
+    return response($messageResponse, 401);
   }
 }

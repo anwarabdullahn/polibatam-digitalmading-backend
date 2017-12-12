@@ -21,4 +21,8 @@ class Announcement extends Model
     public function category() {
       return $this->hasOne('App\AnnouncementCategories', 'id', 'id_category');
     }
+
+    public function setTitleAttribute($value) {
+      $this->attributes['title'] = ucwords($value);
+    }
 }

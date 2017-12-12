@@ -8,6 +8,8 @@ use App\Http\Requests\Store\StoreAddBanner;
 use App\Http\Requests\Update\UpdateBannerPost;
 use Auth;
 use Storage;
+use App\AuthMahasiswa;
+use App\Transformers\BannerTransformer;
 
 class BannerController extends Controller
 {
@@ -80,5 +82,31 @@ class BannerController extends Controller
         }return redirect()->route('banner')->with('gagal', 'Banner Gagal Di Hapus');
       }return redirect()->route('banner')->with('gagal', 'Banner Gagal Di Temukan!!');
     }return redirect()->route('home')->with('gagal','Invalid Credential !!');
+  }
+
+  public function getImage($id) {
+    $path = Storage::get('public/banner/images/'.$id);
+    $mimetype = Storage::mimeType('public/banner/images/'.$id);
+    return response($path, 200)->header('Content-Type', $mimetype);
+  }
+
+  public function getAPI(Request $request)
+  {
+    $authorization = $request->header('Authorization');
+      $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
+      if ($authMahasiswa) {
+        $banners = Banner::where('status', '1')->take(3)->get()->sortByDesc('created_at');
+        if ($banners) {
+          $response = fractal()
+          ->item($banners)
+          ->transformWith(new BannerTransformer)
+          ->toArray();
+            return response()->json($response, 201);
+        }
+        $messageResponse['message'] = 'Banner Tidak Tersedia';
+           return response($messageResponse, 406);
+      }
+      $messageResponse['message'] = 'Invalid Credentials';
+         return response($messageResponse, 401);
   }
 }
