@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\User;
-use Auth;
+
 use App\Http\Requests\Store\StoreAddOrmawa;
 use App\Http\Requests\Update\UpdateOrmawaPost;
+
+use Auth;
+use Image;
+use File;
+use Storage;
 
 class UserController extends Controller
 {
@@ -69,5 +75,39 @@ class UserController extends Controller
         }return redirect()->route('ormawa')->with('gagal','Ormawa Gagal Di Hapus');
       }return redirect()->route('ormawa')->with('gagal','Ormawa Tidak Ditemukan');
     }return redirect()->route('home')->with('gagal','Invalid Credential !!');
+  }
+
+  public function profileUpdate(Request $request)
+  {
+    $user = Auth::user();
+    if ($request->admin === $user->name) {
+        if ($request->description) {
+          $user->deskripsi = $request->description;
+          if ($user->save()) {
+            return redirect()->route('home')->with('info','Profile About Berhasil Di Tukar');
+          }return redirect()->route('home')->with('gagal','Profile About Gagal Di Tukar');
+        }elseif (isset($request->avatar)) {
+            $forDelete = $user->avatar;
+            $avatar = $request->file('avatar');
+            $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $avatar->getClientOriginalExtension();
+            $user->avatar = $byscryptAttachmentFile;
+          if ($request->avatar->storeAs('public/uploads/avatars' , $byscryptAttachmentFile ))
+            if (Image::make($request->avatar)->save(public_path('/assets/img/placeholders/avatars/'.$byscryptAttachmentFile))) {
+              if ($user->save()) {
+              File::delete(public_path('/assets/img/placeholders/avatars/'.$forDelete));
+              Storage::delete('public/uploads/avatars'.$forDelete);
+              return redirect()->route('home')->with('info','Profile Image Berhasil Di Tukar');
+            }return redirect()->route('home')->with('gagal','Profile Image Gagal Di Tukar');
+          }return redirect()->route('home')->with('gagal','Profile Image Gagal Di Tukar');
+        }return redirect()->route('home')->with('gagal','Silahkan Lengkapi Data');
+    }return redirect()->route('home')->with('gagal','Invalid Credential !!');
+  }
+
+  public function getProfile($id)
+  {
+    $path = Storage::get('public/uploads/avatars/'.$id);
+    // dd($id);
+    $mimetype = Storage::mimeType('public/uploads/avatars/'.$id);
+    return response($path, 200)->header('Content-Type' ,$mimetype);
   }
 }

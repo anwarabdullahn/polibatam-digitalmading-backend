@@ -24,8 +24,9 @@ class UpdateEventPost extends FormRequest
      public function rules()
      {
        return [
-         'edittitle'         => 'required',
-         'editdescription'   => 'required',
+         'edittitle'         => 'nullable',
+         'editdate'         => 'required',
+         'editdescription'   => 'nullable',
          'editimage'         => 'nullable',
        ];
      }
@@ -33,8 +34,7 @@ class UpdateEventPost extends FormRequest
      {
        return [
          'edittitle.required' => 'Judul Event dibutuhkan.',
-         // 'image.max' => 'Thumnail Event dibutuhkan.',
-         'editimage.required' => 'Deskripsi Event dibutuhkan.',
+         'editdate.required' => 'Tanggal Event dibutuhkan.',
        ];
      }
 

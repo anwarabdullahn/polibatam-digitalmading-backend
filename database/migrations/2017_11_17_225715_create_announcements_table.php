@@ -16,7 +16,7 @@ class CreateAnnouncementsTable extends Migration
       Schema::create('announcements', function (Blueprint $table) {
           $table->increments('id');
           $table->string('title');
-          $table->string('description');
+          $table->longText('description')->nullable();
           $table->string('image');
           $table->integer('id_user')->unsigned();
           $table->integer('id_category')->unsigned()->nullable();

@@ -25,6 +25,7 @@ class StoreAddEvent extends FormRequest
      {
        return [
          'title'      => 'required',
+         'date'      => 'required',
          'image'     => 'required',
          'description'     => 'required',
        ];
@@ -33,6 +34,7 @@ class StoreAddEvent extends FormRequest
      {
        return [
          'title.required' => 'Judul Event dibutuhkan.',
+         'date.required' => 'Tanggal Event dibutuhkan.',
          'image.required' => 'Thumnail Event dibutuhkan.',
          'description.required' => 'Deskripsi Event dibutuhkan.',
        ];

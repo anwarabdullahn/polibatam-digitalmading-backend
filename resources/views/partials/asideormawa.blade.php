@@ -29,17 +29,16 @@
                     <i class="fa fa-ellipsis-h"></i>
                 </li>
                 <li>
-                    <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-cog sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Dropdown</span></a>
+                    <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-gift sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Management Event</span></a>
                     <ul>
                         <li>
-                            <a href="javascript:void(0)">Link #1</a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)">Link #2</a>
+                            <a href="{{url('/event')}}">Event</a>
                         </li>
                     </ul>
                 </li>
-
+                <li>
+                    <a href="{{url('/banner')}}"><i class="fa fa-newspaper-o sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Banner</span></a>
+                </li>
                 <li>
                   <a href="{{ route('logout') }}"
                       onclick="event.preventDefault();

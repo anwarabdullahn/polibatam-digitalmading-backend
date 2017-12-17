@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Mahasiswa;
-use Illuminate\Support\Facades\Hash;
 use App\AuthMahasiswa;
+
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Store\StoreAddMahasiswa;
-use Validator;
 use App\Transformers\MahasiswaTransformer;
+
+use Validator;
 
 class AuthAPI extends Controller
 {

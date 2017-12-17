@@ -19,6 +19,8 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function(){
   Route::get('/home', 'HomeController@index')->name('home');
+  Route::post('/profile', 'UserController@profileUpdate')->name('profile');
+  Route::get('/profile/{id}', 'UserController@getProfile');
 
   Route::prefix('announcement')->group(function() {
     Route::get('', 'AnnouncementController@index')->name('announcement');

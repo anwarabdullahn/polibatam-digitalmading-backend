@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Banner;
+use App\AuthMahasiswa;
+
 use App\Http\Requests\Store\StoreAddBanner;
 use App\Http\Requests\Update\UpdateBannerPost;
+use App\Transformers\BannerTransformer;
+
 use Auth;
 use Storage;
-use App\AuthMahasiswa;
-use App\Transformers\BannerTransformer;
 
 class BannerController extends Controller
 {

@@ -68,8 +68,7 @@
                                   <thead>
                                         <tr>
                                             <th class="text-center" style="width: 20px;">NO</th>
-                                            <th>Judul</th>
-                                            <th>Deskripsi</th>
+                                            <th style="width: 280px">Judul</th>
                                             <th class="text-center" style="width: 100px;">Penerbit</th>
                                             <th class="text-center" style="width: 100px;">Kategori</th>
                                             <th class="text-center" style="width: 150px;">Tanggal diterbitkan</th>
@@ -80,8 +79,7 @@
                                       @foreach ($announcements as $index=> $announcement)
                                           <tr>
                                             <td class="text-center" style="width: 20px;"> {{ $index+1 }} </td>
-                                            <td> {{ $announcement->title }} </td>
-                                            <td> {{ $announcement->description }} </td>
+                                            <td style="width: 280px"> {{ $announcement->title }} </td>
                                             <td class="text-center" style="width: 100px;"> {{ $announcement->user->name }} </td>
                                             <td class="text-center" style="width: 100px;"> {{ $announcement->category->name }} </td>
                                             <td class="text-center" style="width: 150px;"> {{ $announcement->created_at  }} </td>
@@ -105,7 +103,7 @@
             </div>
             <!-- END Page Container -->
             <div class="modal fade" id="tambah-announcement">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-lg">
                   <div class="modal-content">
                       <div class="modal-header">
                           <div class="modal-body">
@@ -142,7 +140,7 @@
                           </div>
                           <div class="form-group">
                             <label class="form-label">Description</label>
-                            <textarea class="form-control" contenteditable rows="3" name="description" placeholder="Type your description..." value="">{{old('description')}}</textarea>
+                            <textarea class="form-control ckeditor" contenteditable rows="3" name="description" placeholder="Type your description..." value="">{{old('description')}}</textarea>
                           </div>
                           <button type="button" class="btn btn-inline btn-primary pull-right" data-dismiss="modal">Batal</button>
                             <input type="submit" class="btn btn-inline btn-secondary pull-right" name="submit" value="TAMBAH" />
@@ -154,7 +152,7 @@
               </div>
             </div>
             <div class="modal fade" id="edit-announcement">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <div class="modal-body">
@@ -188,11 +186,15 @@
                             <div class="form-group">
                               <label class="form-label">Thumbnail</label>
                               <input type="file" name="editimage" accept="image/*"/>
-
                             </div>
                             <div class="form-group">
                               <label class="form-label">Description</label>
-                              <textarea class="form-control" rows="3" name="editdescription" id="input-description-edit">{{old('editdescription')}}</textarea>
+                              <p id="input-description-edit">
+                              </p>
+                            </div>
+                            <div class="form-group">
+                              <label class="form-label">Edit Description</label>
+                              <textarea class="form-control ckeditor" rows="3" name="editdescription">{{old('editdescription')}}</textarea>
                             </div>
                             <input type="hidden" id="input-edit-id" name="edit_id" value="{{old('edit_id')}}">
                             <input type="hidden" id="input-edit-penerbit" name="edit_penerbit" value="{{old('edit_id')}}">
@@ -271,6 +273,8 @@
       @if (count($errors->edit) > 0)
         <script type="text/javascript"> $('#edit-announcement').modal('show');</script>
       @endif
+
+      <script src="{{asset ('assets/js/plugins/ckeditor/ckeditor.js') }}"></script>
 
       <script type="text/javascript">
         $(document).on('click' , '.edit-announcement', function(){

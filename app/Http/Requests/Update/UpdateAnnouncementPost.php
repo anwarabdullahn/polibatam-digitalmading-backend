@@ -27,7 +27,6 @@ class UpdateAnnouncementPost extends FormRequest
           'edittitle'         => 'required',
           'id_categoryedit'   => 'required',
           'editimage'         => 'nullable',
-          'editdescription'   => 'required',
         ];
     }
 
@@ -37,7 +36,6 @@ class UpdateAnnouncementPost extends FormRequest
         'edittitle.required' => 'Judul Pengumuman dibutuhkan.',
         'id_categoryedit.required' => 'Pilih Kategori',
         // 'image.max' => 'Thumnail Announcement dibutuhkan.',
-        'editdescription.required' => 'Deskripsi Pengumuman dibutuhkan.',
       ];
     }
 

@@ -68,10 +68,9 @@
                                   <thead>
                                         <tr>
                                             <th class="text-center" style="width: 50px;">NO</th>
-                                            <th>Judul</th>
-                                            <th>Deskripsi</th>
+                                            <th tyle="width: 230px;">Judul</th>
                                             <th class="text-center" style="width: 100px;">Penerbit</th>
-                                            <th class="text-center" style="width: 150px;">Tanggal diterbitkan</th>
+                                            <th class="text-center" style="width: 150px;">Tanggal</th>
                                             <th class="text-center" style="width: 230px;"></th>
                                         </tr>
                                     </thead>
@@ -79,12 +78,11 @@
                                       @foreach ($events as $index=> $event)
                                           <tr>
                                             <td class="text-center" style="width: 50px;"> {{ $index+1 }} </td>
-                                            <td> {{ $event->title }} </td>
-                                            <td> {{ $event->description }} </td>
+                                            <td tyle="width: 230px;"> {{ $event->title }} </td>
                                             <td class="text-center" style="width: 100px;"> {{ $event->user->name }} </td>
-                                            <td class="text-center" style="width: 150px;"> {{ $event->created_at  }} </td>
+                                            <td class="text-center" style="width: 150px;"> {{ $event->date  }} </td>
                                             <td class="text-center" style="width: 280px;"><div class="btn-group pull-right" role="group">
-                                            <button type="button" class="edit-event btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-event" data-edit-id="{{$event->id}}" data-edit-title="{{$event->title}}" data-edit-user="{{$event->user->name}}" data-edit-penerbit="{{$event->user->id}}" data-edit-description="{{$event->description}}"><i class="fa fa-edit"></i>Ubah</button>
+                                            <button type="button" class="edit-event btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-event" data-edit-id="{{$event->id}}" data-edit-title="{{$event->title}}" data-edit-user="{{$event->user->name}}" data-edit-penerbit="{{$event->user->id}}" data-edit-description="{{$event->description}}" data-edit-date="{{$event->date}}"><i class="fa fa-edit"></i>Ubah</button>
                                             <button type="button" class="hapus-event btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-event" data-hapus-id="{{$event->id}}" data-hapus-title="{{$event->title}}" data-hapus-user="{{$event->user->name}}" data-hapus-image="{{$event->image}}"><i class="fa fa-trash"></i>Hapus</button>
                                             <button type="button" class="view-event btn btn-inline btn-success" data-toggle="modal" data-target="#view-event" data-view-id="{{$event->id}}"  data-view-image="{{$event->image}}" data-view-admin="{{ $event->user->name }}" data-view-title="{{ $event->title }}" data-view-created-at="{{ $event->created_at}}" data-view-description="{{ $event->description }}"><i class="fa fa-eye"></i>Lihat</button>
                                           </div>
@@ -103,7 +101,7 @@
             </div>
             <!-- END Page Container -->
             <div class="modal fade" id="tambah-event">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-lg">
                   <div class="modal-content">
                       <div class="modal-header">
                           <div class="modal-body">
@@ -122,12 +120,16 @@
                             <input type="text" class="form-control" name="title" placeholder="Judul Event" value="{{old('title')}}">
                           </div>
                           <div class="form-group">
+                            <label class="form-label">Tanggal</label>
+                            <input type="text" class="form-control input-datepicker" name="date" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="{{old('date')}}">
+                          </div>
+                          <div class="form-group">
                             <label class="form-label">Thumbnail</label>
                             <input type="file" name="image" accept="image/*" />
                           </div>
                           <div class="form-group">
                             <label class="form-label">Description</label>
-                            <textarea class="form-control" rows="3" name="description" placeholder="Type your description...">{{old('description')}}</textarea>
+                            <textarea class="form-control ckeditor" rows="3" name="description" >{{old('description')}}</textarea>
                           </div>
                           <button type="button" class="btn btn-inline btn-primary pull-right" data-dismiss="modal">Batal</button>
                             <input type="submit" class="btn btn-inline btn-secondary pull-right" name="submit" value="TAMBAH" />
@@ -139,7 +141,7 @@
               </div>
             </div>
             <div class="modal fade" id="edit-event">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <div class="modal-body">
@@ -158,12 +160,20 @@
                               <input type="text" id="input-title-edit" class="form-control" name="edittitle" value="{{old('edittitle')}}" >
                             </div>
                             <div class="form-group">
+                              <label class="form-label">Tanggal</label>
+                              <input type="text" id="input-date-edit" class="form-control input-datepicker" name="editdate" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="{{old('date')}}">
+                            </div>
+                            <div class="form-group">
                               <label class="form-label">Thumbnail</label>
                               <input type="file" name="editimage" accept="image/*" id="input-image-edit"/>
                             </div>
                             <div class="form-group">
                               <label class="form-label">Description</label>
-                              <textarea class="form-control" rows="3" name="editdescription" id="input-description-edit">{{old('editdescription')}}</textarea>
+                              <p id="input-description-edit"></p>
+                            </div>
+                            <div class="form-group">
+                              <label class="form-label">Edit Description</label>
+                              <textarea class="form-control ckeditor" rows="3" name="editdescription" placeholder="Type your description..." contenteditable>{{old('editdescription')}}</textarea>
                             </div>
                             <input type="hidden" id="input-edit-id" name="edit_id" value="{{old('edit_id')}}">
                             <input type="hidden" id="input-edit-penerbit" name="editpenerbit" value="{{old('editpenerbit')}}">
@@ -203,7 +213,7 @@
                 </div>
               </div>
             <div class="modal fade" id="view-event">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <div class="modal-body">
@@ -244,15 +254,23 @@
         <script type="text/javascript"> $('#edit-event').modal('show');</script>
       @endif
 
+      <script src="{{asset ('assets/js/plugins/ckeditor/ckeditor.js') }}"></script>
+
       <script type="text/javascript">
         $(document).on('click' , '.edit-event', function(){
           $('#input-title-edit').val($(this).data('edit-title'));
           $('#input-image-edit').val($(this).data('edit-image'));
           $('#input-description-edit').html($(this).data('edit-description'));
+          $('#input-date-edit').val($(this).data('edit-date'));
+          // $('#input-description-edit').html($(this).data('edit-description'));
+          // var desc = CKEDITOR.instances['editdescription'].getData();
+          console.log($(this).data('edit-date'));
+          // $('#input-description-edit').ckeditor($(this).data('edit-description'));
           // console.log($(this).data('edit-description'));
           $('#input-edit-id').val($(this).data('edit-id'));
           $('#input-edit-user').val($(this).data('edit-user'));
           $('#input-edit-penerbit').val($(this).data('edit-penerbit'));
+
         });
       </script>
 

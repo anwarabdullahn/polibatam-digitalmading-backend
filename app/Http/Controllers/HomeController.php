@@ -25,10 +25,9 @@ class HomeController extends Controller
     public function index()
     {
       if (Auth::user()->role =='ormawa') {
-        return view ('ormawaapp');
+        return view ('ormawaapp', array('user' => Auth::user()));
       }elseif (Auth::user()->role =='admin') {
-        return view ('adminapp');
+        return view ('adminapp' , array('user' => Auth::user()));
       }
-
     }
 }

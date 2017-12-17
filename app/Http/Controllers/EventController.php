@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Event;
 use App\Http\Requests\Store\StoreAddEvent;
 use App\Http\Requests\Update\UpdateEventPost;
+use App\AuthMahasiswa;
 use Auth;
 use Storage;
+use App\Transformers\EventTransformer;
 
 class EventController extends Controller
 {
@@ -30,6 +32,7 @@ class EventController extends Controller
       $event->title = $request->title;
       $event->description = $request->description;
       $event->id_user = $adminID;
+      $event->date = $request->date;
       if (isset($request->image)) {
         $byscryptAttachmentFile =  md5(str_random(64));
         $event->image = $byscryptAttachmentFile;
@@ -49,8 +52,13 @@ class EventController extends Controller
         $event = $this->events->where('id', $request->edit_id)->first();
         if ($event) {
           $id = $event->image;
-          $event->title = $request->edittitle;
-          $event->description = $request->editdescription;
+          if ($request->edittitle) {
+            $event->title = $request->edittitle;
+          }
+          if ($request->editdescription) {
+            $event->description = $request->editdescription;
+          }
+          $event->date= $request->editdate;
           $event->id_user = $request->editpenerbit;
           if (isset($request->editimage)) {
             $byscryptAttachmentFile =  md5(str_random(64));
@@ -88,6 +96,34 @@ class EventController extends Controller
       $path = Storage::get('public/event/images/'.$id);
       $mimetype = Storage::mimeType('public/event/images/'.$id);
       return response($path, 200)->header('Content-Type', $mimetype);
+    }
+
+    public function getAPI(Request $request)
+    {
+      $authorization = $request->header('Authorization');
+      $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
+
+      if ($authMahasiswa) {
+        if ($request->date) {
+          $event = Event::where('date' ,$request->date)->get()->sortByDesc('created_at');
+          if ($event) {
+            $response = fractal()
+            ->item($event)
+            ->transformWith(new EventTransformer)
+            ->toArray();
+            return response()->json($response, 201);
+          }$messageResponse['message'] = 'Event Tidak ditemukan';
+          return response($messageResponse, 406);
+        }
+        $event = Event::get()->sortByDesc('created_at');
+        // dd($announcements);
+        $response = fractal()
+        ->item($event)
+        ->transformWith(new EventTransformer)
+        ->toArray();
+        return response()->json($response, 201);
+      }$messageResponse['message'] = 'Invalid Credentials';
+      return response($messageResponse, 401);
     }
 
 

@@ -33,5 +33,9 @@ Route::prefix('v1')->group(function () {
       Route::get('category/{id}' , 'AnnouncementController@byCategoryAPI');
     });
 
+    Route::prefix('event')->group(function(){
+      Route::get('' , 'EventController@getAPI');
+    });
+
   });
 });
