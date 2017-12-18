@@ -101,28 +101,31 @@ class EventController extends Controller
     public function getAPI(Request $request)
     {
       $authorization = $request->header('Authorization');
-      $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
+      if ($authorization) {
+        $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
 
-      if ($authMahasiswa) {
-        if ($request->date) {
-          $event = Event::where('date' ,$request->date)->get()->sortByDesc('created_at');
-          if ($event) {
-            $response = fractal()
-            ->item($event)
-            ->transformWith(new EventTransformer)
-            ->toArray();
-            return response()->json($response, 201);
-          }$messageResponse['message'] = 'Event Tidak ditemukan';
-          return response($messageResponse, 406);
-        }
-        $event = Event::get()->sortByDesc('created_at');
-        // dd($announcements);
-        $response = fractal()
-        ->item($event)
-        ->transformWith(new EventTransformer)
-        ->toArray();
-        return response()->json($response, 201);
-      }$messageResponse['message'] = 'Invalid Credentials';
+        if ($authMahasiswa) {
+          if ($request->date) {
+            $event = Event::where('date' ,$request->date)->get()->sortByDesc('created_at');
+            if ($event) {
+              $response = fractal()
+              ->item($event)
+              ->transformWith(new EventTransformer)
+              ->toArray();
+              return response()->json(array('result' => $response['data']), 201);
+            }$messageResponse['message'] = 'Event Tidak ditemukan';
+            return response($messageResponse, 406);
+          }
+          $event = Event::get()->sortByDesc('created_at');
+          // dd($announcements);
+          $response = fractal()
+          ->collection($event)
+          ->transformWith(new EventTransformer)
+          ->toArray();
+          return response()->json(array('result' => $response['data']), 201);
+        }$messageResponse['message'] = 'Invalid Credentials';
+        return response($messageResponse, 401);
+      }$messageResponse['message'] = 'Authorization Not Set';
       return response($messageResponse, 401);
     }
 

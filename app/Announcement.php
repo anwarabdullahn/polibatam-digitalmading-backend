@@ -25,4 +25,5 @@ class Announcement extends Model
     public function setTitleAttribute($value) {
       $this->attributes['title'] = ucwords($value);
     }
+
 }

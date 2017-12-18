@@ -17,17 +17,22 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/profile/{id}', 'UserController@getProfile');
+Route::get('/images/{id}', 'AnnouncementController@getImage');
+Route::get('/images/{id}', 'EventController@getImage');
+Route::get('/images/{id}', 'BannerController@getImage');
+
 Route::group(['middleware' => 'auth'], function(){
   Route::get('/home', 'HomeController@index')->name('home');
   Route::post('/profile', 'UserController@profileUpdate')->name('profile');
-  Route::get('/profile/{id}', 'UserController@getProfile');
+  Route::post('/password', 'UserController@passwordUpdate')->name('password');
 
   Route::prefix('announcement')->group(function() {
     Route::get('', 'AnnouncementController@index')->name('announcement');
     Route::post('', 'AnnouncementController@create');
     Route::post('/delete', 'AnnouncementController@delete');
     Route::post('/update', 'AnnouncementController@update');
-    Route::get('/images/{id}', 'AnnouncementController@getImage');
+
 
     Route::get('/category', 'AnnouncementCategoriesController@index')->name('category');
     Route::post('/category', 'AnnouncementCategoriesController@create');
@@ -40,7 +45,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('', 'EventController@create');
     Route::post('/update', 'EventController@update');
     Route::post('/delete', 'EventController@delete');
-    Route::get('/images/{id}', 'EventController@getImage');
+
   });
 
   Route::prefix('ormawa')->group(function() {
@@ -56,7 +61,15 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('', 'BannerController@create');
     Route::post('/update', 'BannerController@update');
     Route::post('/delete', 'BannerController@delete');
-    Route::get('/images/{id}', 'BannerController@getImage');
+
+  });
+
+  Route::prefix('mahasiswa')->group(function() {
+    Route::get('', 'MahasiswaController@index')->name('mahasiswa');
+    // Route::post('', 'BannerController@create');
+    // Route::post('/update', 'BannerController@update');
+    // Route::post('/delete', 'BannerController@delete');
+
   });
 });
 

@@ -3,7 +3,7 @@
     <div class="col-md-5 col-lg-4">
         <div class="widget">
           <div class="widget-content border-bottom text-dark">
-                <span class="pull-right text-muted">{{ Auth::user()->role }}</span>
+                <span class="pull-right text-muted">{{ Auth::user()->role }}<i class="gi gi-settings pull-right edit-profile" data-toggle="modal" data-target="#edit-profile" data-edit-name="{{ Auth::user()->name}} " data-edit-deskripsi="{{Auth::user()->deskripsi}}"></i></span>
                 Featured Author
             </div>
             <div class="widget-image widget-image-sm ">
@@ -13,7 +13,6 @@
                     <h2 class="widget-heading text-light"><strong>{{ Auth::user()->name }}</strong></h2>
                 </div>
             </div>
-
             <div class="widget-content border-bottom">
               <h4>Change Profile Images</h4>
               <div class="row text-center">
@@ -28,21 +27,22 @@
                   </div>
                 </form>
             </div>
-            </div>            
+            </div>
             <div class="widget-content border-bottom">
-                <h4>About<i class="gi gi-settings pull-right" data-toggle="modal" data-target="#edit-profile"></i></h4>
+                <h4>About</h4>
                 <span>{{ Auth::user()->deskripsi }}</span>
             </div>
-            <div class="widget-content widget-content-full border-bottom">
-                <div class="row text-center">
-
-                    <div class="col-xs-6 push-inner-top-bottom border-right">
-                        <h3 class="widget-heading"><i class="gi gi-heart text-danger push"></i> <br><small><strong>1.5k</strong> Favorites</small></h3>
-                    </div>
-                    <div class="col-xs-6 push-inner-top-bottom">
-                        <h3 class="widget-heading"><i class="gi gi-group themed-color-social push"></i> <br><small><strong>58.6k</strong> Followers</small></h3>
-                    </div>
-                </div>
+        </div>
+        <div class="col-md-12 col-lg-12">
+          <div class="row">
+            <a href="javascript:void(0)" class="widget" data-toggle="modal" data-target="#change-password">
+              <div class="widget-content themed-background-danger clearfix">
+                 <div class="widget-icon pull-right">
+                     <i class="gi gi-keys text-light-op"></i>
+                 </div>
+                 <h2 class="widget-heading h3 text-light"><span class="text-light-op">CHANGE PASSWORD</span></h2>
+             </div>
+            </a>
             </div>
         </div>
     </div>

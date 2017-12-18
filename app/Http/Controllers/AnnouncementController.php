@@ -112,13 +112,12 @@ class AnnouncementController extends Controller
 
       if ($authMahasiswa) {
         $announcements = Announcement::get()->sortByDesc('created_at');
-        // dd($announcements);
         $response = fractal()
-        ->item($announcements)
+        ->collection($announcements)
         ->transformWith(new AnnouncementTransformer)
         ->toArray();
 
-        return response()->json($response, 201);
+        return response()->json(array('result' => $response['data']), 200);
       }
       $messageResponse['message'] = 'Invalid Credentials';
          return response($messageResponse, 401);
@@ -132,11 +131,11 @@ class AnnouncementController extends Controller
         $announcements = Announcement::where('id_category', $id)->get()->sortByDesc('created_at');
         if ($announcements) {
           $response = fractal()
-          ->item($announcements)
+          ->collection($announcements)
           ->transformWith(new AnnouncementTransformer)
           ->toArray();
 
-          return response()->json($response, 201);
+          return response()->json(array('result' => $response['data']), 200);
         }
         $messageResponse['message'] = 'Kategori Tidak Tersedia';
         return response($messageResponse, 406);

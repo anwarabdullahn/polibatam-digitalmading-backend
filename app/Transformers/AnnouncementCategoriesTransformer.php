@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use League\Fractal\TransformerAbstract;
+use App\AnnouncementCategories;
 
 class AnnouncementCategoriesTransformer extends TransformerAbstract
 {
@@ -11,18 +12,11 @@ class AnnouncementCategoriesTransformer extends TransformerAbstract
      *
      * @return array
      */
-     public function transform($categories)
+     public function transform(AnnouncementCategories $category)
      {
-       $allCategory = collect();
-       foreach ($categories as $category) {
-         $t = collect([
-           'id'           => $category->id,
-           'name'        => $category->name
-         ]);
-         $allCategory->push($t);
-       }
        return [
-         'categories'=>$allCategory,
+         'id'           => $category->id,
+         'name'        => $category->name
        ];
      }
 }

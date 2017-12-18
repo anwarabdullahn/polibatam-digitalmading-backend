@@ -71,11 +71,11 @@ class AnnouncementCategoriesController extends Controller
       $categories = AnnouncementCategories::all()->sortBy('id');
       // dd($category);
       $response = fractal()
-      ->item($categories)
+      ->collection($categories)
       ->transformWith(new AnnouncementCategoriesTransformer)
       ->toArray();
 
-      return response()->json($response, 201);
+      return response()->json(array('result' => $response['data']), 200);
     }
     $messageResponse['message'] = 'Invalid Credentials';
     return response($messageResponse, 401);

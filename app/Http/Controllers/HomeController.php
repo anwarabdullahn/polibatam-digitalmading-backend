@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use Charts;
+use App\Mahasiswa;
+use App\Banner;
+use App\Announcement;
+use App\Event;
 
 class HomeController extends Controller
 {
@@ -24,10 +29,27 @@ class HomeController extends Controller
      */
     public function index()
     {
+      $event = Event::count();
+      $announcement = Announcement::count();
+      $banner = Banner::where('status', '1')->count();
+      $mahasiswa = Mahasiswa::count();
+
+      $lastAnnouncement = Announcement::take(5)->get()->sortByDesc('created_at');
+      // dd($lastAnnouncement);
+      $lastEvent = Event::take(5)->get()->sortByDesc('created_at');
+
+      $chart = Charts::database(Event::all(), 'bar', 'highcharts')
+            ->title("Jumlah Event Perbulan")
+            ->elementLabel("Total")
+            ->dimensions(1000, 100)
+            ->responsive(true)
+            ->dateColumn('date')
+            ->groupByMonth('2018',true);
+
       if (Auth::user()->role =='ormawa') {
-        return view ('ormawaapp', array('user' => Auth::user()));
+        return view ('ormawaapp', ['chart' => $chart], compact('mahasiswa','banner','event','announcement','lastAnnouncement','lastEvent'));
       }elseif (Auth::user()->role =='admin') {
-        return view ('adminapp' , array('user' => Auth::user()));
+        return view ('adminapp' , ['chart' => $chart], compact('mahasiswa','banner','event','announcement','lastAnnouncement','lastEvent'));
       }
     }
 }

@@ -101,10 +101,10 @@ class BannerController extends Controller
         $banners = Banner::where('status', '1')->take(3)->get()->sortByDesc('created_at');
         if ($banners) {
           $response = fractal()
-          ->item($banners)
+          ->collection($banners)
           ->transformWith(new BannerTransformer)
           ->toArray();
-            return response()->json($response, 201);
+            return response()->json(array('result' => $response['data']), 200);
         }
         $messageResponse['message'] = 'Banner Tidak Tersedia';
            return response($messageResponse, 406);

@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('role', ['admin', 'ormawa'])->default('ormawa');
             $table->string('notelpon')->nullable();
-            $table->string('deskripsi'))->default('Super Admin Developer')->nullable();
+            $table->string('deskripsi')->default('Deskripsi User')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

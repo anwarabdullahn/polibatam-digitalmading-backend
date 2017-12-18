@@ -8,6 +8,8 @@ use App\User;
 
 use App\Http\Requests\Store\StoreAddOrmawa;
 use App\Http\Requests\Update\UpdateOrmawaPost;
+use App\Http\Requests\Update\UpdateUserPasswordPost;
+use Illuminate\Support\Facades\Hash;
 
 use Auth;
 use Image;
@@ -81,8 +83,13 @@ class UserController extends Controller
   {
     $user = Auth::user();
     if ($request->admin === $user->name) {
-        if ($request->description) {
-          $user->deskripsi = $request->description;
+        if ($request->description || $request->name) {
+          if ($request->description) {
+            $user->deskripsi = $request->description;
+          }
+          if ($request->name) {
+            $user->name = $request->name;
+          }
           if ($user->save()) {
             return redirect()->route('home')->with('info','Profile About Berhasil Di Tukar');
           }return redirect()->route('home')->with('gagal','Profile About Gagal Di Tukar');
@@ -94,8 +101,10 @@ class UserController extends Controller
           if ($request->avatar->storeAs('public/uploads/avatars' , $byscryptAttachmentFile ))
             if (Image::make($request->avatar)->save(public_path('/assets/img/placeholders/avatars/'.$byscryptAttachmentFile))) {
               if ($user->save()) {
-              File::delete(public_path('/assets/img/placeholders/avatars/'.$forDelete));
-              Storage::delete('public/uploads/avatars'.$forDelete);
+                if ($forDelete != 'avatar13@2dx') {
+                  File::delete(public_path('/assets/img/placeholders/avatars/'.$forDelete));
+                  Storage::delete('public/uploads/avatars'.$forDelete);
+                }
               return redirect()->route('home')->with('info','Profile Image Berhasil Di Tukar');
             }return redirect()->route('home')->with('gagal','Profile Image Gagal Di Tukar');
           }return redirect()->route('home')->with('gagal','Profile Image Gagal Di Tukar');
@@ -109,5 +118,18 @@ class UserController extends Controller
     // dd($id);
     $mimetype = Storage::mimeType('public/uploads/avatars/'.$id);
     return response($path, 200)->header('Content-Type' ,$mimetype);
+  }
+
+  public function passwordUpdate(UpdateUserPasswordPost $request)
+  {
+    $user = Auth::user();
+    if ($user->name == $request->admin) {
+      if (Hash::check($request->oldpassword , $user->password)) {
+        $user->password = bcrypt($request->newpassword);
+        if ($user->save()) {
+          return redirect()->route('home')->with('info','Password Berasil Di Tukar');
+        }
+      }return redirect()->route('home')->with('gagal','Password Lama Salah !!');
+    }return redirect()->route('home')->with('gagal','Invalid Credential !!');
   }
 }

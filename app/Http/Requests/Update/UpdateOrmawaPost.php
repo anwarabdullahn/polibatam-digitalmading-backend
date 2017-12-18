@@ -40,7 +40,7 @@ class UpdateOrmawaPost extends FormRequest
          'editemail.email' => 'Email harus dalam format email.',
          'editemail.unique' => 'Email telah dipakai.',
          'editnotelpon.numeric' => 'Nomor telfon harus angka.',
-         'editpassword.min' => 'Password kurang dari jumlah minimal.',
+         'editpassword.min' => 'Password kurang dari jumlah minimal (6).',
          'editconfirm_password.same' => 'Password konfirmasi harus sama.',
          'editconfirm_email.same' => 'Email konfirmasi harus sama.',
        ];
