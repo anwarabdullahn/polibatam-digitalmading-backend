@@ -9,7 +9,7 @@
             <div class="widget-image widget-image-sm ">
                 <img src="{{asset ('assets/img/placeholders/photos/photo1@2x.jpg') }}" alt="image">
                 <div class="widget-image-content text-center">
-                    <img src="public/assets/img/placeholders/avatars/{{Auth::user()->avatar}}" alt="avatar" class="img-circle img-thumbnail img-thumbnail-transparent img-thumbnail-avatar-2x push">
+                    <img src="{{asset ('public/assets/img/placeholders/avatars/') }}{{Auth::user()->avatar}}" alt="avatar" class="img-circle img-thumbnail img-thumbnail-transparent img-thumbnail-avatar-2x push">
                     <h2 class="widget-heading text-light"><strong>{{ Auth::user()->name }}</strong></h2>
                 </div>
             </div>
