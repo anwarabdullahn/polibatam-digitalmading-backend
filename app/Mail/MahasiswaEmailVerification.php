@@ -39,6 +39,6 @@ class MahasiswaEmailVerification extends Mailable
       return $this->from('aannwaran@gmail.com', 'Digital Mading Polibatam')
                   ->subject('Email Verification')
                   ->replyTo('aannwaran@gmail.com', 'no-Reply')
-                  ->markdown('layouts.mahasiswas.emails.register.verificationmails', ['url' => $this->urlVerification, 'name' => $this->name, 'nim' => $this->nim]);
+                  ->markdown('layouts.admins.mahasiswa.emails.register.verificationmails', ['url' => $this->urlVerification, 'name' => $this->name, 'nim' => $this->nim]);
     }
 }

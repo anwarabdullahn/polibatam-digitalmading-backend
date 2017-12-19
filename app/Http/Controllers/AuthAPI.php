@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Store\StoreAddMahasiswa;
 use App\Transformers\MahasiswaTransformer;
 
-use Illuminate\Support\Carbon;
 use App\Mail\MahasiswaEmailVerification;
 
 use Mail;
@@ -80,7 +79,7 @@ class AuthAPI extends Controller
   {
     $mahasiswa = Mahasiswa::where('email', $request->email)
                             ->first();
-
+    // dd($mahasiswa);
     if($mahasiswa){
       if(Hash::check($request->password, $mahasiswa->password))
       {

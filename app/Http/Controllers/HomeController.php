@@ -32,7 +32,7 @@ class HomeController extends Controller
       $event = Event::count();
       $announcement = Announcement::count();
       $banner = Banner::where('status', '1')->count();
-      $mahasiswa = Mahasiswa::count();
+      $mahasiswa = Mahasiswa::where('verified', 'true')->count();
 
       $lastAnnouncement = Announcement::take(5)->get()->sortByDesc('created_at');
       // dd($lastAnnouncement);

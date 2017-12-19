@@ -67,9 +67,10 @@ Route::group(['middleware' => 'auth'], function(){
 
   Route::prefix('mahasiswa')->group(function() {
     Route::get('', 'MahasiswaController@index')->name('mahasiswa');
-    // Route::post('', 'BannerController@create');
+    Route::post('', 'MahasiswaController@create');
+    Route::post('/update', 'MahasiswaController@update');
+    Route::post('/delete', 'MahasiswaController@delete');
     // Route::post('/update', 'BannerController@update');
-    // Route::post('/delete', 'BannerController@delete');
 
   });
 });

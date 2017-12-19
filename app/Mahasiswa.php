@@ -36,4 +36,12 @@ class Mahasiswa extends Model
     public function setNameAttribute($value) {
       $this->attributes['name'] = ucwords($value);
     }
+
+    public function getVerifiedAttribute($value)
+    {
+      if ($value == 'true') {
+        return 'Activated';
+      }
+      return 'NotActivated';
+    }
 }
