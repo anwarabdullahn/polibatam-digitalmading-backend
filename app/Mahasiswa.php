@@ -16,7 +16,7 @@ class Mahasiswa extends Model
      * @var array
      */
     protected $fillable = [
-        'nim','name', 'email', 'password',
+        'nim','name', 'email', 'password','verification_code'
     ];
 
     /**
@@ -27,4 +27,13 @@ class Mahasiswa extends Model
     protected $hidden = [
         'password','remember_token'
     ];
+
+    public function getNameAttribute($value)
+    {
+      return ucwords($value);
+    }
+
+    public function setNameAttribute($value) {
+      $this->attributes['name'] = ucwords($value);
+    }
 }

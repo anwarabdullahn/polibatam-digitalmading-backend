@@ -17,4 +17,8 @@ class Event extends Model
   public function user() {
     return $this->hasOne('App\User', 'id', 'id_user');
   }
+
+  public function setTitleAttribute($value) {
+    $this->attributes['title'] = ucwords($value);
+  }
 }

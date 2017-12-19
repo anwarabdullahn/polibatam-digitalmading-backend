@@ -78,6 +78,21 @@
             @endif
 
             <div class="content">
+              <div class="col-lg-12">
+                @if (session('info'))
+                  <div class="row">
+                    <div class="alert alert-success display-show" class="close" data-dismiss="alert">
+                      {{session('info')}}
+                    </div>
+                  </div>
+                @elseif (session('gagal'))
+                    <div class="row">
+                      <div class="alert alert-danger display-show" class="close" data-dismiss="alert">
+                        {{session('gagal')}}
+                      </div>
+                    </div>
+                @endif
+              </div>
                 <div class="title m-b-md">
                     Laravel
                 </div>

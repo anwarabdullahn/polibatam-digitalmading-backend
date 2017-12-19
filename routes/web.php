@@ -18,9 +18,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/profile/{id}', 'UserController@getProfile');
-Route::get('/images/{id}', 'AnnouncementController@getImage');
-Route::get('/images/{id}', 'EventController@getImage');
-Route::get('/images/{id}', 'BannerController@getImage');
+Route::get('announcement/images/{id}', 'AnnouncementController@getImage');
+Route::get('event/images/{id}', 'EventController@getImage');
+Route::get('banner/images/{id}', 'BannerController@getImage');
+Route::get('/register/verification/{nim}/{code}', 'MahasiswaController@verification');
 
 Route::group(['middleware' => 'auth'], function(){
   Route::get('/home', 'HomeController@index')->name('home');
