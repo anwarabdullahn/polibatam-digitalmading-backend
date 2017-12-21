@@ -83,7 +83,7 @@ class AuthAPI extends Controller
     if($mahasiswa){
       if(Hash::check($request->password, $mahasiswa->password))
       {
-        if ($mahasiswa->verified == 'true') {
+        if ($mahasiswa->verified == 'Activated') {
           $apiStore = AuthMahasiswa::create([
             'api_token'   => bin2hex(str_random(20)),
             'platfom'     =>  $request->platfom,

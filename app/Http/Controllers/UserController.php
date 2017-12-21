@@ -83,6 +83,7 @@ class UserController extends Controller
   {
     $user = Auth::user();
     if ($request->admin === $user->name) {
+      $forDelete = $user->avatar;
         if ($request->description || $request->name) {
           if ($request->description) {
             $user->deskripsi = $request->description;
@@ -94,20 +95,18 @@ class UserController extends Controller
             return redirect()->route('home')->with('info','Profile About Berhasil Di Tukar');
           }return redirect()->route('home')->with('gagal','Profile About Gagal Di Tukar');
         }elseif (isset($request->avatar)) {
-            $forDelete = $user->avatar;
             $avatar = $request->file('avatar');
             $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $avatar->getClientOriginalExtension();
             $user->avatar = $byscryptAttachmentFile;
           if ($request->avatar->storeAs('public/uploads/avatars' , $byscryptAttachmentFile ))
-            if (Image::make($request->avatar)->save(public_path('/assets/img/placeholders/avatars/'.$byscryptAttachmentFile))) {
               if ($user->save()) {
-                if ($forDelete != 'avatar13@2dx') {
-                  File::delete(public_path('/assets/img/placeholders/avatars/'.$forDelete));
-                  Storage::delete('public/uploads/avatars'.$forDelete);
+                if ($forDelete == 'avatar.jpg') {
+                  return redirect()->route('home')->with('info','Profile Image Berhasil Di Tukar');
                 }
-              return redirect()->route('home')->with('info','Profile Image Berhasil Di Tukar');
+                if (Storage::delete('public/uploads/avatars/'.$forDelete)) {
+                  return redirect()->route('home')->with('info','Profile Image Berhasil Di Tukar');
+                }
             }return redirect()->route('home')->with('gagal','Profile Image Gagal Di Tukar');
-          }return redirect()->route('home')->with('gagal','Profile Image Gagal Di Tukar');
         }return redirect()->route('home')->with('gagal','Silahkan Lengkapi Data');
     }return redirect()->route('home')->with('gagal','Invalid Credential !!');
   }

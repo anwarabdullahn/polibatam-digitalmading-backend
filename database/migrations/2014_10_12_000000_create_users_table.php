@@ -16,7 +16,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('avatar')->default('avatar13@2x.jpg');
+            $table->string('avatar')->default('avatar.jpg');
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('role', ['admin', 'ormawa'])->default('ormawa');

@@ -16,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
       Schema::defaultStringLength(191);
+      $this->setDefaultPublicAsset();
 
     }
 
@@ -38,5 +39,10 @@ class AppServiceProvider extends ServiceProvider
       if (!Storage::disk('local')->exists('public/uploads/avatars')) {
         Storage::makeDirectory('public/uploads/avatars');
       }
+    }
+
+    public function setDefaultPublicAsset() {
+      $avatarDefault = Storage::disk('resources')->get('assets/defaults/avatar.jpg');
+      Storage::disk('local')->put('/public/uploads/avatars/avatar.jpg', $avatarDefault);
     }
 }

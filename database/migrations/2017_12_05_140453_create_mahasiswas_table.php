@@ -17,6 +17,7 @@ class CreateMahasiswasTable extends Migration
           $table->increments('id');
           $table->string('nim')->unique();
           $table->string('name');
+          $table->string('avatar')->default('avatar.jpg');
           $table->string('email')->unique();
           $table->string('password');
           $table->string('verification_code')->nullable();

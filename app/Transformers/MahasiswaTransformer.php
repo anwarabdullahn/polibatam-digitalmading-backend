@@ -14,6 +14,7 @@ class MahasiswaTransformer extends TransformerAbstract
       'name'        => $mahasiswa->name,
       'nim'         => $mahasiswa->nim,
       'email'       => $mahasiswa->email,
+      'avatar'      => url('profile/'.$mahasiswa->avatar),
       'registered'  => $mahasiswa->created_at->diffForhumans(),
     ];
   }
