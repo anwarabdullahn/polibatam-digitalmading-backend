@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('avatar')->default('avatar.jpg');
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('role', ['admin', 'ormawa'])->default('ormawa');
+            $table->enum('role', ['admin', 'ormawa','super'])->default('ormawa');
             $table->string('notelpon')->nullable();
             $table->string('deskripsi')->default('Deskripsi User')->nullable();
             $table->rememberToken();

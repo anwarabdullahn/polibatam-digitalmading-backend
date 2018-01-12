@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('', 'AnnouncementController@create');
     Route::post('/delete', 'AnnouncementController@delete');
     Route::post('/update', 'AnnouncementController@update');
+    Route::post('/status', 'AnnouncementController@status');
 
 
     Route::get('/category', 'AnnouncementCategoriesController@index')->name('category');

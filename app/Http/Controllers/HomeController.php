@@ -50,6 +50,8 @@ class HomeController extends Controller
         return view ('ormawaapp', ['chart' => $chart], compact('mahasiswa','banner','event','announcement','lastAnnouncement','lastEvent'));
       }elseif (Auth::user()->role =='admin') {
         return view ('adminapp' , ['chart' => $chart], compact('mahasiswa','banner','event','announcement','lastAnnouncement','lastEvent'));
+      }elseif (Auth::user()->role =='super') {
+        return view ('adminapp' , ['chart' => $chart], compact('mahasiswa','banner','event','announcement','lastAnnouncement','lastEvent'));
       }
     }
 }

@@ -21,7 +21,7 @@ class MahasiswaController extends Controller
 
   public function index()
   {
-    if (Auth::user()->role =='admin') {
+    if (Auth::user()->role =='admin'|| Auth::user()->role =='super') {
       return view ('layouts.admins.mahasiswa.mahasiswa')->with('mahasiswas' , $this->mahasiswas);
     }return redirect()->route('home')->with('gagal','Invalid Credential !!');
   }
@@ -46,7 +46,7 @@ class MahasiswaController extends Controller
 
   public function create(StoreAddMahasiswa $request, Mahasiswa $mahasiswa)
   {
-    if (Auth::user()->role =='admin') {
+    if (Auth::user()->role =='admin'|| Auth::user()->role =='super') {
 
       $code = str_random(64);
 
@@ -86,7 +86,7 @@ class MahasiswaController extends Controller
 
   public function update(Request $request)
   {
-    if (Auth::user()->role =='admin') {
+    if (Auth::user()->role =='admin'|| Auth::user()->role =='super') {
       $mahasiswa = Mahasiswa::where('id' , $request->edit_id)->first();
       // dd($mahasiswa);
       if ($mahasiswa) {
@@ -110,7 +110,7 @@ class MahasiswaController extends Controller
 
   public function delete(Request $request)
   {
-    if (Auth::user()->role =='admin') {
+    if (Auth::user()->role =='admin'|| Auth::user()->role =='super') {
       $mahasiswa = Mahasiswa::where('id' , $request->hapus_id)->first();
       if ($mahasiswa) {
         if ($mahasiswa->delete()) {

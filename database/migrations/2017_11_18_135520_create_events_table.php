@@ -20,6 +20,7 @@ class CreateEventsTable extends Migration
           $table->longText('description');
           $table->string('image');
           $table->integer('id_user')->unsigned();
+          $table->boolean('status')->default(0);
           $table->timestamps();
 
           $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

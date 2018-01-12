@@ -20,6 +20,8 @@ class CreateAnnouncementsTable extends Migration
           $table->string('image');
           $table->integer('id_user')->unsigned();
           $table->integer('id_category')->unsigned()->nullable();
+          $table->boolean('status')->default(0);
+          $table->string('file')->nullable();;
           $table->timestamps();
 
           $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

@@ -7,12 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Announcement extends Model
 {
     protected $fillable = [
-      'title' , 'description' , 'image' , 'id_user' , 'id_category'
+      'title' , 'description' , 'image' , 'id_user' , 'id_category','status','file'
     ];
 
     protected $hidden = [
 
     ];
+
+    public function getStatusAttribute($value)
+    {
+      if ($value == 0) {
+        return 'Hide';
+      }
+      return 'Show';
+    }
 
     public function user() {
       return $this->hasOne('App\User', 'id', 'id_user');

@@ -30,14 +30,14 @@ class AnnouncementController extends Controller
 
     public function index()
     {
-      if (Auth::user()->role =='admin') {
+      if (Auth::user()->role =='admin' || Auth::user()->role =='super') {
         return view ('layouts.admins.announcements.announcement')->with('announcements' , $this->announcements)->with('categories' , $this->categories);
       }return redirect()->route('home')->with('gagal','Invalid Credential !!');
     }
 
     public function create(StoreAddAnnouncement $request, Announcement $announcement)
     {
-      if (Auth::user()->role =='admin'){
+      if (Auth::user()->role =='admin' || Auth::user()->role =='super'){
         $adminID = Auth::user()->id;
         $announcement->title = $request->title;
         $announcement->description = $request->description;
@@ -60,7 +60,7 @@ class AnnouncementController extends Controller
     public function update(UpdateAnnouncementPost $request)
     {
       $id = $request->editimagefordelete;
-      if (Auth::user()->role =='admin') {
+      if (Auth::user()->role =='admin' || Auth::user()->role =='super') {
         $adminID = Auth::user()->id;
         $announcement = $this->announcements->where('id', $request->edit_id)->first();
         if ($announcement) {
@@ -87,7 +87,7 @@ class AnnouncementController extends Controller
     public function delete(Request $request)
     {
       $id = $request->hapusimage;
-      if (Auth::user()->role =='admin') {
+      if (Auth::user()->role =='admin' || Auth::user()->role =='super') {
         $announcement = $this->announcements->where('id',$request->hapus_id)->first();
         if ($announcement) {
           if ($announcement->delete()) {
@@ -95,6 +95,19 @@ class AnnouncementController extends Controller
               return redirect()->route('announcement')->with('info','Announcement Berhasil Di Hapus');
             }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Hapus');
           }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Hapus');
+        }return redirect()->route('announcement')->with('gagal','Announcement Tidak Ditemukan');
+      }return redirect()->route('home')->with('gagal','Invalid Credential !!');
+    }
+
+    public function status(Request $request)
+    {
+      if (Auth::user()->role =='super') {
+        $announcement = $this->announcements->where('id',$request->status_id)->first();
+        if ($announcement) {
+          $announcement->status = $request->editstatus;
+          if ($announcement->save()) {
+            return redirect()->route('announcement')->with('info','Announcement Berhasil Di Ubah');
+          }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Ubah');
         }return redirect()->route('announcement')->with('gagal','Announcement Tidak Ditemukan');
       }return redirect()->route('home')->with('gagal','Invalid Credential !!');
     }
@@ -111,7 +124,7 @@ class AnnouncementController extends Controller
       $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
 
       if ($authMahasiswa) {
-        $announcements = Announcement::get()->sortByDesc('created_at');
+        $announcements = Announcement::where('status', '1')->take(15)->get()->sortByDesc('created_at');
         $response = fractal()
         ->collection($announcements)
         ->transformWith(new AnnouncementTransformer)
@@ -128,7 +141,7 @@ class AnnouncementController extends Controller
       $authorization = $request->header('Authorization');
       $authMahasiswa = AuthMahasiswa::where('api_token' ,$authorization)->first();
       if ($authMahasiswa) {
-        $announcements = Announcement::where('id_category', $id)->get()->sortByDesc('created_at');
+        $announcements = Announcement::where('id_category', $id)->where('status', '1')->take(15)->get()->sortByDesc('created_at');
         if ($announcements) {
           $response = fractal()
           ->collection($announcements)

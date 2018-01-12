@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div id="page-container" class="header-fixed-top sidebar-visible-lg-full">
-              @if (Auth::user()->role == 'admin')
+              @if (Auth::user()->role == 'admin'||Auth::user()->role == 'super')
               @include('partials.asideadmin')
               @else @include('partials.asideormawa')
               @endif
@@ -71,8 +71,9 @@
                                             <th style="width: 280px">Judul</th>
                                             <th class="text-center" style="width: 100px;">Penerbit</th>
                                             <th class="text-center" style="width: 100px;">Kategori</th>
+                                            <th class="text-center" style="width: 100px;">Status</th>
                                             <th class="text-center" style="width: 150px;">Tanggal diterbitkan</th>
-                                            <th class="text-center" style="width: 280px;"></th>
+                                            <th class="text-center" style="width: 200px;"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -82,11 +83,15 @@
                                             <td style="width: 280px"> {{ $announcement->title }} </td>
                                             <td class="text-center" style="width: 100px;"> {{ $announcement->user->name }} </td>
                                             <td class="text-center" style="width: 100px;"> {{ $announcement->category->name }} </td>
+                                            <td class="text-center" style="width: 100px;"> {{ $announcement->status }} </td>
                                             <td class="text-center" style="width: 150px;"> {{ $announcement->created_at  }} </td>
-                                            <td class="text-center" style="width: 280px;"><div class="btn-group pull-right" role="group">
-                                            <button type="button" class="edit-announcement btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-announcement" data-edit-id="{{$announcement->id}}" data-edit-title="{{$announcement->title}}" data-edit-description="{{$announcement->description}}" data-edit-category="{{$announcement->category->id}}" data-edit-image="{{$announcement->image}}"  data-edit-penerbit="{{$announcement->user->id}}" </button><i class="fa fa-edit"></i>Ubah</button>
-                                            <button type="button" class="hapus-announcement btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-announcement" data-hapus-id="{{$announcement->id}}" data-hapus-title="{{$announcement->title}}" data-hapus-image="{{$announcement->image}}"><i class="fa fa-trash"></i>Hapus</button>
-                                            <button type="button" class="view-announcement btn btn-inline btn-success" data-toggle="modal" data-target="#view-announcement" data-view-id="{{$announcement->id}}"  data-view-image="{{$announcement->image}}" data-view-admin="{{ $announcement->user->name }}" data-view-title="{{ $announcement->title }}" data-view-created-at="{{ $announcement->created_at}}" data-view-description="{{ $announcement->description }}"><i class="fa fa-eye"></i>Lihat</button>
+                                            <td class="text-center" style="width: 200px;"><div class="btn-group pull-right" role="group">
+                                            <button type="button" class="edit-announcement btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-announcement" data-edit-id="{{$announcement->id}}" data-edit-title="{{$announcement->title}}" data-edit-description="{{$announcement->description}}" data-edit-category="{{$announcement->category->id}}" data-edit-image="{{$announcement->image}}" data-edit-status="{{$announcement->status}}" data-edit-penerbit="{{$announcement->user->id}}" ><i class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Ubah Pengumuman"></i></button>
+                                            <button type="button" class="hapus-announcement btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-announcement" data-hapus-id="{{$announcement->id}}" data-hapus-title="{{$announcement->title}}" data-hapus-image="{{$announcement->image}}"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Hapus Pengumuman"></i></button>
+                                            <button type="button" class="view-announcement btn btn-inline btn-success" data-toggle="modal" data-target="#view-announcement" data-view-id="{{$announcement->id}}"  data-view-image="{{$announcement->image}}" data-view-admin="{{ $announcement->user->name }}" data-view-title="{{ $announcement->title }}" data-view-created-at="{{ $announcement->created_at}}" data-view-description="{{ $announcement->description }}"><i class="fa fa-eye" data-toggle="tooltip" data-placement="top" title="Lihat Pengumuman"></i></button>
+                                            @if (Auth::user()->role == 'super')
+                                              <button type="button" class="status-announcement btn btn-inline btn-warning" data-toggle="modal" data-target="#status-announcement" data-status-id="{{$announcement->id}}" data-status-title="{{ $announcement->title }}" data-edit-status="{{$announcement->status}}"><i class="gi gi-iphone_exchange" data-toggle="tooltip" data-placement="top" title="Status Pengumuman"></i></button>
+                                            @endif
                                           </div>
                                             </td>
                                           </tr>
@@ -239,7 +244,7 @@
                             <div class="modal-body">
                 <form class="fieldset-form">
                           <fieldset>
-                            <legend class="text-center" style="color: #33577A; font-size: 21px !important;">VIEW ANOUNCEMENT</legend>
+                            <legend class="text-center" style="color: #33577A; font-size: 21px !important;">VIEW PENGUMUMAN</legend>
                             <!-- Start Post -->
                               <div class="panel panel-default">
                                 <div class="panel-body status">
@@ -256,6 +261,42 @@
                               </div>
                             <!-- End Post -->
                             </fieldset>
+                              </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="status-announcement">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="modal-body">
+                <form class="fieldset-form form-horizonta" action="{{ url('/announcement/status')}}" method="post">
+                  {{ csrf_field() }}
+                          <fieldset>
+                            <legend class="text-center" style="color: #33577A; font-size: 21px !important;">STATUS PENGUMUMAN</legend>
+                            <!-- Start Post -->
+                              <div class="panel panel-default">
+                                <div class="panel-body status">
+                                  <div class="col-md-12">
+                                    <strong><span>Ubah Status Pengumuman "<span style="font-style:italic;" id="input-status-title"></span>"</span></strong>
+                                  </div>
+                                  <div class="form-group">
+                                      <label class="col-sm-2 control-label form-label">Status</label>
+                                      <div class="col-sm-10 radio radio-warning">
+                                      <input type="hidden" id="input-status-id" name="status_id" value="">
+                                      <input type="radio" name="editstatus" id="input-banner-status-false" value="0" checked  @if (old('status') == '0') checked @endif><label for="input-radio-1">Hide</label>
+                                      <br />
+                                      <input type="radio" name="editstatus" id="input-banner-status-true" value="1"  @if (old('status') == '1') checked @endif><label for="input-radio-2">Show</label>
+                                      </div>
+                                  </div>
+                              </div>
+                            <!-- End Post -->
+                            </fieldset>
+                            <button type="button" class="btn btn-inline btn-primary pull-right" data-dismiss="modal">Batal</button>
+                              <input type="submit" class="btn btn-inline btn-secondary pull-right" name="submit" value="UBAH" />
                               </form>
                             </div>
                         </div>
@@ -285,7 +326,11 @@
           $('#input-edit-id').val($(this).data('edit-id'));
           $('#input-edit-penerbit').val($(this).data('edit-penerbit'));
           $('select[name=id_categoryedit]').val($(this).data('edit-category'))
-
+          if ($(this).data('edit-status') == "Show") {
+            $("#input-banner-status-true").prop("checked", true);
+          }else {
+            $("#input-banner-status-false").prop("checked", true);
+          }
         });
       </script>
 
@@ -294,6 +339,18 @@
           $('#input-hapus-title').html($(this).data('hapus-title'));
           $('#input-hapus-id').val($(this).data('hapus-id'));
           $('#input-hapus-image').val($(this).data('hapus-image'));
+        });
+      </script>
+
+      <script type="text/javascript">
+        $(document).on('click' , '.status-announcement', function(){
+          $('#input-status-title').html($(this).data('status-title'));
+          $('#input-status-id').val($(this).data('status-id'));
+          if ($(this).data('edit-status') == "Show") {
+            $("#input-banner-status-true").prop("checked", true);
+          }else {
+            $("#input-banner-status-false").prop("checked", true);
+          }
         });
       </script>
 

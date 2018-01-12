@@ -11,9 +11,9 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-      $data = [        
+      $data = [
       [
-      'name' => 'Super Admin',
+      'name' => 'Admin',
       'email' => 'admin@admin.com',
       'password' => bcrypt('admin123'),
       'role' => 'admin',
@@ -21,10 +21,18 @@ class UsersTableSeeder extends Seeder
       'remember_token' => str_random(10),
       ],
       [
-      'name' => 'Ormawa User',
+      'name' => 'Ormawa',
       'email' => 'user@ormawa.com',
       'password' => bcrypt('user123'),
       'role' => 'ormawa',
+      'notelpon' => '087791194987',
+      'remember_token' => str_random(10),
+      ],
+      [
+      'name' => 'Super Admin',
+      'email' => 'superadmin@admin.com',
+      'password' => bcrypt('super123'),
+      'role' => 'super',
       'notelpon' => '087791194987',
       'remember_token' => str_random(10),
       ]];
