@@ -69,21 +69,36 @@ class AnnouncementController extends Controller
     if (Auth::user()->role =='admin' || Auth::user()->role =='super') {
       $adminID = Auth::user()->id;
       $announcement = $this->announcements->where('id', $request->edit_id)->first();
+      $file = $announcement->file;
       if ($announcement) {
         $announcement->title = $request->edittitle;
-        $announcement->description = $request->editdescription;
+        if (isset($request->editdescription)) {
+          $announcement->description = $request->editdescription;
+        }
         $announcement->id_user = $request->edit_penerbit;
         $announcement->id_category = $request->id_categoryedit;
         if (isset($request->editimage)) {
+          $byscryptAttachmentImage =  md5(str_random(64));
+          $announcement->image = $byscryptAttachmentImage;
+        }
+        if (isset($request->editfile)) {
           $byscryptAttachmentFile =  md5(str_random(64));
-          $announcement->image = $byscryptAttachmentFile;
+          $announcement->file = $byscryptAttachmentFile;
         }
         if ($announcement->save()) {
           if (isset($request->editimage)) {
-            if ($request->editimage->storeAs('public/announcement/images' , $byscryptAttachmentFile )) {
+            if ($request->editimage->storeAs('public/announcement/images' , $byscryptAttachmentImage)) {
               Storage::delete('public/announcement/images/'.$id);
-              return redirect()->route('announcement')->with('info', 'Announcement Berhasil Di Ubah');
-            }return redirect()->route('announcement')->with('gagal', 'Announcement Gagal Di Ubah');
+            }else {
+              return redirect()->route('announcement')->with('gagal', 'Announcement Image Gagal Di Ubah');
+            }
+          }
+          if (isset($request->editfile)) {
+            if ($request->editfile->storeAs('public/file' , $byscryptAttachmentFile)) {
+              Storage::delete('public/file/'.$file);
+            }else {
+              return redirect()->route('announcement')->with('gagal', 'Announcement File Gagal Di Ubah');
+            }
           }return redirect()->route('announcement')->with('info', 'Announcement Berhasil Di Ubah');
         }return redirect()->route('announcement')->with('gagal', 'Announcement Gagal Di Ubah');
       }return redirect()->route('announcement')->with('gagal','Announcement Tidak Ditemukan');

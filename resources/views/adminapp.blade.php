@@ -136,7 +136,7 @@
                       <tr>
                         <th style="width: 280px">Judul</th>
                         <th class="text-center" style="width: 100px;">Penerbit</th>
-                        <th class="text-center" style="width: 100px;">Kategori</th>
+                        <th class="text-center" style="width: 100px;">Status</th>
                         <th class="text-center" style="width: 150px;">Tanggal diterbitkan</th>
                       </tr>
                     </thead>
@@ -145,7 +145,7 @@
                         <tr>
                           <td style="width: 280px"> {{ $announcement->title }} </td>
                           <td class="text-center" style="width: 100px;"> {{ $announcement->user->name }} </td>
-                          <td class="text-center" style="width: 100px;"> {{ $announcement->category->name }} </td>
+                          <td class="text-center" style="width: 100px;"> {{ $announcement->status }} </td>
                           <td class="text-center" style="width: 150px;"> {{ $announcement->created_at  }} </td>
                         </tr>
                       @endforeach
