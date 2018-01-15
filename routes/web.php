@@ -22,7 +22,7 @@ Route::get('announcement/images/{id}', 'AnnouncementController@getImage');
 Route::get('event/images/{id}', 'EventController@getImage');
 Route::get('banner/images/{id}', 'BannerController@getImage');
 Route::get('/register/verification/{nim}/{code}', 'MahasiswaController@verification');
-Route::get('file/{id}' , 'HomeController@getContent');
+Route::get('file/{id}' , 'AuthAPI@getContent');
 
 Route::group(['middleware' => 'auth'], function(){
   Route::get('/home', 'HomeController@index')->name('home');
@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('', 'EventController@create');
     Route::post('/update', 'EventController@update');
     Route::post('/delete', 'EventController@delete');
+    Route::post('/status', 'EventController@status');
 
   });
 

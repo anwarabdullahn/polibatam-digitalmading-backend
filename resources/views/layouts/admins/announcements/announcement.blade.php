@@ -140,7 +140,7 @@
                   </select>
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Thumbnail</label>
+                  <label class="form-label">Thumbnail <small style="font-style: italic; text-decoration: underline;">ukuran gambar square (sama sisi)</small></label>
                   <input type="file" name="image" accept="image/*" />
                 </div>
                 <div class="form-group">
@@ -193,7 +193,7 @@
                     </select>
                   </div>
                   <div class="form-group">
-                    <label class="form-label">Thumbnail</label>
+                    <label class="form-label">Thumbnail <small style="font-style: italic; text-decoration: underline;">ukuran gambar square (sama sisi)</small></label>
                     <input type="file" name="editimage" accept="image/*"/>
                   </div>
                   <div class="form-group">
@@ -260,7 +260,7 @@
                         <span class="name"><b><span id="input-view-admin"></span></b> posted an "<i><span id="input-view-title"></span></i>"</span>
                         <span class="from"><b><span id="input-view-created-at"></span></b></span>
                       </div><br />
-                      <div class="image"><center><img id="something" alt="img" style="width:70%; height:70%"></div> </center>
+                      <div class="image" style="width:600px; height600px;"><center><img id="something" alt="img" style="width:70%; height:70%"></div> </center>
                       <br />
                         {{-- @if ($condition) --}}
                         <ul class="comments">

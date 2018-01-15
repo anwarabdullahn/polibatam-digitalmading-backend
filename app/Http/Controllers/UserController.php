@@ -27,14 +27,14 @@ class UserController extends Controller
 
   public function index()
   {
-    if (Auth::user()->role =='admin') {
+    if (Auth::user()->role =='admin' || Auth::user()->role =='super') {
       return view('layouts.admins.users.ormawa')->with('users' , $this->users);
     }return redirect()->route('home')->with('gagal','Invalid Credential !!');
   }
 
   public function create(StoreAddOrmawa $request,User $user)
   {
-    if (Auth::user()->role =='admin') {
+    if (Auth::user()->role =='admin' || Auth::user()->role =='super') {
       $user->name   = $request->nama;
       $user->email  = $request->email;
       $user->notelpon = $request->notelpon;
@@ -48,7 +48,7 @@ class UserController extends Controller
 
   public function update(UpdateOrmawaPost $request)
   {
-    if (Auth::user()->role =='admin') {
+    if (Auth::user()->role =='admin' || Auth::user()->role =='super') {
       $user = $this->users->where('id', $request->edit_id)->first();
       if ($user) {
         $user->name       = $request->editname;
@@ -69,7 +69,7 @@ class UserController extends Controller
 
   public function delete(Request $request)
   {
-    if (Auth::user()->role =='admin') {
+    if (Auth::user()->role =='admin' || Auth::user()->role =='super') {
       $user = $this->users->where('id', $request->hapus_id)->first();
       if ($user) {
         if ($user->delete()) {

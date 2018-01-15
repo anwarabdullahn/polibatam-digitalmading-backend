@@ -91,6 +91,19 @@ class EventController extends Controller
     }return redirect()->route('event')->with('gagal', 'Invalid Credential !!');
   }
 
+  public function status(Request $request)
+  {
+    if (Auth::user()->role =='super') {
+      $event = $this->events->where('id',$request->status_id)->first();
+      if ($event) {
+        $event->status = $request->editstatus;
+        if ($event->save()) {
+          return redirect()->route('event')->with('info','Event Berhasil Di Ubah');
+        }return redirect()->route('event')->with('gagal','Event Gagal Di Ubah');
+      }return redirect()->route('event')->with('gagal','Event Tidak Ditemukan');
+    }return redirect()->route('home')->with('gagal','Invalid Credential !!');
+  }
+
   public function getImage($id)
   {
     $path = Storage::get('public/event/images/'.$id);

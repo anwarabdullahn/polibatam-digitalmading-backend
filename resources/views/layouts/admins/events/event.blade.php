@@ -68,23 +68,28 @@
               <thead>
                 <tr>
                   <th class="text-center" style="width: 50px;">NO</th>
-                  <th tyle="width: 230px;">Judul</th>
+                  <th tyle="width: 280px;">Judul</th>
                   <th class="text-center" style="width: 100px;">Penerbit</th>
+                  <th class="text-center" style="width: 80px;">Status</th>
                   <th class="text-center" style="width: 150px;">Tanggal</th>
-                  <th class="text-center" style="width: 230px;"></th>
+                  <th class="text-center" style="width: 200px;"></th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($events as $index=> $event)
                   <tr>
                     <td class="text-center" style="width: 50px;"> {{ $index+1 }} </td>
-                    <td tyle="width: 230px;"> {{ $event->title }} </td>
+                    <td tyle="width: 280px;"> {{ $event->title }} </td>
                     <td class="text-center" style="width: 100px;"> {{ $event->user->name }} </td>
+                    <td class="text-center" style="width: 80px;"> {{ $event->status }} </td>
                     <td class="text-center" style="width: 150px;"> {{ $event->date  }} </td>
-                    <td class="text-center" style="width: 280px;"><div class="btn-group pull-right" role="group">
-                      <button type="button" class="edit-event btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-event" data-edit-id="{{$event->id}}" data-edit-title="{{$event->title}}" data-edit-user="{{$event->user->name}}" data-edit-penerbit="{{$event->user->id}}" data-edit-description="{{$event->description}}" data-edit-date="{{$event->date}}"><i class="fa fa-edit"></i>Ubah</button>
-                      <button type="button" class="hapus-event btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-event" data-hapus-id="{{$event->id}}" data-hapus-title="{{$event->title}}" data-hapus-user="{{$event->user->name}}" data-hapus-image="{{$event->image}}"><i class="fa fa-trash"></i>Hapus</button>
-                      <button type="button" class="view-event btn btn-inline btn-success" data-toggle="modal" data-target="#view-event" data-view-id="{{$event->id}}"  data-view-image="{{$event->image}}" data-view-admin="{{ $event->user->name }}" data-view-title="{{ $event->title }}" data-view-created-at="{{ $event->created_at}}" data-view-description="{{ $event->description }}"><i class="fa fa-eye"></i>Lihat</button>
+                    <td class="text-center" style="width: 200px;"><div class="btn-group pull-right" role="group">
+                      <button type="button" class="edit-event btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-event" data-edit-id="{{$event->id}}" data-edit-title="{{$event->title}}" data-edit-user="{{$event->user->name}}" data-edit-penerbit="{{$event->user->id}}" data-edit-description="{{$event->description}}" data-edit-date="{{$event->date}}"><i class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Ubah Event"></i></button>
+                      <button type="button" class="hapus-event btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-event" data-hapus-id="{{$event->id}}" data-hapus-title="{{$event->title}}" data-hapus-user="{{$event->user->name}}" data-hapus-image="{{$event->image}}"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Hapus Event"></i></button>
+                      <button type="button" class="view-event btn btn-inline btn-success" data-toggle="modal" data-target="#view-event" data-view-id="{{$event->id}}"  data-view-image="{{$event->image}}" data-view-admin="{{ $event->user->name }}" data-view-title="{{ $event->title }}" data-view-created-at="{{ $event->created_at}}" data-view-description="{{ $event->description }}"><i class="fa fa-eye" data-toggle="tooltip" data-placement="top" title="Lihat Event"></i></button>
+                      @if (Auth::user()->role == 'super')
+                        <button type="button" class="status-event btn btn-inline btn-warning" data-toggle="modal" data-target="#status-event" data-status-id="{{$event->id}}" data-status-title="{{ $event->title }}" data-edit-status="{{$event->status}}"><i class="gi gi-iphone_exchange" data-toggle="tooltip" data-placement="top" title="Status Pengumuman"></i></button>
+                      @endif
                     </div>
                   </td>
                 </tr>
@@ -124,7 +129,7 @@
                 <input type="text" class="form-control input-datepicker" name="date" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="{{old('date')}}">
               </div>
               <div class="form-group">
-                <label class="form-label">Thumbnail</label>
+                <label class="form-label">Thumbnail <small style="font-style: italic; text-decoration: underline;">ukuran gambar square (sama sisi)</small></label>
                 <input type="file" name="image" accept="image/*" />
               </div>
               <div class="form-group">
@@ -164,7 +169,7 @@
                 <input type="text" id="input-date-edit" class="form-control input-datepicker" name="editdate" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="{{old('date')}}">
               </div>
               <div class="form-group">
-                <label class="form-label">Thumbnail</label>
+                <label class="form-label">Thumbnail <small style="font-style: italic; text-decoration: underline;">ukuran gambar square (sama sisi)</small></label>
                 <input type="file" name="editimage" accept="image/*" id="input-image-edit"/>
               </div>
               <div class="form-group">
@@ -219,7 +224,7 @@
         <div class="modal-body">
           <form class="fieldset-form">
             <fieldset>
-              <legend class="text-center" style="color: #33577A; font-size: 21px !important;">VIEW ANOUNCEMENT</legend>
+              <legend class="text-center" style="color: #33577A; font-size: 21px !important;">VIEW EVENT</legend>
               <!-- Start Post -->
               <div class="panel panel-default">
                 <div class="panel-body status">
@@ -227,7 +232,7 @@
                     <span class="name"><b><span id="input-view-admin"></span></b> posted an "<i><span id="input-view-title"></span></i>"</span>
                     <span class="from"><b><span id="input-view-created-at"></span></b></span>
                   </div><br />
-                  <div class="image"><center><img id="something" alt="img" style="width:70%; height:70%"></div> </center>
+                  <div class="image"><center><img id="something" alt="img" style="width:400px;height:400px;"></div> </center>
                   <br />
                   <ul class="comments">
                     <span id="input-view-description"></span>
@@ -242,7 +247,41 @@
     </div>
   </div>
 </div>
-
+<div class="modal fade" id="status-event">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-body">
+          <form class="fieldset-form form-horizonta" action="{{ url('/event/status')}}" method="post">
+            {{ csrf_field() }}
+            <fieldset>
+              <legend class="text-center" style="color: #33577A; font-size: 21px !important;">STATUS EVENT</legend>
+              <!-- Start Post -->
+              <div class="panel panel-default">
+                <div class="panel-body status">
+                  <div class="col-md-12">
+                    <strong><span>Ubah Status Event "<span style="font-style:italic;" id="input-status-title"></span>"</span></strong>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label form-label">Status</label>
+                    <div class="col-sm-10 radio radio-warning">
+                      <input type="hidden" id="input-status-id" name="status_id" value="">
+                      <input type="radio" name="editstatus" id="input-banner-status-false" value="0" checked  @if (old('status') == '0') checked @endif><label for="input-radio-1">Hide</label>
+                        <br />
+                        <input type="radio" name="editstatus" id="input-banner-status-true" value="1"  @if (old('status') == '1') checked @endif><label for="input-radio-2">Show</label>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End Post -->
+                  </fieldset>
+                  <button type="button" class="btn btn-inline btn-primary pull-right" data-dismiss="modal">Batal</button>
+                  <input type="submit" class="btn btn-inline btn-secondary pull-right" name="submit" value="UBAH" />
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
 @include('partials.footer')
 
@@ -280,6 +319,18 @@ $(document).on('click' , '.hapus-event', function(){
   $('#input-hapus-id').val($(this).data('hapus-id'));
   $('#input-hapus-user').val($(this).data('hapus-user'));
   $('#input-hapus-image').val($(this).data('hapus-image'));
+});
+</script>
+
+<script type="text/javascript">
+$(document).on('click' , '.status-event', function(){
+  $('#input-status-title').html($(this).data('status-title'));
+  $('#input-status-id').val($(this).data('status-id'));
+  if ($(this).data('edit-status') == "Show") {
+    $("#input-banner-status-true").prop("checked", true);
+  }else {
+    $("#input-banner-status-false").prop("checked", true);
+  }
 });
 </script>
 

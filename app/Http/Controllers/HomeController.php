@@ -57,9 +57,4 @@ class HomeController extends Controller
     }
   }
 
-  public function getContent($id) {
-    $path = Storage::get('public/file/'.$id);
-    $mimetype = Storage::mimeType('public/file/'.$id);
-    return response($path, 200)->header('Content-Type', $mimetype);
-  }
 }

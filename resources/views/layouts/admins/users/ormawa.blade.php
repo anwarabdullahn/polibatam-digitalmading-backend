@@ -10,7 +10,7 @@
       </div>
     </div>
     <div id="page-container" class="header-fixed-top sidebar-visible-lg-full">
-      @if (Auth::user()->role == 'admin')
+      @if (Auth::user()->role == 'admin'|| Auth::user()->role =='super')
         @include('partials.asideadmin')
       @else @include('partials.asideormawa')
       @endif
