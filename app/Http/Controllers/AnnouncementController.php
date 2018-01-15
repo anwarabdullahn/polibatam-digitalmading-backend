@@ -66,8 +66,9 @@ class AnnouncementController extends Controller
   public function update(UpdateAnnouncementPost $request)
   {
     $id = $request->editimagefordelete;
-    if (Auth::user()->role =='admin' || Auth::user()->role =='super') {
-      $adminID = Auth::user()->id;
+    // $request->edit_penerbit;
+    // dd(Auth::user()->name);
+    if ((Auth::user()->name == $request->editpenerbit) ||  Auth::user()->role =='super') {
       $announcement = $this->announcements->where('id', $request->edit_id)->first();
       $file = $announcement->file;
       if ($announcement) {
@@ -75,7 +76,6 @@ class AnnouncementController extends Controller
         if (isset($request->editdescription)) {
           $announcement->description = $request->editdescription;
         }
-        $announcement->id_user = $request->edit_penerbit;
         $announcement->id_category = $request->id_categoryedit;
         if (isset($request->editimage)) {
           $byscryptAttachmentImage =  md5(str_random(64));
@@ -108,7 +108,7 @@ class AnnouncementController extends Controller
   public function delete(Request $request)
   {
     $id = $request->hapusimage;
-    if (Auth::user()->role =='admin' || Auth::user()->role =='super') {
+    if ((Auth::user()->name == $request->hapuspenerbit) || Auth::user()->role =='super') {
       $announcement = $this->announcements->where('id',$request->hapus_id)->first();
       $file = $announcement->file;
       // dd($file);

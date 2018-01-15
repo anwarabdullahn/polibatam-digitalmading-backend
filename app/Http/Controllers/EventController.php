@@ -48,7 +48,7 @@ class EventController extends Controller
 
   public function update(UpdateEventPost $request)
   {
-    if (Auth::user()->name == $request->edituser || Auth::user()->role =='admin'){
+    if (Auth::user()->name == $request->edituser || Auth::user()->role =='admin'|| Auth::user()->role =='super'){
       $event = $this->events->where('id', $request->edit_id)->first();
       if ($event) {
         $id = $event->image;
@@ -79,7 +79,7 @@ class EventController extends Controller
   public function delete(Request $request)
   {
     $id = $request->hapusimage;
-    if (Auth::user()->name == $request->hapususer || Auth::user()->role =='admin') {
+    if (Auth::user()->name == $request->hapususer || Auth::user()->role =='admin'|| Auth::user()->role =='super') {
       $event = $this->events->where('id' , $request->hapus_id)->first();
       if ($event) {
         if ($event->delete()) {

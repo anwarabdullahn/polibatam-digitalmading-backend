@@ -86,8 +86,8 @@
                     <td class="text-center" style="width: 100px;"> {{ $announcement->status }} </td>
                     <td class="text-center" style="width: 150px;"> {{ $announcement->created_at  }} </td>
                     <td class="text-center" style="width: 200px;"><div class="btn-group pull-right" role="group">
-                      <button type="button" class="edit-announcement btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-announcement" data-edit-id="{{$announcement->id}}" data-edit-title="{{$announcement->title}}" data-edit-description="{{$announcement->description}}" data-edit-category="{{$announcement->category->id}}" data-edit-image="{{$announcement->image}}" data-edit-status="{{$announcement->status}}" data-edit-penerbit="{{$announcement->user->id}}" ><i class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Ubah Pengumuman"></i></button>
-                      <button type="button" class="hapus-announcement btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-announcement" data-hapus-id="{{$announcement->id}}" data-hapus-title="{{$announcement->title}}" data-hapus-image="{{$announcement->image}}"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Hapus Pengumuman"></i></button>
+                      <button type="button" class="edit-announcement btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-announcement" data-edit-id="{{$announcement->id}}" data-edit-title="{{$announcement->title}}" data-edit-description="{{$announcement->description}}" data-edit-category="{{$announcement->category->id}}" data-edit-image="{{$announcement->image}}" data-edit-status="{{$announcement->status}}" data-edit-penerbit="{{$announcement->user->name}}" ><i class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Ubah Pengumuman"></i></button>
+                      <button type="button" class="hapus-announcement btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-announcement" data-hapus-id="{{$announcement->id}}" data-hapus-title="{{$announcement->title}}" data-hapus-image="{{$announcement->image}}" data-hapus-penerbit="{{$announcement->user->name}}"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Hapus Pengumuman"></i></button>
                       <button type="button" class="view-announcement btn btn-inline btn-success" data-toggle="modal" data-target="#view-announcement" data-view-id="{{$announcement->id}}"  data-view-image="{{$announcement->image}}" data-view-admin="{{ $announcement->user->name }}" data-view-title="{{ $announcement->title }}" data-view-created-at="{{ $announcement->created_at}}" data-view-description="{{ $announcement->description }}" data-view-file="{{$announcement->file}}"><i class="fa fa-eye" data-toggle="tooltip" data-placement="top" title="Lihat Pengumuman"></i></button>
                       @if (Auth::user()->role == 'super')
                         <button type="button" class="status-announcement btn btn-inline btn-warning" data-toggle="modal" data-target="#status-announcement" data-status-id="{{$announcement->id}}" data-status-title="{{ $announcement->title }}" data-edit-status="{{$announcement->status}}"><i class="gi gi-iphone_exchange" data-toggle="tooltip" data-placement="top" title="Status Pengumuman"></i></button>
@@ -210,7 +210,7 @@
                     <textarea class="form-control ckeditor" rows="3" name="editdescription">{{old('editdescription')}}</textarea>
                   </div>
                   <input type="hidden" id="input-edit-id" name="edit_id" value="{{old('edit_id')}}">
-                  <input type="hidden" id="input-edit-penerbit" name="edit_penerbit" value="{{old('edit_id')}}">
+                  <input type="hidden" id="input-edit-penerbit" name="editpenerbit" value="{{old('edit_penerbit')}}">
                   <input type="hidden" id="input-image-edit" name="editimagefordelete">
                   <button type="button" class="btn btn-inline btn-primary pull-right" data-dismiss="modal">Batal</button>
                   <input type="submit" class="btn btn-inline btn-secondary pull-right" name="submit" value="UBAH" />
@@ -234,8 +234,9 @@
                     <span>Apakah Anda Ingin Menghapus "<span id="input-hapus-title"></span>"</span>
                   </div>
                   <br /><br />
-                  <input type="hidden" id="input-hapus-id" name="hapus_id" value="">
-                  <input type="hidden" id="input-hapus-image" name="hapusimage" value="">
+                  <input type="hidden" id="input-hapus-id" name="hapus_id" value="{{old('hapus_id')}}">
+                  <input type="hidden" id="input-hapus-image" name="hapusimage" value="{{old('hapusimage')}}">
+                  <input type="hidden" id="input-hapus-penerbit" name="hapuspenerbit" value="{{old('edit_penerbit')}}">
                   <button type="button" class="btn btn-inline btn-primary pull-right" data-dismiss="modal">Batal</button>
                   <button type="submit" class="btn btn-inline btn-secondary pull-right" >HAPUS</button>
                 </fieldset>
@@ -352,6 +353,7 @@
             $('#input-hapus-title').html($(this).data('hapus-title'));
             $('#input-hapus-id').val($(this).data('hapus-id'));
             $('#input-hapus-image').val($(this).data('hapus-image'));
+            $('#input-hapus-penerbit').val($(this).data('hapus-penerbit'));
           });
           </script>
 
