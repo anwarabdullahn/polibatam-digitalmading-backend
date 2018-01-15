@@ -22,7 +22,7 @@ class UserController extends Controller
 
   public function __construct()
   {
-    $this->users = User::where('role' , 'ormawa')->get();;
+    $this->users = User::where('role' , 'ormawa')->get();
   }
 
   public function index()
@@ -114,7 +114,6 @@ class UserController extends Controller
   public function getProfile($id)
   {
     $path = Storage::get('public/uploads/avatars/'.$id);
-    // dd($id);
     $mimetype = Storage::mimeType('public/uploads/avatars/'.$id);
     return response($path, 200)->header('Content-Type' ,$mimetype);
   }

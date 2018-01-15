@@ -29,16 +29,16 @@ class MahasiswaController extends Controller
   public function verification($nim , $code)
   {
     $mahasiswa = Mahasiswa::where('nim' , $nim)
-                          ->where('verification_code' ,$code)
-                          ->first();
+    ->where('verification_code' ,$code)
+    ->first();
     // dd($mahasiswa);
     if ($mahasiswa) {
       $mahasiswa->verification_code = NULL;
       $mahasiswa->verified = true;
-        if ($mahasiswa->save()) {
-          $swal = swal()->success('Good Job','Your Account successfully Activated!',[]);
-          return view('layouts.app', compact('swal'));
-        }
+      if ($mahasiswa->save()) {
+        $swal = swal()->success('Good Job','Your Account successfully Activated!',[]);
+        return view('layouts.app', compact('swal'));
+      }
     }
     $swal = swal()->error('Sorry','There is an Error while Activating Your Account!',[]);
     return view('layouts.app', compact('swal'));
@@ -52,35 +52,35 @@ class MahasiswaController extends Controller
 
       if ($request->verified == 'true') {
         // dd($code);
-          $mahasiswa->nim                       = $request->nim;
-          $mahasiswa->name                      = $request->name;
-          $mahasiswa->email                     = $request->email;
-          $mahasiswa->verification_code         = NULL;
-          $mahasiswa->password                  = bcrypt($request->password);
-          $mahasiswa->verified                  = $request->verified;
+        $mahasiswa->nim                       = $request->nim;
+        $mahasiswa->name                      = $request->name;
+        $mahasiswa->email                     = $request->email;
+        $mahasiswa->verification_code         = NULL;
+        $mahasiswa->password                  = bcrypt($request->password);
+        $mahasiswa->verified                  = $request->verified;
 
         if ($mahasiswa->save()) {
           return redirect()->route('mahasiswa')->with('info','Data Verified Mahasiswa Berhasil Ditambahkan !!');
         }return redirect()->route('mahasiswa')->with('gagal','Data Mahasiswa Gagal di Tambahkan !!');
       }elseif ($request->verified == 'false'){
 
-          $mahasiswa->nim                       = $request->nim;
-          $mahasiswa->name                      = $request->name;
-          $mahasiswa->email                     = $request->email;
-          $mahasiswa->verification_code         = $code;
-          $mahasiswa->password                  = bcrypt($request->password);
-          $mahasiswa->verified                  = $request->verified;
+        $mahasiswa->nim                       = $request->nim;
+        $mahasiswa->name                      = $request->name;
+        $mahasiswa->email                     = $request->email;
+        $mahasiswa->verification_code         = $code;
+        $mahasiswa->password                  = bcrypt($request->password);
+        $mahasiswa->verified                  = $request->verified;
 
         if ($mahasiswa->save()) {
           $data = array(
             'nim'               => $request->nim,
             'name'              => $mahasiswa->name,
             'verification_code' => $code,
-            );
-            Mail::to($request->email)->send(new MahasiswaEmailVerification($data));
-            return redirect()->route('mahasiswa')->with('info','Data Non-Verified Mahasiswa Berhasil Ditambahkan, Silahkan Periksa Email Untuk Verifikasi !!');
-          }return redirect()->route('mahasiswa')->with('gagal','Data Mahasiswa Gagal di Tambahkan !!');
+          );
+          Mail::to($request->email)->send(new MahasiswaEmailVerification($data));
+          return redirect()->route('mahasiswa')->with('info','Data Non-Verified Mahasiswa Berhasil Ditambahkan, Silahkan Periksa Email Untuk Verifikasi !!');
         }return redirect()->route('mahasiswa')->with('gagal','Data Mahasiswa Gagal di Tambahkan !!');
+      }return redirect()->route('mahasiswa')->with('gagal','Data Mahasiswa Gagal di Tambahkan !!');
     }return redirect()->route('home')->with('gagal','Invalid Credential !!');
   }
 

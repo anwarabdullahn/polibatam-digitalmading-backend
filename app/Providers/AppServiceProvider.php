@@ -39,6 +39,9 @@ class AppServiceProvider extends ServiceProvider
       if (!Storage::disk('local')->exists('public/uploads/avatars')) {
         Storage::makeDirectory('public/uploads/avatars');
       }
+      if(!Storage::disk('local')->exists('public/file')){
+        Storage::makeDirectory('public/file');
+      }
     }
 
     public function setDefaultPublicAsset() {

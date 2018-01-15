@@ -37,7 +37,7 @@ class AnnouncementCategoriesController extends Controller
       }return redirect()->route('category')->with('gagal','Kategori Gagal di Tambahkan !!');
     }return redirect()->route('home')->with('gagal','Invalid Credential !!');
   }
-
+  
   public function update(UpdateAnnouncementCategories $request)
   {
     if (Auth::user()->role =='admin') {

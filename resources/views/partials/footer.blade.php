@@ -7,8 +7,8 @@
 
 {{-- <script src="{{asset ('assets/js/pages/readyLogin.js') }}"></script> --}}
 {{-- <script>$(function(){ ReadyLogin.init(); });</script> --}}
-    <script>
-    		$(function() {
-    			$('#example').DataTable();
-    		});
-    	</script>
+<script>
+$(function() {
+  $('#example').DataTable();
+});
+</script>

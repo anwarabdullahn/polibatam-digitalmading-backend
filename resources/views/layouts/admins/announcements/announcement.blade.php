@@ -88,7 +88,7 @@
                                             <td class="text-center" style="width: 200px;"><div class="btn-group pull-right" role="group">
                                             <button type="button" class="edit-announcement btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-announcement" data-edit-id="{{$announcement->id}}" data-edit-title="{{$announcement->title}}" data-edit-description="{{$announcement->description}}" data-edit-category="{{$announcement->category->id}}" data-edit-image="{{$announcement->image}}" data-edit-status="{{$announcement->status}}" data-edit-penerbit="{{$announcement->user->id}}" ><i class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Ubah Pengumuman"></i></button>
                                             <button type="button" class="hapus-announcement btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-announcement" data-hapus-id="{{$announcement->id}}" data-hapus-title="{{$announcement->title}}" data-hapus-image="{{$announcement->image}}"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Hapus Pengumuman"></i></button>
-                                            <button type="button" class="view-announcement btn btn-inline btn-success" data-toggle="modal" data-target="#view-announcement" data-view-id="{{$announcement->id}}"  data-view-image="{{$announcement->image}}" data-view-admin="{{ $announcement->user->name }}" data-view-title="{{ $announcement->title }}" data-view-created-at="{{ $announcement->created_at}}" data-view-description="{{ $announcement->description }}"><i class="fa fa-eye" data-toggle="tooltip" data-placement="top" title="Lihat Pengumuman"></i></button>
+                                            <button type="button" class="view-announcement btn btn-inline btn-success" data-toggle="modal" data-target="#view-announcement" data-view-id="{{$announcement->id}}"  data-view-image="{{$announcement->image}}" data-view-admin="{{ $announcement->user->name }}" data-view-title="{{ $announcement->title }}" data-view-created-at="{{ $announcement->created_at}}" data-view-description="{{ $announcement->description }}" data-view-file="{{$announcement->file}}"><i class="fa fa-eye" data-toggle="tooltip" data-placement="top" title="Lihat Pengumuman"></i></button>
                                             @if (Auth::user()->role == 'super')
                                               <button type="button" class="status-announcement btn btn-inline btn-warning" data-toggle="modal" data-target="#status-announcement" data-status-id="{{$announcement->id}}" data-status-title="{{ $announcement->title }}" data-edit-status="{{$announcement->status}}"><i class="gi gi-iphone_exchange" data-toggle="tooltip" data-placement="top" title="Status Pengumuman"></i></button>
                                             @endif
@@ -144,6 +144,10 @@
                             <input type="file" name="image" accept="image/*" />
                           </div>
                           <div class="form-group">
+                            <label class="form-label">File <small style="font-style: italic; text-decoration: underline;">silahkan isi jika ada, tinggalkan jika tidak ada (pdf only)</small></label>
+                            <input type="file" name="file" accept="application/pdf"/>
+                          </div>
+                          <div class="form-group">
                             <label class="form-label">Description</label>
                             <textarea class="form-control ckeditor" contenteditable rows="3" name="description" placeholder="Type your description..." value="">{{old('description')}}</textarea>
                           </div>
@@ -191,6 +195,10 @@
                             <div class="form-group">
                               <label class="form-label">Thumbnail</label>
                               <input type="file" name="editimage" accept="image/*"/>
+                            </div>
+                            <div class="form-group">
+                              <label class="form-label">File <small style="font-style: italic; text-decoration: underline;">silahkan isi jika ada, tinggalkan jika tidak ada (pdf only)</small></label>
+                              <input type="file" name="editfile" accept="application/pdf"/>
                             </div>
                             <div class="form-group">
                               <label class="form-label">Description</label>
@@ -254,6 +262,9 @@
                                   </div><br />
                                   <div class="image"><center><img id="something" alt="img" style="width:70%; height:70%"></div> </center>
                                   <br />
+                                  <ul class="comments">
+                                    <a href="{{url('file/')}}/"{{<span id="input-view-file"></span>}}>File</a>
+                                  </ul>
                                   <ul class="comments">
                                     <span id="input-view-description"></span>
                                   </ul>
@@ -361,6 +372,9 @@
           $('#input-view-admin').html($(this).data('view-admin'));
           $('#input-view-created-at').html($(this).data('view-created-at'));
           $('#input-view-image').html($(this).data('view-image'));
+          var file = $(this).data('view-file');
+          console.log(file);
+          // console.log($(this).data('view-file'));
           // var images = $('#input-view-image').html($(this).data('view-image'));
           // console.log($(this).data('view-image'));
           var urls      = window.location.href+'/images/'+$(this).data('view-image');
