@@ -64,7 +64,7 @@
         @endif
         <div class="block full">
           <div class="table-responsive">
-            <table id="example" class="table table-borderless table-hover">
+            <table id="announcementtable" class="table table-borderless table-hover">
               <thead>
                 <tr>
                   <th class="text-center" style="width: 20px;">NO</th>
@@ -140,7 +140,7 @@
                   </select>
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Thumbnail <small style="font-style: italic; text-decoration: underline;">ukuran gambar square (sama sisi)</small></label>
+                  <label class="form-label">Thumbnail <small style="font-style: italic; text-decoration: underline;">ukuran gambar square (sama sisi (400px x 400px))</small></label>
                   <input type="file" name="image" accept="image/*" />
                 </div>
                 <div class="form-group">
@@ -193,7 +193,7 @@
                     </select>
                   </div>
                   <div class="form-group">
-                    <label class="form-label">Thumbnail <small style="font-style: italic; text-decoration: underline;">ukuran gambar square (sama sisi)</small></label>
+                    <label class="form-label">Thumbnail <small style="font-style: italic; text-decoration: underline;">ukuran gambar square (sama sisi (400px x 400px))</small></label>
                     <input type="file" name="editimage" accept="image/*"/>
                   </div>
                   <div class="form-group">
@@ -261,13 +261,13 @@
                         <span class="name"><b><span id="input-view-admin"></span></b> posted an "<i><span id="input-view-title"></span></i>"</span>
                         <span class="from"><b><span id="input-view-created-at"></span></b></span>
                       </div><br />
-                      <div class="image" style="width:600px; height600px;"><center><img id="something" alt="img" style="width:70%; height:70%"></div> </center>
+                      <div class="image" style="margin:auto;"><center><img id="something" alt="img" style="width:400px;height:400px;"></div> </center>
                       <br />
-                        {{-- @if ($condition) --}}
-                        <ul class="comments">
-                          <a id="files" download><span id="input-view-file"></span></a>
-                        </ul>
-                        {{-- @endif --}}
+                      {{-- @if ($condition) --}}
+                      <ul class="comments">
+                        <a id="files" download><span id="input-view-file"></span></a>
+                      </ul>
+                      {{-- @endif --}}
                       <ul class="comments">
                         <span id="input-view-description"></span>
                       </ul>
@@ -301,9 +301,9 @@
                         <label class="col-sm-2 control-label form-label">Status</label>
                         <div class="col-sm-10 radio radio-warning">
                           <input type="hidden" id="input-status-id" name="status_id" value="">
-                          <input type="radio" name="editstatus" id="input-banner-status-false" value="0" checked  @if (old('status') == '0') checked @endif><label for="input-radio-1">Hide</label>
+                          <input type="radio" name="editstatus" id="input-announcement-status-false" value="0" checked  @if (old('status') == '0') checked @endif><label for="input-radio-1">Hide</label>
                             <br />
-                            <input type="radio" name="editstatus" id="input-banner-status-true" value="1"  @if (old('status') == '1') checked @endif><label for="input-radio-2">Show</label>
+                            <input type="radio" name="editstatus" id="input-announcement-status-true" value="1"  @if (old('status') == '1') checked @endif><label for="input-radio-2">Show</label>
                             </div>
                           </div>
                         </div>
@@ -362,9 +362,9 @@
             $('#input-status-title').html($(this).data('status-title'));
             $('#input-status-id').val($(this).data('status-id'));
             if ($(this).data('edit-status') == "Show") {
-              $("#input-banner-status-true").prop("checked", true);
+              $("#input-announcement-status-true").prop("checked", true);
             }else {
-              $("#input-banner-status-false").prop("checked", true);
+              $("#input-announcement-status-false").prop("checked", true);
             }
           });
           </script>

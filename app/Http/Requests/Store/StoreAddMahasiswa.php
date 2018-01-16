@@ -24,13 +24,13 @@ class StoreAddMahasiswa extends FormRequest
   public function rules()
   {
     return [
-      'nim'       => 'required|unique:mahasiswas|numeric',
-      'name'      => 'required',
-      'email'     => 'required|email|unique:mahasiswas',
+      'nim'         => 'required|unique:mahasiswas|numeric',
+      'name'        => 'required',
+      'email'       => 'required|email|unique:mahasiswas',
       'reemail'     => 'same:email',
-      'password'  => 'required|min:6',
+      'password'    => 'required|min:6',
       'repassword'  => 'same:password',
-      'verified'  => 'required',
+      'verified'    => 'required',
     ];
   }
 

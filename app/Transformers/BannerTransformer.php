@@ -11,7 +11,7 @@ class BannerTransformer extends TransformerAbstract
      {
          return [
                'title'       => $banner->title,
-               'image'       => url('/announcement/images/'.$banner->image),
+               'image'       => url('/banner/images/'.$banner->image),
          ];
      }
 }

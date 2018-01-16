@@ -64,7 +64,7 @@
         @endif
         <div class="block full">
           <div class="table-responsive">
-            <table id="example" class="table table-borderless table-hover">
+            <table id="mahasiswatable" class="table table-borderless table-hover">
               <thead>
                 <tr>
                   <th class="text-center" style="width: 20px;">NO</th>

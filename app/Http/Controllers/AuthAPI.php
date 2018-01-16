@@ -16,6 +16,7 @@ use App\Mail\MahasiswaEmailVerification;
 use Mail;
 use Storage;
 use Validator;
+use File;
 
 class AuthAPI extends Controller
 {
@@ -114,6 +115,89 @@ class AuthAPI extends Controller
     return response()->json([
       'message' => 'Akun Tidak diTemukan !'
     ], 404);
+  }
+
+  public function profile(Request $request) {
+    $authorization = $request->header('Authorization');
+    $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
+    // dd($authMahasiswa->id_mahasiswa);
+    if ($authMahasiswa) {
+      $mahasiswa = Mahasiswa::where('id' ,$authMahasiswa->id_mahasiswa)->first();
+      if ($mahasiswa) {
+        $response = fractal()
+        ->item($mahasiswa)
+        ->transformWith(new MahasiswaTransformer)
+        ->toArray();
+        return response()->json($response, 201);
+      }return response()->json([
+        'message' => 'Akun Tidak diTemukan !'
+      ], 404);
+    }return response()->json([
+      'message' => 'Credential is required !'
+    ], 405);
+  }
+
+  public function profileUpdate(Request $request){
+    $authorization = $request->header('Authorization');
+    $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
+    // dd($authMahasiswa->id_mahasiswa);
+    if ($authMahasiswa) {
+      $mahasiswa = Mahasiswa::where('id' ,$authMahasiswa->id_mahasiswa)->first();
+      // dd($mahasiswa);
+      if ($mahasiswa) {
+
+        $messsages = array(
+          'repassword.same'   => 'Password Harus Sama.',
+          'nim.unique'        => 'NIM telah digunakan.',
+          'nim.numeric'        => 'NIM telah digunakan.',
+        );
+
+        $validator = Validator::make($request->all(), [
+          'repassword'  => 'same:password',
+          'nim'         => 'numeric|unique:mahasiswas',
+        ], $messsages);
+
+        if ($validator->fails()) {
+          $errors = $validator->errors();
+          return response()->json([
+            'message' => $errors->first()
+          ], 406);
+        }
+
+        if (isset($request->name)) {
+          $mahasiswa->name = $request->name;
+        }
+        if (isset($request->avatar)) {
+          $forDelete = $mahasiswa->avatar;
+          $avatar = $request->file('avatar');
+          $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $avatar->getClientOriginalExtension();
+          // dd($avatar->getClientOriginalExtension());
+          $mahasiswa->avatar = $byscryptAttachmentFile;
+          // dd($mahasiswa->avatar);
+          if ($mahasiswa->save()) {
+            $save = $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
+            $delete = storage_path('public/uploads/avatars'.$forDelete);
+            if (File::exists($delete)) {
+              File::delete($delete);
+            }
+            return response()->json([
+            'message' => 'Update Profile Berhasil'
+            ], 200);
+          }
+        }
+        if ($request->nim != 0 || $request->nim != '') {
+          $mahasiswa->nim = $request->nim;
+        }
+        if (isset($request->password)) {
+          $mahasiswa->password = $request->password;
+        }
+        if ($mahasiswa->save()) {
+          return response()->json([
+            'message' => 'Data Berhasil diubah. !'
+          ], 200);
+        }
+      }
+    }
   }
 
   public function getContent($id) {

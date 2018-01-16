@@ -64,7 +64,7 @@
         @endif
         <div class="block full">
           <div class="table-responsive">
-            <table id="example"  class="table table-borderless table-hover">
+            <table id="eventtable"  class="table table-borderless table-hover">
               <thead>
                 <tr>
                   <th class="text-center" style="width: 50px;">NO</th>
@@ -129,7 +129,7 @@
                 <input type="text" class="form-control input-datepicker" name="date" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="{{old('date')}}">
               </div>
               <div class="form-group">
-                <label class="form-label">Thumbnail <small style="font-style: italic; text-decoration: underline;">ukuran gambar square (sama sisi)</small></label>
+                <label class="form-label">Thumbnail <small style="font-style: italic; text-decoration: underline;">ukuran gambar square (sama sisi (400px x 400px))</small></label>
                 <input type="file" name="image" accept="image/*" />
               </div>
               <div class="form-group">
@@ -169,7 +169,7 @@
                 <input type="text" id="input-date-edit" class="form-control input-datepicker" name="editdate" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="{{old('date')}}">
               </div>
               <div class="form-group">
-                <label class="form-label">Thumbnail <small style="font-style: italic; text-decoration: underline;">ukuran gambar square (sama sisi)</small></label>
+                <label class="form-label">Thumbnail <small style="font-style: italic; text-decoration: underline;">ukuran gambar square (sama sisi (400px x 400px))</small></label>
                 <input type="file" name="editimage" accept="image/*" id="input-image-edit"/>
               </div>
               <div class="form-group">
@@ -232,7 +232,7 @@
                     <span class="name"><b><span id="input-view-admin"></span></b> posted an "<i><span id="input-view-title"></span></i>"</span>
                     <span class="from"><b><span id="input-view-created-at"></span></b></span>
                   </div><br />
-                  <div class="image"><center><img id="something" alt="img" style="width:400px;height:400px;"></div> </center>
+                  <div class="image" style="margin:auto;"><center><img id="something" alt="img" style="width:400px;height:400px;"></div> </center>
                   <br />
                   <ul class="comments">
                     <span id="input-view-description"></span>
@@ -266,9 +266,9 @@
                     <label class="col-sm-2 control-label form-label">Status</label>
                     <div class="col-sm-10 radio radio-warning">
                       <input type="hidden" id="input-status-id" name="status_id" value="">
-                      <input type="radio" name="editstatus" id="input-banner-status-false" value="0" checked  @if (old('status') == '0') checked @endif><label for="input-radio-1">Hide</label>
+                      <input type="radio" name="editstatus" id="input-event-status-false" value="0" checked  @if (old('status') == '0') checked @endif><label for="input-radio-1">Hide</label>
                         <br />
-                        <input type="radio" name="editstatus" id="input-banner-status-true" value="1"  @if (old('status') == '1') checked @endif><label for="input-radio-2">Show</label>
+                        <input type="radio" name="editstatus" id="input-event-status-true" value="1"  @if (old('status') == '1') checked @endif><label for="input-radio-2">Show</label>
                         </div>
                       </div>
                     </div>
@@ -283,70 +283,70 @@
         </div>
       </div>
 
-@include('partials.footer')
+      @include('partials.footer')
 
-@if (count($errors->add) > 0)
-  <script type="text/javascript"> $('#tambah-event').modal('show');</script>
-@endif
+      @if (count($errors->add) > 0)
+        <script type="text/javascript"> $('#tambah-event').modal('show');</script>
+      @endif
 
-@if (count($errors->edit) > 0)
-  <script type="text/javascript"> $('#edit-event').modal('show');</script>
-@endif
+      @if (count($errors->edit) > 0)
+        <script type="text/javascript"> $('#edit-event').modal('show');</script>
+      @endif
 
-<script src="{{asset ('assets/js/plugins/ckeditor/ckeditor.js') }}"></script>
+      <script src="{{asset ('assets/js/plugins/ckeditor/ckeditor.js') }}"></script>
 
-<script type="text/javascript">
-$(document).on('click' , '.edit-event', function(){
-  $('#input-title-edit').val($(this).data('edit-title'));
-  $('#input-image-edit').val($(this).data('edit-image'));
-  $('#input-description-edit').html($(this).data('edit-description'));
-  $('#input-date-edit').val($(this).data('edit-date'));
-  // $('#input-description-edit').html($(this).data('edit-description'));
-  // var desc = CKEDITOR.instances['editdescription'].getData();
-  console.log($(this).data('edit-date'));
-  // $('#input-description-edit').ckeditor($(this).data('edit-description'));
-  // console.log($(this).data('edit-description'));
-  $('#input-edit-id').val($(this).data('edit-id'));
-  $('#input-edit-user').val($(this).data('edit-user'));
-  $('#input-edit-penerbit').val($(this).data('edit-penerbit'));
+      <script type="text/javascript">
+      $(document).on('click' , '.edit-event', function(){
+        $('#input-title-edit').val($(this).data('edit-title'));
+        $('#input-image-edit').val($(this).data('edit-image'));
+        $('#input-description-edit').html($(this).data('edit-description'));
+        $('#input-date-edit').val($(this).data('edit-date'));
+        // $('#input-description-edit').html($(this).data('edit-description'));
+        // var desc = CKEDITOR.instances['editdescription'].getData();
+        console.log($(this).data('edit-date'));
+        // $('#input-description-edit').ckeditor($(this).data('edit-description'));
+        // console.log($(this).data('edit-description'));
+        $('#input-edit-id').val($(this).data('edit-id'));
+        $('#input-edit-user').val($(this).data('edit-user'));
+        $('#input-edit-penerbit').val($(this).data('edit-penerbit'));
 
-});
-</script>
+      });
+      </script>
 
-<script type="text/javascript">
-$(document).on('click' , '.hapus-event', function(){
-  $('#input-hapus-title').html($(this).data('hapus-title'));
-  $('#input-hapus-id').val($(this).data('hapus-id'));
-  $('#input-hapus-user').val($(this).data('hapus-user'));
-  $('#input-hapus-image').val($(this).data('hapus-image'));
-});
-</script>
+      <script type="text/javascript">
+      $(document).on('click' , '.hapus-event', function(){
+        $('#input-hapus-title').html($(this).data('hapus-title'));
+        $('#input-hapus-id').val($(this).data('hapus-id'));
+        $('#input-hapus-user').val($(this).data('hapus-user'));
+        $('#input-hapus-image').val($(this).data('hapus-image'));
+      });
+      </script>
 
-<script type="text/javascript">
-$(document).on('click' , '.status-event', function(){
-  $('#input-status-title').html($(this).data('status-title'));
-  $('#input-status-id').val($(this).data('status-id'));
-  if ($(this).data('edit-status') == "Show") {
-    $("#input-banner-status-true").prop("checked", true);
-  }else {
-    $("#input-banner-status-false").prop("checked", true);
-  }
-});
-</script>
+      <script type="text/javascript">
+      $(document).on('click' , '.status-event', function(){
+        $('#input-status-title').html($(this).data('status-title'));
+        $('#input-status-id').val($(this).data('status-id'));
+        if ($(this).data('edit-status') == "Show") {
+          $("#input-event-status-true").prop("checked", true);
+        }else {
+          $("#input-event-status-false").prop("checked", true);
+        }
+      });
+    </script>
 
-<script type="text/javascript">
-$(document).on('click' , '.view-event', function(){
-  $('#input-view-title').html($(this).data('view-title'));
-  $('#input-view-description').html($(this).data('view-description'));
-  $('#input-view-admin').html($(this).data('view-admin'));
-  $('#input-view-created-at').html($(this).data('view-created-at'));
-  $('#input-view-image').html($(this).data('view-image'));
-  // var images = $('#input-view-image').html($(this).data('view-image'));
-  // console.log($(this).data('view-image'));
-  var urls      = window.location.href+'/images/'+$(this).data('view-image');
-  // console.log(urls);
-  $("#something").attr('src', urls);
-});
-</script>
+    <script type="text/javascript">
+    $(document).on('click' , '.view-event', function(){
+      $('#input-view-title').html($(this).data('view-title'));
+      $('#input-view-description').html($(this).data('view-description'));
+      $('#input-view-admin').html($(this).data('view-admin'));
+      $('#input-view-created-at').html($(this).data('view-created-at'));
+      $('#input-view-image').html($(this).data('view-image'));
+      // var images = $('#input-view-image').html($(this).data('view-image'));
+      // console.log($(this).data('view-image'));
+      var urls      = window.location.href+'/images/'+$(this).data('view-image');
+      // console.log(urls);
+      $("#something").attr('src', urls);
+    });
+  </script>
 </body>
 </html>

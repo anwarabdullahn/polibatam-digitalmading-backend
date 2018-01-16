@@ -32,7 +32,6 @@ class BannerController extends Controller
   {
     $adminID = Auth::user()->id;
     $banner->title   = $request->title;
-    $banner->status = $request->status;
     $banner->id_user = $adminID;
     if (isset($request->image)) {
       $byscryptAttachmentFile =  md5(str_random(64));
@@ -49,12 +48,11 @@ class BannerController extends Controller
   public function update(UpdateBannerPost $request)
   {
     $id = $request->editimagefordelete;
-    if (Auth::user()->role =='admin' || Auth::user()->name == $request->edituser) {
+    if (Auth::user()->role =='super' || Auth::user()->name == $request->edituser) {
       $adminID = Auth::user()->id;
       $banner = $this->banners->where('id', $request->edit_id)->first();
       if ($banner) {
         $banner->title = $request->edittitle;
-        $banner->status = $request->editstatus;
         $banner->id_user = $request->editpenerbit;
         if (isset($request->editimage)) {
           $byscryptAttachmentFile =  md5(str_random(64));
@@ -75,7 +73,7 @@ class BannerController extends Controller
   public function delete(Request $request)
   {
     $id = $request->hapusimage;
-    if (Auth::user()->role =='admin' || Auth::user()->name == $request->hapususer) {
+    if (Auth::user()->role =='super' || Auth::user()->name == $request->hapususer) {
       $banner = $this->banners->where('id',$request->hapus_id)->first();
       if ($banner) {
         if ($banner->delete()) {
@@ -83,6 +81,18 @@ class BannerController extends Controller
             return redirect()->route('banner')->with('info','Banner Berhasil Di Hapus');
           }return redirect()->route('banner')->with('gagal', 'Banner Gagal Di Hapus');
         }return redirect()->route('banner')->with('gagal', 'Banner Gagal Di Hapus');
+      }return redirect()->route('banner')->with('gagal', 'Banner Gagal Di Temukan!!');
+    }return redirect()->route('home')->with('gagal','Invalid Credential !!');
+  }
+  public function status(Request $request)
+  {
+    if (Auth::user()->role =='super') {
+      $banner = $this->banners->where('id',$request->status_id)->first();
+      if ($banner) {
+        $banner->status = $request->editstatus;
+        if ($banner->save()) {
+          return redirect()->route('banner')->with('info','Banner Berhasil Di Ubah');
+        }return redirect()->route('banner')->with('gagal','Banner Gagal Di Hapus');
       }return redirect()->route('banner')->with('gagal', 'Banner Gagal Di Temukan!!');
     }return redirect()->route('home')->with('gagal','Invalid Credential !!');
   }

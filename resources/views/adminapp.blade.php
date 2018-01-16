@@ -93,7 +93,7 @@
                     <div class="widget-icon pull-right">
                       <i class="gi gi-group text-light-op"></i>
                     </div>
-                    <h2 class="widget-heading h3 text-light"><strong><span data-toggle="counter" data-to="{{$mahasiswa}}"></span></strong></h2>
+                    <h2 class="widget-heading h3 text-light"><span data-toggle="counter" data-to="{{$mahasiswa}}"></span></h2>
                     <span class="text-light-op">MAHASISWA</span>
                   </div>
                 </a>

@@ -49,9 +49,11 @@
         <li>
           <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-group sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Management Akun</span></a>
           <ul>
-            <li>
-              <a href="{{url('/ormawa')}}">Ormawa</a>
-            </li>
+            @if (Auth::user()->role == 'super')
+              <li>
+                <a href="{{url('/ormawa')}}">Ormawa</a>
+              </li>
+            @endif
             <li>
               <a href="{{url('/mahasiswa')}}">Mahasiswa</a>
             </li>

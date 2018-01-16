@@ -31,8 +31,8 @@ class HomeController extends Controller
   */
   public function index()
   {
-    $event = Event::count();
-    $announcement = Announcement::count();
+    $event = Event::where('status', '1')->count();
+    $announcement = Announcement::where('status', '1')->count();
     $banner = Banner::where('status', '1')->count();
     $mahasiswa = Mahasiswa::where('verified', 'true')->count();
 

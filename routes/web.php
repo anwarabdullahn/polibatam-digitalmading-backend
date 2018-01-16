@@ -65,6 +65,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('', 'BannerController@create');
     Route::post('/update', 'BannerController@update');
     Route::post('/delete', 'BannerController@delete');
+    Route::post('/status', 'BannerController@status');
 
   });
 

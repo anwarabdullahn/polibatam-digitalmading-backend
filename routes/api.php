@@ -19,12 +19,15 @@ use Illuminate\Http\Request;
 
 Route::prefix('v1')->group(function () {
   Route::prefix('mhs')->group(function (){
-    
+
     Route::prefix('auth')->group(function(){
       Route::post('register' , 'AuthAPI@register');
       Route::post('login' , 'AuthAPI@login');
       Route::get('verify/{token}' , 'AuthAPI@verify')->name('verify');
     });
+
+    Route::get('profile' , 'AuthAPI@profile');
+    Route::post('profile/update' , 'AuthAPI@profileUpdate');
 
     Route::get('banner' , 'BannerController@getAPI');
 
