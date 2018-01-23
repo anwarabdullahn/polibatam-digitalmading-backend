@@ -86,7 +86,7 @@ class AuthAPI extends Controller
       {
         if ($mahasiswa->verified == 'Activated') {
           $apiStore = AuthMahasiswa::create([
-            'api_token'   => bin2hex(str_random(20)),
+            'api_token'   => bin2hex(openssl_random_pseudo_bytes(64)),
             'platfom'     =>  $request->platfom,
             'id_mahasiswa' => $mahasiswa->id,
           ]);
@@ -148,13 +148,13 @@ class AuthAPI extends Controller
 
         $messsages = array(
           'repassword.same'   => 'Password Harus Sama.',
-          'nim.unique'        => 'NIM telah digunakan.',
-          'nim.numeric'        => 'NIM telah digunakan.',
+          // 'nim.unique'        => 'NIM telah digunakan.',
+          // 'nim.numeric'        => 'NIM telah digunakan.',
         );
 
         $validator = Validator::make($request->all(), [
           'repassword'  => 'same:password',
-          'nim'         => 'numeric|unique:mahasiswas',
+          // 'nim'         => 'numeric|unique:mahasiswas',
         ], $messsages);
 
         if ($validator->fails()) {
