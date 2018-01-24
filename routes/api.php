@@ -23,6 +23,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('auth')->group(function(){
       Route::post('register' , 'AuthAPI@register');
       Route::post('login' , 'AuthAPI@login');
+      Route::put('logout' , 'AuthAPI@logout');
       Route::get('verify/{token}' , 'AuthAPI@verify')->name('verify');
     });
 

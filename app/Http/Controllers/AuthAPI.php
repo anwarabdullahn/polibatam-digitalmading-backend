@@ -181,7 +181,7 @@ class AuthAPI extends Controller
               File::delete($delete);
             }
             return response()->json([
-            'message' => 'Update Profile Berhasil'
+              'message' => 'Update Profile Berhasil'
             ], 200);
           }
         }
@@ -198,6 +198,26 @@ class AuthAPI extends Controller
         }
       }
     }
+  }
+
+  public function logout(Request $request){
+    $authorization = $request->header('Authorization');
+    $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
+    // dd($authMahasiswa->id_mahasiswa);
+    if ($authMahasiswa) {
+      if ($authMahasiswa->delete()) {
+        return response()->json([
+          'message' => 'Success'
+        ], 200);
+      }else {
+        return response()->json([
+          'message' => 'Invalid Credential'
+        ], 401);
+      }
+    }
+    return response()->json([
+      'message' => 'Credential is required'
+    ], 405);
   }
 
   public function getContent($id) {
