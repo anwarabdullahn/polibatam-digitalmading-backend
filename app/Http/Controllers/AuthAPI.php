@@ -146,13 +146,13 @@ class AuthAPI extends Controller
       // dd($mahasiswa);
       if ($mahasiswa) {
         $messsages = array(
-          'repassword.same'   => 'Password Harus Sama.',
+          // 'repassword.same'   => 'Password Harus Sama.',
           // 'nim.unique'        => 'NIM telah digunakan.',
           // 'nim.numeric'        => 'NIM telah digunakan.',
         );
 
         $validator = Validator::make($request->all(), [
-          'repassword'  => 'same:password',
+          // 'repassword'  => 'same:password',
           // 'nim'         => 'numeric|unique:mahasiswas',
         ], $messsages);
 
@@ -187,14 +187,6 @@ class AuthAPI extends Controller
         if ($request->nim != 0 || $request->nim != '') {
           $mahasiswa->nim = $request->nim;
         }
-        if (isset($request->password)) {
-          if(Hash::check($request->oldpassword, $mahasiswa->password)){
-            $mahasiswa->password = bcrypt($request->password);
-          }
-          return response()->json([
-            'message' => 'Password Lama Salah!'
-          ], 401);
-        }
         if ($mahasiswa->save()) {
           return response()->json([
             'message' => 'Data Berhasil diubah. !'
@@ -228,5 +220,48 @@ class AuthAPI extends Controller
     $path = Storage::get('public/file/'.$id);
     $mimetype = Storage::mimeType('public/file/'.$id);
     return response($path, 200)->header('Content-Type', $mimetype);
+  }
+
+  public function updatePassword(Request $request){
+    $authorization = $request->header('Authorization');
+    $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
+    if ($authMahasiswa) {
+      $mahasiswa = Mahasiswa::where('id' ,$authMahasiswa->id_mahasiswa)->first();
+      if ($mahasiswa) {
+        $messsages = array(
+          'repassword.same'   => 'Password Harus Sama.',
+          'password.required'  => 'Password Baru Harus diisi.',
+          'oldpassword.required'  => 'Password Lama Harus diisi.',
+          'password.min'       => 'Password minimal 6 karakter.',
+        );
+
+        $validator = Validator::make($request->all(), [
+          'oldpassword'  => 'required',
+          'password'  => 'required|min:6',
+          'repassword'  => 'same:password',
+        ], $messsages);
+
+        if ($validator->fails()) {
+          $errors = $validator->errors();
+          return response()->json([
+            'message' => $errors->first()
+          ], 406);
+        }
+
+        if (isset($request->password)) {
+          if(Hash::check($request->oldpassword, $mahasiswa->password)){
+            $mahasiswa->password = bcrypt($request->password);
+            if ($mahasiswa->save()) {
+              return response()->json([
+                'message' => 'Data Berhasil diubah. !'
+              ], 200);
+            }
+          }
+          return response()->json([
+            'message' => 'Password Lama Salah!'
+          ], 401);
+        }
+      }
+    }
   }
 }
