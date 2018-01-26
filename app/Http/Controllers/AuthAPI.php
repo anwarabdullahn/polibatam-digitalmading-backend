@@ -189,7 +189,7 @@ class AuthAPI extends Controller
           $mahasiswa->nim = $request->nim;
         }
         if (isset($request->password)) {
-          $mahasiswa->password = $request->password;
+          $mahasiswa->password = bcrypt($request->password);
         }
         if ($mahasiswa->save()) {
           return response()->json([
