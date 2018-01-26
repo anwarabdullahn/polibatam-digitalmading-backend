@@ -189,7 +189,12 @@ class AuthAPI extends Controller
           $mahasiswa->nim = $request->nim;
         }
         if (isset($request->password)) {
-          $mahasiswa->password = bcrypt($request->password);
+          if(Hash::check($request->password, $mahasiswa->password)){
+            $mahasiswa->password = bcrypt($request->password);
+          }
+          return response()->json([
+            'message' => 'Password Lama Salah!'
+          ], 401);
         }
         if ($mahasiswa->save()) {
           return response()->json([
