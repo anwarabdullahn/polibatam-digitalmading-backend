@@ -145,7 +145,6 @@ class AuthAPI extends Controller
       $mahasiswa = Mahasiswa::where('id' ,$authMahasiswa->id_mahasiswa)->first();
       // dd($mahasiswa);
       if ($mahasiswa) {
-
         $messsages = array(
           'repassword.same'   => 'Password Harus Sama.',
           // 'nim.unique'        => 'NIM telah digunakan.',
@@ -189,7 +188,7 @@ class AuthAPI extends Controller
           $mahasiswa->nim = $request->nim;
         }
         if (isset($request->password)) {
-          if(Hash::check($request->password, $mahasiswa->password)){
+          if(Hash::check($request->oldpassword, $mahasiswa->password)){
             $mahasiswa->password = bcrypt($request->password);
           }
           return response()->json([
