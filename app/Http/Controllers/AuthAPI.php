@@ -180,6 +180,7 @@ class AuthAPI extends Controller
          $base64 = base64_encode($imagedata);
 
          $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $data->getClientOriginalExtension();
+         $mahasiswa->avatar = $byscryptAttachmentFile;
          $path = storage_path('app/public/uploads/avatars/'.$byscryptAttachmentFile);
          // dd($path);
          Image::make($base64)->resize(400, 400)->save($path);
