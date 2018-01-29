@@ -17,6 +17,7 @@ use Mail;
 use Storage;
 use Validator;
 use File;
+use Image;
 
 class AuthAPI extends Controller
 {
@@ -167,10 +168,22 @@ class AuthAPI extends Controller
           $mahasiswa->name = $request->name;
         }
         if (isset($request->avatar)) {
+          //
+          // $file =Input::file('file');
+          //     $imagedata = file_get_contents($file);
+          //     $base64 = base64_encode($imagedata);
+          //     $oUser->avatar = $base64;
+          //     $oUser->update();
+      //
          $data = $request->avatar;
+         $imagedata = file_get_contents($data);
+         $base64 = base64_encode($imagedata);
+
          $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $data->getClientOriginalExtension();
-         $path = storage_path().'public/uploads/avatar'.$byscryptAttachmentFile;
-         Image::make(file_get_contents($data->base64_image))->save($path);
+         $path = storage_path('app/public/uploads/avatars/'.$byscryptAttachmentFile);
+         // dd($path);
+         Image::make($base64)->resize(400, 400)->save($path);
+         // dd($request->avatar);
           $forDelete = $mahasiswa->avatar;
           // $avatar = $request->file('avatar');
           // $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $avatar->getClientOriginalExtension();
