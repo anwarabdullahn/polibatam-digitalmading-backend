@@ -167,14 +167,18 @@ class AuthAPI extends Controller
           $mahasiswa->name = $request->name;
         }
         if (isset($request->avatar)) {
+         $data = $request->avatar;
+         $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $data->getClientOriginalExtension();
+         $path = storage_path().'public/uploads/avatar'.$byscryptAttachmentFile;
+         Image::make(file_get_contents($data->base64_image))->save($path);
           $forDelete = $mahasiswa->avatar;
-          $avatar = $request->file('avatar');
-          $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $avatar->getClientOriginalExtension();
+          // $avatar = $request->file('avatar');
+          // $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $avatar->getClientOriginalExtension();
           // dd($avatar->getClientOriginalExtension());
-          $mahasiswa->avatar = $byscryptAttachmentFile;
+          // $mahasiswa->avatar = $byscryptAttachmentFile;
           // dd($mahasiswa->avatar);
           if ($mahasiswa->save()) {
-            $save = $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
+            // $save = $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
             $delete = storage_path('public/uploads/avatars'.$forDelete);
             if (File::exists($delete)) {
               File::delete($delete);
