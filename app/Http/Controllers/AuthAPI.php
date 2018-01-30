@@ -172,11 +172,11 @@ class AuthAPI extends Controller
           $avatar = $request->file('avatar');
           $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $avatar->getClientOriginalExtension();
           // dd($avatar->getClientOriginalExtension());
-          $mahasiswa->avatar = $byscryptAttachmentFile;
+          // dd($avatar);
           // dd($mahasiswa->avatar);
+          $mahasiswa->avatar = $byscryptAttachmentFile;
           if ($mahasiswa->save()) {
-            // $save = $avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
-            $path = Storage::putFile('uploads/avatars', $request->file('avatar'));
+            $save = $avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
             // dd($path);
             $delete = storage_path('public/uploads/avatars'.$forDelete);
             if (File::exists($delete)) {
