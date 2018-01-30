@@ -22,6 +22,10 @@ Route::get('announcement/images/{id}', 'AnnouncementController@getImage');
 Route::get('event/images/{id}', 'EventController@getImage');
 Route::get('banner/images/{id}', 'BannerController@getImage');
 Route::get('/register/verification/{nim}/{code}', 'MahasiswaController@verification');
+
+Route::get('/forget/{nim}/{code}', 'MahasiswaController@forgetPasswordLayout')->name('forget');
+Route::post('/forget', 'MahasiswaController@forgetPassword');
+
 Route::get('file/{id}' , 'AuthAPI@getContent');
 
 Route::group(['middleware' => 'auth'], function(){

@@ -8,6 +8,7 @@ use Auth;
 use Softon\SweetAlert\Facades\SWAL;
 use App\Http\Requests\Store\StoreAddMahasiswa;
 use Mail;
+use Validator;
 use App\Mail\MahasiswaEmailVerification;
 
 class MahasiswaController extends Controller
@@ -43,6 +44,55 @@ class MahasiswaController extends Controller
     $swal = swal()->error('Sorry','There is an Error while Activating Your Account!',[]);
     return view('layouts.app', compact('swal'));
   }
+
+  public function forgetPassword(Request $request){
+
+    $messsages = array(
+      'newpassword.required'  => 'Password Harus diisi.',
+      'renewpassword.required'  => 'Password Harus diisi.',
+      'rerenewpassword.required'  => 'Password Harus diisi.',
+      'newpassword.min'       => 'Password minimal 6 karakter.',
+      'renewpassword.same'    => 'Password Tidak Cocok.',
+      'rerenewpassword.same'  => 'Password Tidak Cocok.',
+    );
+
+    $validator = Validator::make($request->all(), [
+      'newpassword'     => 'required|min:6',
+      'renewpassword'   => 'required|same:newpassword',
+      'rerenewpassword' => 'required|same:rerenewpassword',
+    ], $messsages);
+
+    if ($validator->fails()) {
+      $nim = $request->nim;
+      $code = $request->code;
+      return redirect()->route('forget',compact('nim','code'))->withErrors($validator, 'forget');
+    }
+
+    $mahasiswa = Mahasiswa::where('nim' , $request->nim)
+    ->where('verification_code',$request->code)->first();
+
+    if ($mahasiswa) {
+      $mahasiswa->verification_code=null;
+      $mahasiswa->password = $request->newpassword;
+      // dd($mahasiswa->password);
+      if ($mahasiswa->save()) {
+        $swal = swal()->success('Good Job','Your Password successfully Change!',[]);
+        return view('layouts.app', compact('swal'));
+      }
+      $swal = swal()->error('Sorry','There is an Error while Change Your Password!',[]);
+      return view('layouts.app', compact('swal'));
+    }
+  }
+
+  public function forgetPasswordLayout($nim,$code){
+    $mahasiswa = Mahasiswa::where('nim' , $nim)
+    ->where('verification_code',$code)->first();
+
+    if ($mahasiswa) {
+      return view('layouts.admins.mahasiswa.forget',compact('nim','code'));
+    }
+  }
+
 
   public function create(StoreAddMahasiswa $request, Mahasiswa $mahasiswa)
   {

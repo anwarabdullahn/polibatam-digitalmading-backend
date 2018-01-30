@@ -29,7 +29,10 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::get('profile' , 'AuthAPI@profile');
-    Route::post('profile/update' , 'AuthAPI@profileUpdate');
+    Route::post('profile/picture' , 'AuthAPI@profileUpdate');
+    Route::post('profile/update' , 'AuthAPI@dataUpdate');
+
+    Route::post('forget','AuthAPI@resetPassword');
 
     Route::get('banner' , 'BannerController@getAPI');
 

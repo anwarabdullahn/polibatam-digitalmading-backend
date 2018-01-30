@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Store\StoreAddMahasiswa;
 use App\Transformers\MahasiswaTransformer;
 
+use App\Mail\MahasiswaForgetPassword;
 use App\Mail\MahasiswaEmailVerification;
 
 use Mail;
@@ -146,34 +147,10 @@ class AuthAPI extends Controller
       $mahasiswa = Mahasiswa::where('id' ,$authMahasiswa->id_mahasiswa)->first();
       // dd($mahasiswa);
       if ($mahasiswa) {
-        $messsages = array(
-          // 'repassword.same'   => 'Password Harus Sama.',
-          // 'nim.unique'        => 'NIM telah digunakan.',
-          // 'nim.numeric'        => 'NIM telah digunakan.',
-        );
-
-        $validator = Validator::make($request->all(), [
-          // 'repassword'  => 'same:password',
-          // 'nim'         => 'numeric|unique:mahasiswas',
-        ], $messsages);
-
-        if ($validator->fails()) {
-          $errors = $validator->errors();
-          return response()->json([
-            'message' => $errors->first()
-          ], 406);
-        }
-
-        if (isset($request->name)) {
-          $mahasiswa->name = $request->name;
-        }
         if (isset($request->avatar)) {
           $forDelete = $mahasiswa->avatar;
           $avatar = $request->file('avatar');
           $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $avatar->getClientOriginalExtension();
-          // dd($avatar->getClientOriginalExtension());
-          // dd($avatar);
-          // dd($mahasiswa->avatar);
           $mahasiswa->avatar = $byscryptAttachmentFile;
           if ($mahasiswa->save()) {
             $save = $avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
@@ -185,18 +162,43 @@ class AuthAPI extends Controller
             return response()->json([
               'message' => 'Update Profile Berhasil'
             ], 200);
-          }
+          }return response()->json([
+            'message' => 'Update Profile Gagal !'
+          ], 400);
         }
-        if ($request->nim != 0 || $request->nim != '') {
+      }return response()->json([
+        'message' => 'Akun Tidak diTemukan !'
+      ], 404);
+    }return response()->json([
+      'message' => 'Credential is required !'
+    ], 405);
+  }
+
+  public function dataUpdate(Request $request){
+    $authorization = $request->header('Authorization');
+    $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
+    // dd($authMahasiswa->id_mahasiswa);
+    if ($authMahasiswa) {
+      $mahasiswa = Mahasiswa::where('id' ,$authMahasiswa->id_mahasiswa)->first();
+      if ($mahasiswa) {
+        if (isset($request->name)) {
+          $mahasiswa->name = $request->name;
+        }
+        if (isset($request->nim)) {
           $mahasiswa->nim = $request->nim;
         }
+
         if ($mahasiswa->save()) {
           return response()->json([
-            'message' => 'Data Berhasil diubah. !'
+            'message' => 'Update Profile Berhasil'
           ], 200);
         }
-      }
-    }
+      }return response()->json([
+        'message' => 'Akun Tidak diTemukan !'
+      ], 404);
+    }return response()->json([
+      'message' => 'Credential is required !'
+    ], 405);
   }
 
   public function logout(Request $request){
@@ -266,5 +268,44 @@ class AuthAPI extends Controller
         }
       }
     }
+  }
+
+  public function resetPassword(Request $request){
+    $messsages = array(
+      'email.required'  =>  'Silahkan masukkan Alamat Email terlebih dahulu',
+      'email.email'     =>  'Silahkan masukkan Alamat Email yang Valid'
+    );
+
+    $validator = Validator::make($request->all(), [
+      'email' =>  'required|email'
+    ], $messsages);
+
+    if ($validator->fails()) {
+      $errors = $validator->errors();
+      return response()->json([
+        'message' => $errors->first()
+      ], 406);
+    }
+
+    $mahasiswa = Mahasiswa::where('email' , $request->email)->first();
+    if ($mahasiswa) {
+      $code = str_random(64);
+
+
+      $data = array(
+        'nim'               => $mahasiswa->nim,
+        'name'              => $mahasiswa->name,
+        'verification_code' => $code,
+      );
+      $mahasiswa->verification_code = $code;
+      if ($mahasiswa->save()) {
+        Mail::to($request->email)->send(new MahasiswaForgetPassword($data));
+        return response()->json([
+          'message' => 'Silahkan Periksa Email!'
+        ], 201);
+      }      
+    }return response()->json([
+      'message' => 'Akun Tidak diTemukan !'
+    ], 404);
   }
 }
