@@ -168,31 +168,14 @@ class AuthAPI extends Controller
           $mahasiswa->name = $request->name;
         }
         if (isset($request->avatar)) {
-          //
-          // $file =Input::file('file');
-          //     $imagedata = file_get_contents($file);
-          //     $base64 = base64_encode($imagedata);
-          //     $oUser->avatar = $base64;
-          //     $oUser->update();
-      //
-         $data = $request->avatar;
-         $imagedata = file_get_contents($data);
-         $base64 = base64_encode($imagedata);
-
-         $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $data->getClientOriginalExtension();
-         $mahasiswa->avatar = $byscryptAttachmentFile;
-         $path = storage_path('app/public/uploads/avatars/'.$byscryptAttachmentFile);
-         // dd($path);
-         Image::make($base64)->resize(400, 400)->save($path);
-         // dd($request->avatar);
           $forDelete = $mahasiswa->avatar;
-          // $avatar = $request->file('avatar');
-          // $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $avatar->getClientOriginalExtension();
+          $avatar = $request->file('avatar');
+          $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $avatar->getClientOriginalExtension();
           // dd($avatar->getClientOriginalExtension());
-          // $mahasiswa->avatar = $byscryptAttachmentFile;
+          $mahasiswa->avatar = $byscryptAttachmentFile;
           // dd($mahasiswa->avatar);
           if ($mahasiswa->save()) {
-            // $save = $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
+            $save = $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
             $delete = storage_path('public/uploads/avatars'.$forDelete);
             if (File::exists($delete)) {
               File::delete($delete);
