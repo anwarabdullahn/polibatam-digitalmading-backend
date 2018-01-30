@@ -4,7 +4,7 @@
 <body>
   <!-- Full Background -->
   <!-- For best results use an image with a resolution of 1280x1280 pixels (prefer a blurred image for smaller file size) -->
-  <img src="{{asset ('assets/img/placeholders/layout/lock_full_bg.jpg') }}" alt="Full Background" class="full-bg full-bg-bottom animation-pulseSlow">
+  {{-- <img src="{{asset ('assets/img/placeholders/layout/lock_full_bg.jpg') }}" alt="Full Background" class="full-bg full-bg-bottom animation-pulseSlow"> --}}
   <!-- END Full Background -->
 
   <!-- Login Container -->
@@ -19,7 +19,7 @@
   @include('partials.footer')
   @include('sweetalert::cdn')
   @include('sweetalert::view')
-  
+
   <script>
   $(document).ready(function() {
     swal({
