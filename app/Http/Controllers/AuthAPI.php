@@ -154,7 +154,8 @@ class AuthAPI extends Controller
           // dd($byscryptAttachmentFile);
           if ($mahasiswa->save()) {
             $mahasiswa->avatar = $byscryptAttachmentFile;
-            $save = $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
+            // $save = $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
+            $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
             // dd($path);
             $delete = storage_path('public/uploads/avatars'.$forDelete);
             if (File::exists($delete)) {
