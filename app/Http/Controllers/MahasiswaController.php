@@ -73,7 +73,7 @@ class MahasiswaController extends Controller
 
     if ($mahasiswa) {
       $mahasiswa->verification_code=null;
-      $mahasiswa->password = $request->newpassword;
+      $mahasiswa->password = bcrypt($request->newpassword);
       // dd($mahasiswa->password);
       if ($mahasiswa->save()) {
         $swal = swal()->success('Good Job','Your Password successfully Change!',[]);
