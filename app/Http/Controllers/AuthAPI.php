@@ -149,10 +149,11 @@ class AuthAPI extends Controller
       if ($mahasiswa) {
         if (isset($request->avatar)) {
           $forDelete = $mahasiswa->avatar;
-          $avatar = $request->file('avatar');
-          $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $avatar->getClientOriginalExtension();
-          $mahasiswa->avatar = $byscryptAttachmentFile;
+          // $avatar = $request->file('avatar');
+          $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $request->avatar->getClientOriginalExtension();
+          // dd($byscryptAttachmentFile);
           if ($mahasiswa->save()) {
+            $mahasiswa->avatar = $byscryptAttachmentFile;
             $save = $avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
             // dd($path);
             $delete = storage_path('public/uploads/avatars'.$forDelete);
@@ -303,7 +304,7 @@ class AuthAPI extends Controller
         return response()->json([
           'message' => 'Silahkan Periksa Email!'
         ], 201);
-      }      
+      }
     }return response()->json([
       'message' => 'Akun Tidak diTemukan !'
     ], 404);
