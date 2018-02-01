@@ -150,22 +150,32 @@ class AuthAPI extends Controller
         if (isset($request->avatar)) {
           $forDelete = $mahasiswa->avatar;
           // $avatar = $request->file('avatar');
-          $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $request->avatar->getClientOriginalExtension();
-          // dd($byscryptAttachmentFile);
-          $mahasiswa->avatar = $byscryptAttachmentFile;
-          if ($mahasiswa->save()) {
-            // $save = $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
-            // $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
-            $save = Image::make($request->file('avatar'))->fit(600, 600, function ($constraint) {   $constraint->upsize();})->save(storage_path('app/public/uploads/avatars/'.$byscryptAttachmentFile));
-            // dd($path);
-            $delete = storage_path('public/uploads/avatars'.$forDelete);
-            if (File::exists($delete)) {
-              File::delete($delete);
-            }
-            return response()->json([
-              'message' => 'Update Profile Berhasil'
-            ], 200);
-          }return response()->json([
+          $code = md5(str_random(64));
+          $byscryptAttachmentFile =  $code . '.' . $request->avatar->getClientOriginalExtension();
+          $path = $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
+          if ($path) {
+            $mahasiswa->avatar = $byscryptAttachmentFile;
+            if ($mahasiswa->save()) {
+              // $save = $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
+
+              // $save = Storage::disk('local')->store('app/public/uploads/avatars/', $byscryptAttachmentFile, $request->avatar);
+
+              // dd($path);
+              // $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
+              // $save = Image::make($request->file('avatar'))->fit(600, 600, function ($constraint) {   $constraint->upsize();})->save(storage_path('app/public/uploads/avatars/'.$byscryptAttachmentFile));
+
+              $delete = storage_path('app/public/uploads/avatars'.$forDelete);
+              if (File::exists($delete)) {
+                File::delete($delete);
+              }
+              return response()->json([
+                'message' => 'Update Profile Berhasil'
+              ], 200);
+            }return response()->json([
+              'message' => 'Update Profile Gagal !'
+            ], 400);
+          }
+          return response()->json([
             'message' => 'Update Profile Gagal !'
           ], 400);
         }
