@@ -148,25 +148,37 @@ class AuthAPI extends Controller
       // dd($mahasiswa);
       if ($mahasiswa) {
         if (isset($request->avatar)) {
+          $messsages = array(
+            'avatar.mimetypes'   => 'Incorrect File Type.',
+          );
+
+          $validator = Validator::make($request->all(), [
+            'avatar'  => 'mimetypes:image/jpeg,image/png,image/gif',
+          ], $messsages);
+
+          if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+              'message' => $errors->first()
+            ], 406);
+          }
           $forDelete = $mahasiswa->avatar;
           // $avatar = $request->file('avatar');
           $code = md5(str_random(64));
           $byscryptAttachmentFile =  $code . '.' . $request->avatar->getClientOriginalExtension();
           // $path = $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
-          $path = $request->file('avatar')->move(storage_path('app/public/uploads/avatars'), $byscryptAttachmentFile);
+          // $path = $request->file('avatar')->move(storage_path('app/public/uploads/avatars'), $byscryptAttachmentFile);
           // dd($path);
-          if ($path) {
+          $save = Image::make($request->file('avatar'))->fit(600, 600, function ($constraint) {   $constraint->upsize();})->save(storage_path('app/public/uploads/avatars/'.$byscryptAttachmentFile));
+          if ($save) {
             $mahasiswa->avatar = $byscryptAttachmentFile;
             if ($mahasiswa->save()) {
               // $save = $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
-
               // $save = Storage::disk('local')->store('app/public/uploads/avatars/', $byscryptAttachmentFile, $request->avatar);
-
               // dd($path);
               // $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
-              // $save = Image::make($request->file('avatar'))->fit(600, 600, function ($constraint) {   $constraint->upsize();})->save(storage_path('app/public/uploads/avatars/'.$byscryptAttachmentFile));
-
-              $delete = storage_path('app/public/uploads/avatars'.$forDelete);
+              $delete = storage_path('app/public/uploads/avatars/'.$forDelete);
+              // dd($delete);
               if (File::exists($delete)) {
                 File::delete($delete);
               }
