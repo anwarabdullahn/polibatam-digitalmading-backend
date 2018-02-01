@@ -152,7 +152,9 @@ class AuthAPI extends Controller
           // $avatar = $request->file('avatar');
           $code = md5(str_random(64));
           $byscryptAttachmentFile =  $code . '.' . $request->avatar->getClientOriginalExtension();
-          $path = $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
+          // $path = $request->avatar->storeAs('public/uploads/avatars', $byscryptAttachmentFile);
+          $path = $request->file('avatar')->move(storage_path('app/public/uploads/avatars'), $byscryptAttachmentFile);
+          // dd($path);
           if ($path) {
             $mahasiswa->avatar = $byscryptAttachmentFile;
             if ($mahasiswa->save()) {
