@@ -108,7 +108,7 @@ class BannerController extends Controller
     $authorization = $request->header('Authorization');
     $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
     if ($authMahasiswa) {
-      $banners = Banner::where('status', '1')->take(3)->get()->sortByDesc('created_at');
+      $banners = Banner::where('status', '1')->take(5)->get()->sortByDesc('created_at');
       if ($banners) {
         $response = fractal()
         ->collection($banners)
