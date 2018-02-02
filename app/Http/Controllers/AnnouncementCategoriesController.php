@@ -23,24 +23,24 @@ class AnnouncementCategoriesController extends Controller
 
   public function index()
   {
-    if (Auth::user()->role =='admin') {
+    if (Auth::user()->role =='admin'|| Auth::user()->role =='super') {
       return view ('layouts.admins.announcements.categories')->with('categories' , $this->categories);
     }return redirect()->route('home')->with('gagal','Invalid Credential !!');
   }
 
   public function create(StoreAddAnnouncementCategories $request, AnnouncementCategories $category)
   {
-    if (Auth::user()->role =='admin') {
+    if (Auth::user()->role =='admin'|| Auth::user()->role =='super') {
       $category->name = $request->name;
       if ($category->save()) {
         return redirect()->route('category')->with('info','Kategori Berhasil di Tambahkan !!');
       }return redirect()->route('category')->with('gagal','Kategori Gagal di Tambahkan !!');
     }return redirect()->route('home')->with('gagal','Invalid Credential !!');
   }
-  
+
   public function update(UpdateAnnouncementCategories $request)
   {
-    if (Auth::user()->role =='admin') {
+    if (Auth::user()->role =='admin'|| Auth::user()->role =='super') {
       $category = $this->categories->where('id', $request->edit_id)->first();
       if ($category) {
         $category->name = $request->editname;
@@ -53,7 +53,7 @@ class AnnouncementCategoriesController extends Controller
 
   public function delete(Request $request)
   {
-    if (Auth::user()->role =='admin') {
+    if (Auth::user()->role =='admin'|| Auth::user()->role =='super') {
       $category = $this->categories->where('id', $request->hapus_id)->first();
       if ($category) {
         if ($category->delete()) {
