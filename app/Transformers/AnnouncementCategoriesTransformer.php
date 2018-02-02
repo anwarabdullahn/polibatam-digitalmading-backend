@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use League\Fractal\TransformerAbstract;
+use App\Announcement;
 use App\AnnouncementCategories;
 
 class AnnouncementCategoriesTransformer extends TransformerAbstract
@@ -14,9 +15,14 @@ class AnnouncementCategoriesTransformer extends TransformerAbstract
      */
      public function transform(AnnouncementCategories $category)
      {
+       $categoriesCount = Announcement::where('id_category',$category->id)->count();
+
        return [
          'id'           => $category->id,
-         'name'        => $category->name
+         'name'        => $category->name,
+         'image'        => url('images/'.$category->image),
+         'amount'       =>$categoriesCount,
+
        ];
      }
 }

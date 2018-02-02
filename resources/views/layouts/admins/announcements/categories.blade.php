@@ -114,6 +114,10 @@
                 <label class="form-label">Nama Kategori</label>
                 <input type="text" class="form-control" name="name" placeholder="Nama Kategori"  value="{{old('title')}}">
               </div>
+              <div class="form-group">
+                <label class="form-label">Background</label>
+                <input type="file" name="image" accept="image/*" />
+              </div>
               <button type="button" class="btn btn-inline btn-primary pull-right" data-dismiss="modal">Batal</button>
               <input type="submit" class="btn btn-inline btn-secondary pull-right" name="submit" value="TAMBAH" />
             </fieldset>
@@ -141,6 +145,10 @@
               <div class="form-group">
                 <label class="form-label">Nama Kategori</label>
                 <input id="input-edit-name" type="text" class="form-control" name="editname" placeholder="Nama Kategori"  value="{{old('editname')}}">
+                <div class="form-group">
+                  <label class="form-label">Background</label>
+                  <input type="file" name="editimage" accept="image/*" />
+                </div>
                 <input id="input-edit-id" type="hidden" class="form-control" name="edit_id">
               </div>
               <button type="button" class="btn btn-inline btn-primary pull-right" data-dismiss="modal">Batal</button>

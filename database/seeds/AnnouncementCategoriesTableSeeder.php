@@ -14,6 +14,7 @@ class AnnouncementCategoriesTableSeeder extends Seeder
       $data = [
       [
       'name' => 'Umum',
+      'image' => 'bg.jpg'
       ]];
 
     DB::table('announcement_categories')->insert($data);

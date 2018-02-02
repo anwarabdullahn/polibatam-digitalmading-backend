@@ -11,6 +11,8 @@ use App\Transformers\AnnouncementCategoriesTransformer;
 use App\Http\Requests\Store\StoreAddAnnouncementCategories;
 use App\Http\Requests\Update\UpdateAnnouncementCategories;
 
+use Image;
+use Storage;
 
 class AnnouncementCategoriesController extends Controller
 {
@@ -32,9 +34,17 @@ class AnnouncementCategoriesController extends Controller
   {
     if (Auth::user()->role =='admin'|| Auth::user()->role =='super') {
       $category->name = $request->name;
-      if ($category->save()) {
-        return redirect()->route('category')->with('info','Kategori Berhasil di Tambahkan !!');
-      }return redirect()->route('category')->with('gagal','Kategori Gagal di Tambahkan !!');
+      if (isset($request->image)) {
+        $byscryptAttachmentFile =  md5(str_random(24)). '.' . $request->image->getClientOriginalExtension();
+        // dd($byscryptAttachmentFile);
+      }
+      $save = Image::make($request->file('image'))->fit(700, 300, function ($constraint) {   $constraint->upsize();})->save(storage_path('app/public/uploads/backgrounds/'.$byscryptAttachmentFile));
+      if ($save) {
+        $category->image = $byscryptAttachmentFile;
+        if ($category->save()) {
+          return redirect()->route('category')->with('info','Kategori Berhasil di Tambahkan !!');
+        }return redirect()->route('category')->with('gagal','Kategori Gagal di Tambahkan !!');
+      }
     }return redirect()->route('home')->with('gagal','Invalid Credential !!');
   }
 
@@ -43,10 +53,21 @@ class AnnouncementCategoriesController extends Controller
     if (Auth::user()->role =='admin'|| Auth::user()->role =='super') {
       $category = $this->categories->where('id', $request->edit_id)->first();
       if ($category) {
+        $forDelete = $category->image;
         $category->name = $request->editname;
-        if ($category->save()) {
-          return redirect()->route('category')->with('info','Kategori Berhasil di Ubah !!');
-        }return redirect()->route('category')->with('gagal','Kategori Gagal di Ubah !!');
+        if (isset($request->editimage)) {
+          $byscryptAttachmentFile =  md5(str_random(24)). '.' . $request->editimage->getClientOriginalExtension();
+        }
+        $save = Image::make($request->file('editimage'))->fit(700, 300, function ($constraint) {   $constraint->upsize();})->save(storage_path('app/public/uploads/backgrounds/'.$byscryptAttachmentFile));
+        if ($save) {
+          if ($category->save()) {
+            $delete = storage_path('app/public/uploads/backgrounds/'.$forDelete);
+            if (File::exists($delete)) {
+              File::delete($delete);
+            }
+            return redirect()->route('category')->with('info','Kategori Berhasil di Ubah !!');
+          }return redirect()->route('category')->with('gagal','Kategori Gagal di Ubah !!');
+        }
       }return redirect()->route('category')->with('gagal','Kategori Tidak di Temukan !!');
     }return redirect()->route('home')->with('gagal','Invalid Credential !!');
   }
@@ -80,4 +101,11 @@ class AnnouncementCategoriesController extends Controller
     $messageResponse['message'] = 'Invalid Credentials';
     return response($messageResponse, 401);
   }
+
+  public function getContent($id) {
+    $path = Storage::get('public/uploads/backgrounds/'.$id);
+    $mimetype = Storage::mimeType('public/uploads/backgrounds/'.$id);
+    return response($path, 200)->header('Content-Type', $mimetype);
+  }
+
 }

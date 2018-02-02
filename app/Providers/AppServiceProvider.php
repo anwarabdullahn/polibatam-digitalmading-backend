@@ -42,10 +42,16 @@ class AppServiceProvider extends ServiceProvider
       if(!Storage::disk('local')->exists('public/file')){
         Storage::makeDirectory('public/file');
       }
+      if (!Storage::disk('local')->exists('public/uploads/backgrounds')) {
+        Storage::makeDirectory('public/uploads/backgrounds');
+      }
     }
 
     public function setDefaultPublicAsset() {
       $avatarDefault = Storage::disk('resources')->get('assets/defaults/avatar.jpg');
+      $bgDefault = Storage::disk('resources')->get('assets/defaults/bg.jpg');
+      
       Storage::disk('local')->put('/public/uploads/avatars/avatar.jpg', $avatarDefault);
+      Storage::disk('local')->put('/public/uploads/backgrounds/bg.jpg', $bgDefault);
     }
 }

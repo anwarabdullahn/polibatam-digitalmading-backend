@@ -27,6 +27,7 @@ Route::get('/forget/{nim}/{code}', 'MahasiswaController@forgetPasswordLayout')->
 Route::post('/forget', 'MahasiswaController@forgetPassword');
 
 Route::get('file/{id}' , 'AuthAPI@getContent');
+Route::get('images/{id}' , 'AnnouncementCategoriesController@getContent');
 
 Route::group(['middleware' => 'auth'], function(){
   Route::get('/home', 'HomeController@index')->name('home');
