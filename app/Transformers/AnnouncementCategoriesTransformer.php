@@ -15,7 +15,9 @@ class AnnouncementCategoriesTransformer extends TransformerAbstract
      */
      public function transform(AnnouncementCategories $category)
      {
-       $categoriesCount = Announcement::where('id_category',$category->id)->count();
+       $categoriesCount = Announcement::where('id_category',$category->id)
+                                      ->where('status', '1')
+                                      ->count();
 
        return [
          'id'           => $category->id,

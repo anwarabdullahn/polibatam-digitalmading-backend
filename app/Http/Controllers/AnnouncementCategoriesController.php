@@ -13,14 +13,23 @@ use App\Http\Requests\Update\UpdateAnnouncementCategories;
 
 use Image;
 use Storage;
+use File;
+
+use App\Firebase\Push;
+use App\Firebase\Firebase;
+
 
 class AnnouncementCategoriesController extends Controller
 {
   protected $categories;
+  protected $firebase;
+  protected $push;
 
   public function __construct()
   {
     $this->categories = AnnouncementCategories::all();
+    $this->firebase = new Firebase();
+    $this->push = new Push();
   }
 
   public function index()
@@ -77,35 +86,39 @@ class AnnouncementCategoriesController extends Controller
     if (Auth::user()->role =='admin'|| Auth::user()->role =='super') {
       $category = $this->categories->where('id', $request->hapus_id)->first();
       if ($category) {
+        $forDelete = $category->image;
         if ($category->delete()) {
-          return redirect()->route('category')->with('info','Kategori Berhasil di Hapus !!');
-        }return redirect()->route('category')->with('gagal','Kategori Gagal di Hapus !!');
-      }return redirect()->route('category')->with('gagal','Kategori Tidak di Temukan !!');
-    }return redirect()->route('home')->with('gagal','Invalid Credential !!');
-  }
-  public function getAPI(Request $request)
-  {
-    $authorization = $request->header('Authorization');
-    $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
-
-    if ($authMahasiswa) {
-      $categories = AnnouncementCategories::all()->sortBy('id');
-      // dd($category);
-      $response = fractal()
-      ->collection($categories)
-      ->transformWith(new AnnouncementCategoriesTransformer)
-      ->toArray();
-
-      return response()->json(array('result' => $response['data']), 200);
+          $delete = storage_path('app/public/uploads/backgrounds/'.$forDelete);
+          if (File::exists($delete)) {
+            File::delete($delete);}
+            return redirect()->route('category')->with('info','Kategori Berhasil di Hapus !!');
+          }return redirect()->route('category')->with('gagal','Kategori Gagal di Hapus !!');
+        }return redirect()->route('category')->with('gagal','Kategori Tidak di Temukan !!');
+      }return redirect()->route('home')->with('gagal','Invalid Credential !!');
     }
-    $messageResponse['message'] = 'Invalid Credentials';
-    return response($messageResponse, 401);
-  }
+    public function getAPI(Request $request)
+    {
+      $authorization = $request->header('Authorization');
+      $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
 
-  public function getContent($id) {
-    $path = Storage::get('public/uploads/backgrounds/'.$id);
-    $mimetype = Storage::mimeType('public/uploads/backgrounds/'.$id);
-    return response($path, 200)->header('Content-Type', $mimetype);
-  }
+      if ($authMahasiswa) {
+        $categories = AnnouncementCategories::all()->sortBy('id');
+        // dd($category);
+        $response = fractal()
+        ->collection($categories)
+        ->transformWith(new AnnouncementCategoriesTransformer)
+        ->toArray();
 
-}
+        return response()->json(array('result' => $response['data']), 200);
+      }
+      $messageResponse['message'] = 'Invalid Credentials';
+      return response($messageResponse, 401);
+    }
+
+    public function getContent($id) {
+      $path = Storage::get('public/uploads/backgrounds/'.$id);
+      $mimetype = Storage::mimeType('public/uploads/backgrounds/'.$id);
+      return response($path, 200)->header('Content-Type', $mimetype);
+    }
+
+  }

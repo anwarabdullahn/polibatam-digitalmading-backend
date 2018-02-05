@@ -1,0 +1,6 @@
+<?php
+
+namespace App\Firebase;
+
+// Firebase API Key
+define('FIREBASE_API_KEY', 'AAAApnPMWM8:APA91bGL099mKOpyM6MfelnN-HR6aaJ-LakK0VcySHUiSY4F76uB7hSlB30ervw3PYJQzu2RC56086BVf6Pn6Bn85I3bP2V1st1uXkPr5TNhb7iVsIqqI_sKp4v6f1VsiEStTGVLfaF2');

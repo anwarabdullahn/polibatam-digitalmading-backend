@@ -12,95 +12,153 @@
     <div id="page-container" class="header-fixed-top sidebar-visible-lg-full">
       @if (Auth::user()->role == 'admin'||Auth::user()->role == 'super')
         @include('partials.asideadmin')
-      @else @include('partials.asideormawa')
-      @endif
-    </div>
-    <!-- Main Container -->
-    <div id="main-container">
-      <header class="navbar navbar-inverse navbar-fixed-top">
-        <!-- Left Header Navigation -->
-        <ul class="nav navbar-nav-custom">
-          <!-- Main Sidebar Toggle Button -->
+        <li class="sidebar-separator">
+          <i class="fa fa-ellipsis-h"></i>
+        </li>
+        @if (Auth::user()->role == 'admin'||Auth::user()->role == 'super')
           <li>
-            <a href="javascript:void(0)" onclick="App.sidebar('toggle-sidebar');this.blur();">
-              <i class="fa fa-ellipsis-v fa-fw animation-fadeInRight" id="sidebar-toggle-mini"></i>
-              <i class="fa fa-bars fa-fw animation-fadeInRight" id="sidebar-toggle-full"></i>
-            </a>
+            <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-pencil sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Pengumuman</span></a>
+            <ul>
+              <li>
+                <a href="{{url('/announcement')}}">Pengumuman</a>
+              </li>
+              <li>
+                <a href="{{url('/announcement/category')}}">Kategori</a>
+              </li>
+            </ul>
           </li>
-          <!-- END Main Sidebar Toggle Button -->
-        </ul>
-        <!-- END Left Header Navigation -->
-      </header>
-      <!-- END Header -->
+        @endif
+        <li >
+          <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-gift sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Management Event</span></a>
+          <ul>
+            <li>
+              <a href="{{url('/event')}}">Event</a>
+            </li>
+          </ul>
+        </li>
+        @if (Auth::user()->role == 'admin'||Auth::user()->role == 'super')
+          <li>
+            <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-group sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Management Akun</span></a>
+            <ul>
+              @if (Auth::user()->role == 'super')
+                <li>
+                  <a href="{{url('/ormawa')}}">Ormawa</a>
+                </li>
+              @endif
+              <li>
+                <a href="{{url('/mahasiswa')}}">Mahasiswa</a>
+              </li>
+            </ul>
+          </li>
+        @endif
+        <li>
+          <a class="active" href="{{url('/banner')}}"><i class="fa fa-newspaper-o sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Banner</span></a>
+        </li>
+        <li>
+          <a href="{{ route('logout') }}"
+          onclick="event.preventDefault();
+          document.getElementById('logout-form').submit();">
+          <i class="hi hi-off sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Logout</span>
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+          {{ csrf_field() }}
+        </form>
+      </li>
+    </ul>
+    <!-- END Sidebar Navigation -->
+  </div>
+  <!-- END Sidebar Content -->
+</div>
+<!-- END Wrapper for scrolling functionality -->
+@else @include('partials.asideormawa')
+@endif
+</div>
+<!-- Main Container -->
+<div id="main-container">
+  <header class="navbar navbar-inverse navbar-fixed-top">
+    <!-- Left Header Navigation -->
+    <ul class="nav navbar-nav-custom">
+      <!-- Main Sidebar Toggle Button -->
+      <li>
+        <a href="javascript:void(0)" onclick="App.sidebar('toggle-sidebar');this.blur();">
+          <i class="fa fa-ellipsis-v fa-fw animation-fadeInRight" id="sidebar-toggle-mini"></i>
+          <i class="fa fa-bars fa-fw animation-fadeInRight" id="sidebar-toggle-full"></i>
+        </a>
+      </li>
+      <!-- END Main Sidebar Toggle Button -->
+    </ul>
+    <!-- END Left Header Navigation -->
+  </header>
+  <!-- END Header -->
 
-      <!-- Page content -->
-      <div id="page-content">
-        <div class="content-header">
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="header-section">
-                <h1>Banner</h1>
-              </div>
-            </div>
-            <div class="col-sm-6 hidden-xs">
-              <div class="header-section">
-                <button class="btn btn-rounded btn-warning pull-right" data-toggle="modal" data-target="#tambah-banner"><i class="fa fa-plus-circle"></i>Tambah Banner</button>
-              </div>
-            </div>
+  <!-- Page content -->
+  <div id="page-content">
+    <div class="content-header">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="header-section">
+            <h1>Banner</h1>
           </div>
         </div>
-        @if (session('info'))
-          <div class="row">
-            <div class="alert alert-success display-show" class="close" data-dismiss="alert">
-              {{session('info')}}
-            </div>
+        <div class="col-sm-6 hidden-xs">
+          <div class="header-section">
+            <button class="btn btn-rounded btn-warning pull-right" data-toggle="modal" data-target="#tambah-banner"><i class="fa fa-plus-circle"></i>Tambah Banner</button>
           </div>
-        @elseif (session('gagal'))
-          <div class="row">
-            <div class="alert alert-danger display-show" class="close" data-dismiss="alert">
-              {{session('gagal')}}
-            </div>
-          </div>
-        @endif
-        <div class="block full">
-          <div class="table-responsive">
-            <table id="bannertable" class="table table-borderless table-hover">
-              <thead>
-                <tr>
-                  <th class="text-center" style="width: 50px;">NO</th>
-                  <th style="width: 300px;">Judul</th>
-                  <th class="text-center" style="width: 180px;">Penerbit</th>
-                  <th class="text-center" style="width: 140px;">Tanggal dibuat</th>
-                  <th class="text-center" style="width: 100px;">Status</th>
-                  <th class="text-center" style="width: 180px;"></th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach ($banners as $index=> $banner)
-                  <tr>
-                    <td class="text-center" style="width: 50px;"> {{ $index+1 }} </td>
-                    <td style="width: 300px;"> {{ $banner->title }} </td>
-                    <td class="text-center" style="width: 180px;">{{ $banner->user->name }}</td>
-                    <td class="text-center" style="width: 140px;"> {{ $banner->created_at }} </td>
-                    <td class="text-center" style="width: 100px;"> {{ $banner->status }} </td>
-                    <td class="text-center" style="width: 180px;"><div class="btn-group pull-right" role="group"><button type="button" class="edit-banner btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-banner" data-edit-id="{{$banner->id}}" data-edit-title="{{$banner->title}}" data-edit-user="{{$banner->user->name}}" data-edit-penerbit="{{$banner->user->id}}" data-edit-image="{{$banner->image}}"><i class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Ubah Banner"></i></button>
-                      <button type="button" class="hapus-banner btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-banner" data-hapus-id="{{ $banner->id }}" data-hapus-title="{{ $banner->title }}" data-hapus-user="{{$banner->user->name}}" data-hapus-image="{{$banner->image}}"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Hapus Banner"></i></button>
-                      <button type="button" class="view-banner btn btn-inline btn-success" data-toggle="modal" data-target="#view-banner" data-view-image="{{$banner->image}}"><i class="fa fa-eye" data-toggle="tooltip" data-placement="top" title="Lihat Banner"></i></button>
-                      @if (Auth::user()->role == 'super')
-                        <button type="button" class="status-banner btn btn-inline btn-warning" data-toggle="modal" data-target="#status-banner" data-status-id="{{$banner->id}}" data-status-title="{{ $banner->title }}" data-edit-status="{{$banner->status}}"><i class="gi gi-iphone_exchange" data-toggle="tooltip" data-placement="top" title="Status Banner"></i></button>
-                      @endif
-                    </div>
-                  </td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
-    <!-- END Page Content -->
+    @if (session('info'))
+      <div class="row">
+        <div class="alert alert-success display-show" class="close" data-dismiss="alert">
+          {{session('info')}}
+        </div>
+      </div>
+    @elseif (session('gagal'))
+      <div class="row">
+        <div class="alert alert-danger display-show" class="close" data-dismiss="alert">
+          {{session('gagal')}}
+        </div>
+      </div>
+    @endif
+    <div class="block full">
+      <div class="table-responsive">
+        <table id="bannertable" class="table table-borderless table-hover">
+          <thead>
+            <tr>
+              <th class="text-center" style="width: 50px;">NO</th>
+              <th style="width: 300px;">Judul</th>
+              <th class="text-center" style="width: 180px;">Penerbit</th>
+              <th class="text-center" style="width: 140px;">Tanggal dibuat</th>
+              <th class="text-center" style="width: 100px;">Status</th>
+              <th class="text-center" style="width: 180px;"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($banners as $index=> $banner)
+              <tr>
+                <td class="text-center" style="width: 50px;"> {{ $index+1 }} </td>
+                <td style="width: 300px;"> {{ $banner->title }} </td>
+                <td class="text-center" style="width: 180px;">{{ $banner->user->name }}</td>
+                <td class="text-center" style="width: 140px;"> {{ $banner->created_at }} </td>
+                <td class="text-center" style="width: 100px;"> {{ $banner->status }} </td>
+                <td class="text-center" style="width: 180px;"><div class="btn-group pull-right" role="group"><button type="button" class="edit-banner btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-banner" data-edit-id="{{$banner->id}}" data-edit-title="{{$banner->title}}" data-edit-user="{{$banner->user->name}}" data-edit-penerbit="{{$banner->user->id}}" data-edit-image="{{$banner->image}}"><i class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Ubah Banner"></i></button>
+                  <button type="button" class="hapus-banner btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-banner" data-hapus-id="{{ $banner->id }}" data-hapus-title="{{ $banner->title }}" data-hapus-user="{{$banner->user->name}}" data-hapus-image="{{$banner->image}}"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Hapus Banner"></i></button>
+                  <button type="button" class="view-banner btn btn-inline btn-success" data-toggle="modal" data-target="#view-banner" data-view-image="{{$banner->image}}"><i class="fa fa-eye" data-toggle="tooltip" data-placement="top" title="Lihat Banner"></i></button>
+                  @if (Auth::user()->role == 'super')
+                    <button type="button" class="status-banner btn btn-inline btn-warning" data-toggle="modal" data-target="#status-banner" data-status-id="{{$banner->id}}" data-status-title="{{ $banner->title }}" data-edit-status="{{$banner->status}}"><i class="gi gi-iphone_exchange" data-toggle="tooltip" data-placement="top" title="Status Banner"></i></button>
+                  @endif
+                </div>
+              </td>
+            </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
   </div>
-  <!-- END Main Container -->
+</div>
+<!-- END Page Content -->
+</div>
+<!-- END Main Container -->
 </div>
 <div class="modal fade" id="tambah-banner">
   <div class="modal-dialog">
@@ -289,38 +347,38 @@
           $("#input-banner-status-false").prop("checked", true);
         }
       });
-    </script>
+      </script>
 
-    <script type="text/javascript">
-    $(document).on('click' , '.status-banner', function(){
-      $('#input-status-title').html($(this).data('status-title'));
-      $('#input-status-id').val($(this).data('status-id'));
-      if ($(this).data('edit-status') == "Show") {
-        $("#input-banner-status-true").prop("checked", true);
-      }else {
-        $("#input-banner-status-false").prop("checked", true);
-      }
+      <script type="text/javascript">
+      $(document).on('click' , '.status-banner', function(){
+        $('#input-status-title').html($(this).data('status-title'));
+        $('#input-status-id').val($(this).data('status-id'));
+        if ($(this).data('edit-status') == "Show") {
+          $("#input-banner-status-true").prop("checked", true);
+        }else {
+          $("#input-banner-status-false").prop("checked", true);
+        }
 
-    });
-    </script>
+      });
+      </script>
 
-    <script type="text/javascript">
-    $(document).on('click' , '.hapus-banner', function(){
-      $('#input-hapus-id').val($(this).data('hapus-id'));
-      $('#input-hapus-image').val($(this).data('hapus-image'));
-      $('#input-hapus-user').val($(this).data('hapus-user'));
-      $('#input-hapus-title').html($(this).data('hapus-title'));
+      <script type="text/javascript">
+      $(document).on('click' , '.hapus-banner', function(){
+        $('#input-hapus-id').val($(this).data('hapus-id'));
+        $('#input-hapus-image').val($(this).data('hapus-image'));
+        $('#input-hapus-user').val($(this).data('hapus-user'));
+        $('#input-hapus-title').html($(this).data('hapus-title'));
 
-    });
-    </script>
+      });
+      </script>
 
-  <script type="text/javascript">
-  $(document).on('click' , '.view-banner', function(){
-    var urls      = window.location.href+'/images/'+$(this).data('view-image');
-    $("#something").attr('src', urls);
-  });
-</script>
+      <script type="text/javascript">
+      $(document).on('click' , '.view-banner', function(){
+        var urls      = window.location.href+'/images/'+$(this).data('view-image');
+        $("#something").attr('src', urls);
+      });
+      </script>
 
 
-</body>
-</html>
+    </body>
+    </html>

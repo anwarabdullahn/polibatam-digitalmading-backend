@@ -11,6 +11,12 @@ use Auth;
 use Storage;
 use App\Transformers\EventTransformer;
 
+use App\Firebase\Push;
+use App\Firebase\Firebase;
+
+use Image;
+use File;
+
 class EventController extends Controller
 {
   protected $events;
@@ -19,6 +25,8 @@ class EventController extends Controller
   {
     // $this->middleware('auth');
     $this->events = Event::all();
+    $this->firebase = new Firebase();
+    $this->push = new Push();
   }
 
   public function index()
@@ -38,12 +46,14 @@ class EventController extends Controller
       $event->image = $byscryptAttachmentFile;
       // dd($byscryptAttachmentFile);
     }
-    if ($event->save()) {
-      if (isset($request->image)) {
-        $request->image->storeAs('public/event/images' , $byscryptAttachmentFile );
-        return redirect()->route('event')->with('info','Event Berhasil Di Tambahkan');
-      }return redirect()->route('event')->with('gagal','Event Gagal Di Tambahkan');
-    }return redirect()->route('event')->with('gagal','Event Gagal Di Tambahkan');
+    $save = Image::make($request->file('image'))->fit(400, 400, function ($constraint) {
+      $constraint->upsize();})->save(storage_path('app/public/event/images/'.$byscryptAttachmentFile));
+      if ($save) {
+        if ($event->save()) {
+          return redirect()->route('event')->with('info','Event Berhasil Di Tambahkan');
+        }
+      }
+    return redirect()->route('event')->with('gagal','Event Gagal Di Tambahkan');
   }
 
   public function update(UpdateEventPost $request)
@@ -51,7 +61,7 @@ class EventController extends Controller
     if (Auth::user()->name == $request->edituser || Auth::user()->role =='admin'|| Auth::user()->role =='super'){
       $event = $this->events->where('id', $request->edit_id)->first();
       if ($event) {
-        $id = $event->image;
+        $forDelete = $event->image;
         if ($request->edittitle) {
           $event->title = $request->edittitle;
         }
@@ -64,28 +74,33 @@ class EventController extends Controller
           $byscryptAttachmentFile =  md5(str_random(64));
           $event->image = $byscryptAttachmentFile;
         }
-        if ($event->save()) {
-          if (isset($request->editimage)) {
-            if ($request->editimage->storeAs('public/event/images' , $byscryptAttachmentFile )) {
-              Storage::delete('public/event/images/'.$id);
-              return redirect()->route('event')->with('info', 'Event Berhasil Di Ubah');
-            }return redirect()->route('event')->with('gagal', 'Event Gagal Di Ubah');
-          }return redirect()->route('event')->with('info', 'Event Berhasil Di Ubah');
-        }return redirect()->route('event')->with('gagal', 'Event Gagal Di Ubah');
+        $save = Image::make($request->file('editimage'))->fit(400, 400, function ($constraint) {
+          $constraint->upsize();})->save(storage_path('app/public/event/images/'.$byscryptAttachmentFile));
+          if ($save) {
+            if ($event->save()) {
+              $delete = storage_path('app/public/event/images/'.$forDelete);
+              if (File::exists($delete)) {
+                File::delete($delete);
+              }return redirect()->route('event')->with('info', 'Event Berhasil Di Ubah');
+            }return redirect()->route('event')->with('info', 'Event Berhasil Di Ubah');
+          }
+        return redirect()->route('event')->with('gagal', 'Event Gagal Di Ubah');
       }return redirect()->route('event')->with('gagal', 'Event Gagal Di Ubah');
     }return redirect()->route('event')->with('gagal','Invalid Credential !!');
   }
 
   public function delete(Request $request)
   {
-    $id = $request->hapusimage;
+    $forDelete = $request->hapusimage;
     if (Auth::user()->name == $request->hapususer || Auth::user()->role =='admin'|| Auth::user()->role =='super') {
       $event = $this->events->where('id' , $request->hapus_id)->first();
       if ($event) {
         if ($event->delete()) {
-          if (Storage::delete('public/event/images/'.$id)) {
-            return redirect()->route('event')->with('info', 'Event Berhasil Di Hapus');
-          }return redirect()->route('event')->with('gagal', 'Event Gagal Di Hapus');
+          $delete = storage_path('app/public/event/images/'.$forDelete);
+          if (File::exists($delete)) {
+            File::delete($delete);
+          }
+          return redirect()->route('event')->with('info', 'Event Berhasil Di Hapus');
         }return redirect()->route('event')->with('gagal', 'Event Gagal Di Hapus');
       }return redirect()->route('event')->with('gagal', 'Event Tidak Ditemukan');
     }return redirect()->route('event')->with('gagal', 'Invalid Credential !!');
@@ -98,6 +113,27 @@ class EventController extends Controller
       if ($event) {
         $event->status = $request->editstatus;
         if ($event->save()) {
+
+          // Firebase Push
+          $payload = array();
+          $payload['Event'] = $event->title;
+          $title = $event->title;
+          $message = $event->date.' - '.$event->user->name;
+          $push_type = 'topic';
+
+          $this->push->setTitle($title);
+          $this->push->setMessage($message);
+          $this->push->setImage('');
+          $this->push->setIsBackground(FALSE);
+          $this->push->setPayload($payload);
+
+          $json = '';
+          $response = '';
+
+          $json = $this->push->getPush();
+          $response = $this->firebase->sendToTopic('global', $json);
+          // End Firebase
+
           return redirect()->route('event')->with('info','Event Berhasil Di Ubah');
         }return redirect()->route('event')->with('gagal','Event Gagal Di Ubah');
       }return redirect()->route('event')->with('gagal','Event Tidak Ditemukan');

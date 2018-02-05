@@ -10,101 +10,156 @@
       </div>
     </div>
     <div id="page-container" class="header-fixed-top sidebar-visible-lg-full">
+      @include('partials.asideadmin')
+      <li class="sidebar-separator">
+        <i class="fa fa-ellipsis-h"></i>
+      </li>
       @if (Auth::user()->role == 'admin'||Auth::user()->role == 'super')
-        @include('partials.asideadmin')
-      @else @include('partials.asideormawa')
-      @endif
-    </div>
-    <!-- Main Container -->
-    <div id="main-container">
-      <header class="navbar navbar-inverse navbar-fixed-top">
-        <!-- Left Header Navigation -->
-        <ul class="nav navbar-nav-custom">
-          <!-- Main Sidebar Toggle Button -->
+        <li class="active">
+          <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-pencil sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Pengumuman</span></a>
+          <ul>
+            <li>
+              <a class="active" href="{{url('/announcement')}}">Pengumuman</a>
+            </li>
+            <li>
+              <a href="{{url('/announcement/category')}}">Kategori</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+        @endif
+        <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-gift sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Management Event</span></a>
+        <ul>
           <li>
-            <a href="javascript:void(0)" onclick="App.sidebar('toggle-sidebar');this.blur();">
-              <i class="fa fa-ellipsis-v fa-fw animation-fadeInRight" id="sidebar-toggle-mini"></i>
-              <i class="fa fa-bars fa-fw animation-fadeInRight" id="sidebar-toggle-full"></i>
-            </a>
+            <a href="{{url('/event')}}">Event</a>
           </li>
-          <!-- END Main Sidebar Toggle Button -->
         </ul>
-        <!-- END Left Header Navigation -->
-      </header>
-      <!-- END Header -->
+      </li>
+      @if (Auth::user()->role == 'admin'||Auth::user()->role == 'super')
+      <li>
+        <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-group sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Management Akun</span></a>
+        <ul>
+          @if (Auth::user()->role == 'super')
+            <li>
+              <a href="{{url('/ormawa')}}">Ormawa</a>
+            </li>
+          @endif
+          <li>
+            <a href="{{url('/mahasiswa')}}">Mahasiswa</a>
+          </li>
+        </ul>
+      </li>
+      @endif
+      <li>
+        <a href="{{url('/banner')}}"><i class="fa fa-newspaper-o sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Banner</span></a>
+      </li>
+      <li>
+        <a href="{{ route('logout') }}"
+        onclick="event.preventDefault();
+        document.getElementById('logout-form').submit();">
+        <i class="hi hi-off sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Logout</span>
+      </a>
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        {{ csrf_field() }}
+      </form>
+    </li>
+  </ul>
+  <!-- END Sidebar Navigation -->
+</div>
+<!-- END Sidebar Content -->
+</div>
+<!-- END Wrapper for scrolling functionality -->
+</div>
+<!-- Main Container -->
+<div id="main-container">
+  <header class="navbar navbar-inverse navbar-fixed-top">
+    <!-- Left Header Navigation -->
+    <ul class="nav navbar-nav-custom">
+      <!-- Main Sidebar Toggle Button -->
+      <li>
+        <a href="javascript:void(0)" onclick="App.sidebar('toggle-sidebar');this.blur();">
+          <i class="fa fa-ellipsis-v fa-fw animation-fadeInRight" id="sidebar-toggle-mini"></i>
+          <i class="fa fa-bars fa-fw animation-fadeInRight" id="sidebar-toggle-full"></i>
+        </a>
+      </li>
+      <!-- END Main Sidebar Toggle Button -->
+    </ul>
+    <!-- END Left Header Navigation -->
+  </header>
+  <!-- END Header -->
 
-      <!-- Page content -->
-      <div id="page-content">
-        <div class="content-header">
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="header-section">
-                <h1>Pengumuman</h1>
-              </div>
-            </div>
-            <div class="col-sm-6 hidden-xs">
-              <div class="header-section">
-                <button class="btn btn-rounded btn-warning pull-right" data-toggle="modal" data-target="#tambah-announcement"><i class="fa fa-plus-circle"></i> Tambah Pengumuman</button>
-              </div>
-            </div>
+  <!-- Page content -->
+  <div id="page-content">
+    <div class="content-header">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="header-section">
+            <h1>Pengumuman</h1>
           </div>
         </div>
-        @if (session('info'))
-          <div class="row">
-            <div class="alert alert-success display-show" class="close" data-dismiss="alert">
-              {{session('info')}}
-            </div>
+        <div class="col-sm-6 hidden-xs">
+          <div class="header-section">
+            <button class="btn btn-rounded btn-warning pull-right" data-toggle="modal" data-target="#tambah-announcement"><i class="fa fa-plus-circle"></i> Tambah Pengumuman</button>
           </div>
-        @elseif (session('gagal'))
-          <div class="row">
-            <div class="alert alert-danger display-show" class="close" data-dismiss="alert">
-              {{session('gagal')}}
-            </div>
-          </div>
-        @endif
-        <div class="block full">
-          <div class="table-responsive">
-            <table id="announcementtable" class="table table-borderless table-hover">
-              <thead>
-                <tr>
-                  <th class="text-center" style="width: 20px;">NO</th>
-                  <th style="width: 280px">Judul</th>
-                  <th class="text-center" style="width: 100px;">Penerbit</th>
-                  <th class="text-center" style="width: 100px;">Kategori</th>
-                  <th class="text-center" style="width: 100px;">Status</th>
-                  <th class="text-center" style="width: 150px;">Tanggal diterbitkan</th>
-                  <th class="text-center" style="width: 200px;"></th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach ($announcements as $index=> $announcement)
-                  <tr>
-                    <td class="text-center" style="width: 20px;"> {{ $index+1 }} </td>
-                    <td style="width: 280px"> {{ $announcement->title }} </td>
-                    <td class="text-center" style="width: 100px;"> {{ $announcement->user->name }} </td>
-                    <td class="text-center" style="width: 100px;"> {{ $announcement->category->name }} </td>
-                    <td class="text-center" style="width: 100px;"> {{ $announcement->status }} </td>
-                    <td class="text-center" style="width: 150px;"> {{ $announcement->created_at  }} </td>
-                    <td class="text-center" style="width: 200px;"><div class="btn-group pull-right" role="group">
-                      <button type="button" class="edit-announcement btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-announcement" data-edit-id="{{$announcement->id}}" data-edit-title="{{$announcement->title}}" data-edit-description="{{$announcement->description}}" data-edit-category="{{$announcement->category->id}}" data-edit-image="{{$announcement->image}}" data-edit-status="{{$announcement->status}}" data-edit-penerbit="{{$announcement->user->name}}" ><i class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Ubah Pengumuman"></i></button>
-                      <button type="button" class="hapus-announcement btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-announcement" data-hapus-id="{{$announcement->id}}" data-hapus-title="{{$announcement->title}}" data-hapus-image="{{$announcement->image}}" data-hapus-penerbit="{{$announcement->user->name}}"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Hapus Pengumuman"></i></button>
-                      <button type="button" class="view-announcement btn btn-inline btn-success" data-toggle="modal" data-target="#view-announcement" data-view-id="{{$announcement->id}}"  data-view-image="{{$announcement->image}}" data-view-admin="{{ $announcement->user->name }}" data-view-title="{{ $announcement->title }}" data-view-created-at="{{ $announcement->created_at}}" data-view-description="{{ $announcement->description }}" data-view-file="{{$announcement->file}}"><i class="fa fa-eye" data-toggle="tooltip" data-placement="top" title="Lihat Pengumuman"></i></button>
-                      @if (Auth::user()->role == 'super')
-                        <button type="button" class="status-announcement btn btn-inline btn-warning" data-toggle="modal" data-target="#status-announcement" data-status-id="{{$announcement->id}}" data-status-title="{{ $announcement->title }}" data-edit-status="{{$announcement->status}}"><i class="gi gi-iphone_exchange" data-toggle="tooltip" data-placement="top" title="Status Pengumuman"></i></button>
-                      @endif
-                    </div>
-                  </td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
         </div>
       </div>
-
     </div>
-    <!-- END Page Content -->
+    @if (session('info'))
+      <div class="row">
+        <div class="alert alert-success display-show" class="close" data-dismiss="alert">
+          {{session('info')}}
+        </div>
+      </div>
+    @elseif (session('gagal'))
+      <div class="row">
+        <div class="alert alert-danger display-show" class="close" data-dismiss="alert">
+          {{session('gagal')}}
+        </div>
+      </div>
+    @endif
+    <div class="block full">
+      <div class="table-responsive">
+        <table id="announcementtable" class="table table-borderless table-hover">
+          <thead>
+            <tr>
+              <th class="text-center" style="width: 20px;">NO</th>
+              <th style="width: 280px">Judul</th>
+              <th class="text-center" style="width: 100px;">Penerbit</th>
+              <th class="text-center" style="width: 100px;">Kategori</th>
+              <th class="text-center" style="width: 100px;">Status</th>
+              <th class="text-center" style="width: 150px;">Tanggal diterbitkan</th>
+              <th class="text-center" style="width: 200px;"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($announcements as $index=> $announcement)
+              <tr>
+                <td class="text-center" style="width: 20px;"> {{ $index+1 }} </td>
+                <td style="width: 280px"> {{ $announcement->title }} </td>
+                <td class="text-center" style="width: 100px;"> {{ $announcement->user->name }} </td>
+                <td class="text-center" style="width: 100px;"> {{ $announcement->category->name }} </td>
+                <td class="text-center" style="width: 100px;"> {{ $announcement->status }} </td>
+                <td class="text-center" style="width: 150px;"> {{ $announcement->created_at  }} </td>
+                <td class="text-center" style="width: 200px;"><div class="btn-group pull-right" role="group">
+                  <button type="button" class="edit-announcement btn btn-inline btn-primary" data-toggle="modal" data-target="#edit-announcement" data-edit-id="{{$announcement->id}}" data-edit-title="{{$announcement->title}}" data-edit-description="{{$announcement->description}}" data-edit-category="{{$announcement->category->id}}" data-edit-image="{{$announcement->image}}" data-edit-status="{{$announcement->status}}" data-edit-penerbit="{{$announcement->user->name}}" ><i class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Ubah Pengumuman"></i></button>
+                  <button type="button" class="hapus-announcement btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-announcement" data-hapus-id="{{$announcement->id}}" data-hapus-title="{{$announcement->title}}" data-hapus-image="{{$announcement->image}}" data-hapus-penerbit="{{$announcement->user->name}}"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Hapus Pengumuman"></i></button>
+                  <button type="button" class="view-announcement btn btn-inline btn-success" data-toggle="modal" data-target="#view-announcement" data-view-id="{{$announcement->id}}"  data-view-image="{{$announcement->image}}" data-view-admin="{{ $announcement->user->name }}" data-view-title="{{ $announcement->title }}" data-view-created-at="{{ $announcement->created_at}}" data-view-description="{{ $announcement->description }}" data-view-file="{{$announcement->file}}"><i class="fa fa-eye" data-toggle="tooltip" data-placement="top" title="Lihat Pengumuman"></i></button>
+                  @if (Auth::user()->role == 'super')
+                    <button type="button" class="status-announcement btn btn-inline btn-warning" data-toggle="modal" data-target="#status-announcement" data-status-id="{{$announcement->id}}" data-status-title="{{ $announcement->title }}" data-edit-status="{{$announcement->status}}"><i class="gi gi-iphone_exchange" data-toggle="tooltip" data-placement="top" title="Status Pengumuman"></i></button>
+                  @endif
+                </div>
+              </td>
+            </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
   </div>
-  <!-- END Main Container -->
+
+</div>
+<!-- END Page Content -->
+</div>
+<!-- END Main Container -->
 </div>
 <!-- END Page Container -->
 <div class="modal fade" id="tambah-announcement">

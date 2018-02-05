@@ -15,6 +15,7 @@ class AnnouncementTransformer extends TransformerAbstract
       'description'  => $announcement->description,
       'file'         => url('file/'.$announcement->file),
       'category'     => $announcement->category->name,
+      'created_at'     => $announcement->created_at,
       'author'       => [
         'name'  => $announcement->user->name,
         'avatar' => url('profile/'.$announcement->user->avatar),
