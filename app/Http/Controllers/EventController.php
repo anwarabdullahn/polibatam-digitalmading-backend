@@ -156,9 +156,10 @@ class EventController extends Controller
       if ($authMahasiswa) {
         if ($request->date) {
           $event = Event::where('date' ,$request->date)->get()->sortByDesc('created_at');
+          // dd($event);
           if ($event) {
             $response = fractal()
-            ->item($event)
+            ->collection($event)
             ->transformWith(new EventTransformer)
             ->toArray();
             return response()->json(array('result' => $response['data']), 201);

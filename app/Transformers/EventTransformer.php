@@ -14,19 +14,6 @@ class EventTransformer extends TransformerAbstract
      */
     public function transform(Event $event)
     {
-        // $author = collect();
-        // foreach ($events as $event) {
-        //   $u = collect([
-        //     'name'  => $event->user->name,
-        //     'avatar' => $event->user->avatar,
-        //   ]);
-        //   $author->push($u);
-        //   break;
-        //  //  $author = array (
-        //  //   'name'  => $announcement->user->name,
-        //  //   'avatar' => $announcement->user->avatar,
-        //  // );
-        // }
         return [
           'title'         => $event->title,
           'date'          => $event->date,
