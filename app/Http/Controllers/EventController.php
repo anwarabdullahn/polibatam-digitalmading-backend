@@ -47,12 +47,13 @@ class EventController extends Controller
       // dd($byscryptAttachmentFile);
     }
     $save = Image::make($request->file('image'))->fit(400, 400, function ($constraint) {
-      $constraint->upsize();})->save(storage_path('app/public/event/images/'.$byscryptAttachmentFile));
-      if ($save) {
-        if ($event->save()) {
-          return redirect()->route('event')->with('info','Event Berhasil Di Tambahkan');
-        }
+      $constraint->upsize();
+    })->save(storage_path('app/public/event/images/'.$byscryptAttachmentFile));
+    if ($save) {
+      if ($event->save()) {
+        return redirect()->route('event')->with('info','Event Berhasil Di Tambahkan');
       }
+    }
     return redirect()->route('event')->with('gagal','Event Gagal Di Tambahkan');
   }
 
@@ -72,21 +73,22 @@ class EventController extends Controller
         $event->id_user = $request->editpenerbit;
         if (isset($request->editimage)) {
           $byscryptAttachmentFile =  md5(str_random(64));
-          $event->image = $byscryptAttachmentFile;
-        }
-        $save = Image::make($request->file('editimage'))->fit(400, 400, function ($constraint) {
-          $constraint->upsize();})->save(storage_path('app/public/event/images/'.$byscryptAttachmentFile));
+          $save = Image::make($request->file('editimage'))->fit(400, 400, function ($constraint) {
+            $constraint->upsize();
+          })->save(storage_path('app/public/event/images/'.$byscryptAttachmentFile));
           if ($save) {
-            if ($event->save()) {
-              $delete = storage_path('app/public/event/images/'.$forDelete);
-              if (File::exists($delete)) {
-                File::delete($delete);
-              }return redirect()->route('event')->with('info', 'Event Berhasil Di Ubah');
-            }return redirect()->route('event')->with('info', 'Event Berhasil Di Ubah');
+            $event->image = $byscryptAttachmentFile;
+            $delete = storage_path('app/public/event/images/'.$forDelete);
+            if (File::exists($delete)) {
+              File::delete($delete);
+            }
           }
-        return redirect()->route('event')->with('gagal', 'Event Gagal Di Ubah');
-      }return redirect()->route('event')->with('gagal', 'Event Gagal Di Ubah');
-    }return redirect()->route('event')->with('gagal','Invalid Credential !!');
+        }
+        if ($event->save()) {
+          return redirect()->route('event')->with('info', 'Event Berhasil Di Ubah');
+        }return redirect()->route('event')->with('gagal', 'Event Gagal Di Ubah');
+      }return redirect()->route('event')->with('gagal','Invalid Credential !!');
+    }
   }
 
   public function delete(Request $request)
