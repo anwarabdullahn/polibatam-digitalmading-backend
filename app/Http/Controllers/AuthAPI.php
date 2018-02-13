@@ -249,8 +249,8 @@ class AuthAPI extends Controller
   }
 
   public function getContent($id) {
-    $path = Storage::get('public/file/'.$id);
-    $mimetype = Storage::mimeType('public/file/'.$id);
+    $path = Storage::get('public/files/'.$id);
+    $mimetype = Storage::mimeType('public/files/'.$id);
     return response($path, 200)->header('Content-Type', $mimetype);
   }
 

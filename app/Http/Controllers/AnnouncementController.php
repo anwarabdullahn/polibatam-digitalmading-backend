@@ -66,7 +66,7 @@ class AnnouncementController extends Controller
       if ($save) {
         if ($announcement->save()) {
           if (isset($request->file)) {
-            $request->file->storeAs('public/file' , $byscryptAttachmentFile );
+            $request->file->storeAs('public/files' , $byscryptAttachmentFile );
           }return redirect()->route('announcement')->with('info','Announcement Berhasil Di Tambahkan');
         }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Tambahkan');
       }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Tambahkan');
@@ -107,8 +107,8 @@ class AnnouncementController extends Controller
         }
         if ($announcement->save()) {
           if (isset($request->editfile)) {
-            if ($request->editfile->storeAs('public/file' , $byscryptAttachmentFile)) {
-              Storage::delete('public/file/'.$file);
+            if ($request->editfile->storeAs('public/files' , $byscryptAttachmentFile)) {
+              Storage::delete('public/files/'.$file);
             }else {
               return redirect()->route('announcement')->with('info', 'Announcement Berhasil Di Ubah');
             }
@@ -126,7 +126,7 @@ class AnnouncementController extends Controller
       $announcement = $this->announcements->where('id',$request->hapus_id)->first();
       if ($announcement->file) {
         $file = $announcement->file;
-        $delete = storage_path('app/public/file/'.$file);
+        $delete = storage_path('app/public/files/'.$file);
         // dd($delete);
         if (File::exists($delete)) {
           File::delete($delete);
