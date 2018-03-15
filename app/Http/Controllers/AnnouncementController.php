@@ -66,7 +66,8 @@ class AnnouncementController extends Controller
       if ($save) {
         if ($announcement->save()) {
           if (isset($request->file)) {
-            $request->file->storeAs('public/files' , $byscryptAttachmentFile );
+            $request->file('file')->storeAs('public/files', $byscryptAttachmentFile);
+            // $request->file('file')->storeAs('public/files' , $byscryptAttachmentFile );
           }return redirect()->route('announcement')->with('info','Announcement Berhasil Di Tambahkan');
         }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Tambahkan');
       }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Tambahkan');
@@ -107,7 +108,8 @@ class AnnouncementController extends Controller
         }
         if ($announcement->save()) {
           if (isset($request->editfile)) {
-            if ($request->editfile->storeAs('public/files' , $byscryptAttachmentFile)) {
+            // $request->file('editfile')->storeAs('public/files', $byscryptAttachmentFile);
+            if ($request->file('editfile')->storeAs('public/files', $byscryptAttachmentFile)) {
               Storage::delete('public/files/'.$file);
             }else {
               return redirect()->route('announcement')->with('info', 'Announcement Berhasil Di Ubah');
