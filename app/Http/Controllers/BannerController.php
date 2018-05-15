@@ -16,8 +16,6 @@ use Storage;
 
 class BannerController extends Controller
 {
-  protected $banners;
-
   public function __construct()
   {
     $this->banners = Banner::all();

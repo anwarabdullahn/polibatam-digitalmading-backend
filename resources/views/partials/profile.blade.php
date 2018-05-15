@@ -1,5 +1,3 @@
-
-
 <div class="col-md-5 col-lg-4">
   <div class="widget">
     <div class="widget-content border-bottom text-dark">

@@ -13,8 +13,6 @@ use App\Mail\MahasiswaEmailVerification;
 
 class MahasiswaController extends Controller
 {
-  protected $mahasiswas;
-
   public function __construct()
   {
     $this->mahasiswas = Mahasiswa::all();

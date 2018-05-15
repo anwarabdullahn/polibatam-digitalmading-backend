@@ -21,10 +21,6 @@ use App\Firebase\Firebase;
 
 class AnnouncementCategoriesController extends Controller
 {
-  protected $categories;
-  protected $firebase;
-  protected $push;
-
   public function __construct()
   {
     $this->categories = AnnouncementCategories::all();

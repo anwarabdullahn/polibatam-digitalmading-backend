@@ -18,8 +18,6 @@ use Storage;
 
 class UserController extends Controller
 {
-  protected $users;
-
   public function __construct()
   {
     $this->users = User::where('role' , 'ormawa')->get();

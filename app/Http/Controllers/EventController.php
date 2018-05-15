@@ -19,8 +19,6 @@ use File;
 
 class EventController extends Controller
 {
-  protected $events;
-
   public function __construct()
   {
     // $this->middleware('auth');

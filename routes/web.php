@@ -82,6 +82,15 @@ Route::group(['middleware' => 'auth'], function(){
     // Route::post('/update', 'BannerController@update');
 
   });
+
+  Route::prefix('kuesioner')->group(function() {
+    Route::get('', 'KuesionerController@index')->name('kuesioner');
+    Route::post('', 'KuesionerController@updatePertanyaan');
+    // Route::post('/delete', 'BannerController@delete');
+    // Route::post('/status', 'BannerController@status');
+
+  });
+
 });
 
 Route::get('register', function(){

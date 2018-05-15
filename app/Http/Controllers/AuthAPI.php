@@ -80,8 +80,7 @@ class AuthAPI extends Controller
 
   public function login(Request $request)
   {
-    $mahasiswa = Mahasiswa::where('email', $request->email)
-    ->first();
+    $mahasiswa = Mahasiswa::where('email', $request->email)->first();
     // dd($mahasiswa);
     if($mahasiswa){
       if(Hash::check($request->password, $mahasiswa->password))

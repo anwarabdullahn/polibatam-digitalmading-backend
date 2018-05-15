@@ -52,7 +52,12 @@
       @endif
       <li>
         <a href="{{url('/banner')}}"><i class="fa fa-newspaper-o sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Banner</span></a>
+      </li>      
+      @if (Auth::user()->role == 'super')
+      <li>
+        <a href="{{url('/kuesioner')}}"><i class="fa fa-tasks sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Kuesioner</span></a>
       </li>
+      @endif
       <li>
         <a href="{{ route('logout') }}"
         onclick="event.preventDefault();

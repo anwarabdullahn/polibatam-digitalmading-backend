@@ -23,7 +23,7 @@ class CreateEventsTable extends Migration
           $table->boolean('status')->default(0);
           $table->timestamps();
 
-          $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+          $table->foreign('id_user')->references('id')->on('users')->onUpdate('cascade');
         });
     }
 

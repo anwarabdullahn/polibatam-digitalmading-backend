@@ -46,5 +46,9 @@ Route::prefix('v1')->group(function () {
       Route::get('' , 'EventController@getAPI');
     });
 
+    Route::prefix('kuesioner')->group(function(){
+      Route::post('' , 'KuesionerController@submitKuesioner');
+    });
+
   });
 });

@@ -24,8 +24,8 @@ class CreateAnnouncementsTable extends Migration
       $table->string('file')->nullable();
       $table->timestamps();
 
-      $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-      $table->foreign('id_category')->references('id')->on('announcement_categories')->onDelete('cascade')->onUpdate('cascade');
+      $table->foreign('id_user')->references('id')->on('users')->onUpdate('cascade');
+      $table->foreign('id_category')->references('id')->on('announcement_categories')->onUpdate('cascade');
     });
   }
 

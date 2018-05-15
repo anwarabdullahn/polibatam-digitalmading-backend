@@ -11,6 +11,7 @@ class MahasiswaTransformer extends TransformerAbstract
   public function transform(Mahasiswa $mahasiswa)
   {
     return [
+      'id'          => $mahasiswa->id,
       'name'        => $mahasiswa->name,
       'nim'         => $mahasiswa->nim,
       'email'       => $mahasiswa->email,
