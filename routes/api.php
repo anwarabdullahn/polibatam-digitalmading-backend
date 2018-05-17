@@ -29,6 +29,9 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::get('profile' , 'AuthAPI@profile');
+
+    Route::get('pertanyaan' , 'KuesionerController@getKuesioner');
+
     Route::post('profile/picture' , 'AuthAPI@profileUpdate');
     Route::post('profile/update' , 'AuthAPI@dataUpdate');
 
@@ -49,6 +52,10 @@ Route::prefix('v1')->group(function () {
     Route::prefix('kuesioner')->group(function(){
       Route::post('' , 'KuesionerController@submitKuesioner');
     });
+
+    // Route::prefix('pertanyaan')->group(function(){
+    //   Route::post('' , 'KuesionerController@getKuesioner');
+    // });
 
   });
 });

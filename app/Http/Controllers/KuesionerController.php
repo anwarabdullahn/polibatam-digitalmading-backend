@@ -9,6 +9,7 @@ use App\Kuesioner;
 use App\Pertanyaan;
 use App\AuthMahasiswa;
 use App\Http\Requests\Update\UpdateKuesionerPost;
+use App\Transformers\PertanyaanTransformer;
 
 class KuesionerController extends Controller
 {
@@ -97,6 +98,22 @@ class KuesionerController extends Controller
             }return response()->json([
                 'message' => 'Gagal Submit Kuesioner !'
             ], 400);
+        }
+        $messageResponse['message'] = 'Invalid Credentials';
+        return response($messageResponse, 401);
+    }
+
+    public function getKuesioner(Request $request)
+    {
+        $authorization = $request->header('Authorization');
+        $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
+        if ($authMahasiswa) {
+            $response = fractal()
+            ->item($this->pertanyaan)
+            ->transformWith(new PertanyaanTransformer)
+            ->toArray();
+
+            return response()->json(array('result' => $response['data']), 200);
         }
         $messageResponse['message'] = 'Invalid Credentials';
         return response($messageResponse, 401);
