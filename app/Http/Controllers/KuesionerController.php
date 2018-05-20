@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use Validator;
+use Mail;
 use App\Kuesioner;
 use App\Pertanyaan;
 use App\AuthMahasiswa;
 use App\Http\Requests\Update\UpdateKuesionerPost;
 use App\Transformers\PertanyaanTransformer;
+use App\Mail\MahasiswaDoReport;
 
 class KuesionerController extends Controller
 {
@@ -138,5 +140,47 @@ class KuesionerController extends Controller
                 return redirect()->route('kuesioner')->with('info','Kuesioner Berhasil dihapus !!');
             }return redirect()->route('kuesioner')->with('gagal','Kuesioner Gagal dihapus !!');
         }return redirect()->route('home')->with('gagal','Invalid Credential !!');
+    }
+
+    public function doReport(Request $request)
+    {
+        $authorization = $request->header('Authorization');
+        $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
+        if ($authMahasiswa) {
+            $gm = "anwarabdullahn28@gmail.com";
+
+            $messsages = array(
+                'name.required'     => 'Credential Dibutuhkan !!',
+                'email.required'    => 'Credential Dibutuhkan !!',
+                'report.required'   => 'Report Harus diisi.',
+            );
+
+            $validator = Validator::make($request->all(), [
+                'name'      => 'required',
+                'email'     => 'required',
+                'report'    => 'required',
+            ], $messsages);
+
+            if ($validator->fails()) {
+                $errors = $validator->errors();
+                return response()->json([
+                'message' => $errors->first()
+                ], 406);
+            }
+
+            $data = array(
+                'who'               => $request->name,
+                'email'             => $request->email,
+                'what'              => $request->report,
+              );
+
+              Mail::to($gm)->send(new MahasiswaDoReport($data));
+                return response()->json([
+                    'message' => 'Terima Kasih, Report Berhasil dikirim !'
+                  ], 201);
+
+        }
+        $messageResponse['message'] = 'Invalid Credentials';
+        return response($messageResponse, 401);
     }
 }

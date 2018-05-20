@@ -51,6 +51,7 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('kuesioner')->group(function(){
       Route::post('' , 'KuesionerController@submitKuesioner');
+      Route::post('/report' , 'KuesionerController@doReport');
     });
 
     // Route::prefix('pertanyaan')->group(function(){
