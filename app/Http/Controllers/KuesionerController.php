@@ -53,9 +53,19 @@ class KuesionerController extends Controller
             $kuesioner = Kuesioner::where('id_mahasiswa',  $id)->count();
             // dd($authMahasiswa->id);
             if($kuesioner > 0){
-                return response()->json([
-                    'message' => 'Anda Sudah Mengisi Kuesioner !'
-                ], 200);
+                $kuesioner->jawaban1 = $request->jawaban1;
+                $kuesioner->jawaban2 = $request->jawaban2;
+                $kuesioner->jawaban3 = $request->jawaban3;
+                $kuesioner->jawaban4 = $request->jawaban4;
+                $kuesioner->id_mahasiswa = $id;
+
+                if($kuesioner->save){
+                    return response()->json([
+                        'message' => 'Kuesioner Berhasil diubah !'
+                    ], 200);
+                }return response()->json([
+                    'message' => 'Kuesioner Gagal diubag !'
+                ], 400);
             }
 
             $messsages = array(
