@@ -148,7 +148,7 @@
                 <td class="text-center" style="width: 100px;"> {{ $kuesioner->jawaban4 }} </td>
                 <td class="text-center" style="width: 150px;"> {{ $kuesioner->created_at  }} </td>
                 <td class="text-center" style="width: 50px;"><div class="btn-group pull-right" role="group">
-                  <button type="button" class="hapus-announcement btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-announcement"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Hapus Pengumuman"></i> Hapus</button>
+                  <button type="button" class="hapus-kuesioner btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-kuesioner" data-hapus-name=" {{ $kuesioner->mahasiswa->name }} " data-hapus-id=" {{ $kuesioner->id }} "><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Hapus Pengumuman"></i> Hapus</button>
                 </div>
               </td>
             </tr>
@@ -204,12 +204,41 @@
     </div>
   </div>
 </div>
-@include('partials.footer')
 
+<div class="modal fade" id="hapus-kuesioner">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-body">
+          <form class="fieldset-form" action="{{ url('/kuesioner/delete')}}" method="post">
+            {{ csrf_field() }}
+            <fieldset>
+              <legend class="text-center" style="color: #33577A; font-size: 21px !important;">HAPUS KUESIONER</legend>
+              <div class="col-md-12">
+                <span>Apakah Anda Ingin Menghapus "<span id="input-hapus-name"></span>"</span>
+              </div>
+              <br /><br />
+              <input type="hidden" id="input-hapus-id" name="hapus_id" value="">
+              <button type="button" class="btn btn-inline btn-primary pull-right" data-dismiss="modal">Batal</button>
+              <button type="submit" class="btn btn-inline btn-secondary pull-right" >HAPUS</button>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+@include('partials.footer')
 
 @if (count($errors->update) > 0)
   <script type="text/javascript"> $('#lihat-kuesioner').modal('show');</script>
 @endif
 
+<script type="text/javascript">
+  $(document).on('click' , '.hapus-kuesioner', function(){
+    $('#input-hapus-name').html($(this).data('hapus-name'));
+    $('#input-hapus-id').val($(this).data('hapus-id'));
+  });
+  </script>
 </body>
 </html>

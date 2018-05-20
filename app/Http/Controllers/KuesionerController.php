@@ -55,7 +55,7 @@ class KuesionerController extends Controller
             if($kuesioner > 0){
                 return response()->json([
                     'message' => 'Anda Sudah Mengisi Kuesioner !'
-                ], 400);
+                ], 200);
             }
 
             $messsages = array(
@@ -117,5 +117,15 @@ class KuesionerController extends Controller
         }
         $messageResponse['message'] = 'Invalid Credentials';
         return response($messageResponse, 401);
+    }
+
+    public function delete(Request $request)
+    {
+        if (Auth::user()->role =='super') {
+            $kuesioner = Kuesioner::where('id',$request->hapus_id)->first();
+            if($kuesioner->delete()){
+                return redirect()->route('kuesioner')->with('info','Kuesioner Berhasil dihapus !!');
+            }return redirect()->route('kuesioner')->with('gagal','Kuesioner Gagal dihapus !!');
+        }return redirect()->route('home')->with('gagal','Invalid Credential !!');
     }
 }

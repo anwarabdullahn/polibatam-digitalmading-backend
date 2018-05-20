@@ -86,7 +86,7 @@ Route::group(['middleware' => 'auth'], function(){
   Route::prefix('kuesioner')->group(function() {
     Route::get('', 'KuesionerController@index')->name('kuesioner');
     Route::post('', 'KuesionerController@updatePertanyaan');
-    // Route::post('/delete', 'BannerController@delete');
+    Route::post('/delete', 'KuesionerController@delete');
     // Route::post('/status', 'BannerController@status');
 
   });
