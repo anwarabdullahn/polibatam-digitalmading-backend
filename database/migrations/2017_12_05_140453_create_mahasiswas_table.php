@@ -19,6 +19,7 @@ class CreateMahasiswasTable extends Migration
           $table->string('name');
           $table->string('avatar')->default('avatar.jpg');
           $table->string('email')->unique();
+          $table->string('jurusan')->nullable();
           $table->string('password');
           $table->string('verification_code')->nullable();
           $table->enum('verified', ['true', 'false'])->default('false');

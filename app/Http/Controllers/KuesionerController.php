@@ -147,7 +147,7 @@ class KuesionerController extends Controller
         $authorization = $request->header('Authorization');
         $authMahasiswa = AuthMahasiswa::where('api_token' , $authorization)->first();
         if ($authMahasiswa) {
-            $gm = "anwarabdullahn28@gmail.com";
+            $gm = "aannwaran@gmail.com";
 
             $messsages = array(
                 'name.required'     => 'Credential Dibutuhkan !!',

@@ -6,7 +6,7 @@ namespace App\Firebase;
  * @author Ravi Tamada
  * @link URL Tutorial link
  */
- 
+
 class Firebase {
 
     // sending push message to single user by firebase reg id

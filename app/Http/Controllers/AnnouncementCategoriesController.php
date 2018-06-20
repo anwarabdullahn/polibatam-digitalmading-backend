@@ -115,6 +115,7 @@ class AnnouncementCategoriesController extends Controller
       $path = Storage::get('public/uploads/backgrounds/'.$id);
       $mimetype = Storage::mimeType('public/uploads/backgrounds/'.$id);
       return response($path, 200)->header('Content-Type', $mimetype);
-    }
+
+  }
 
   }

@@ -51,7 +51,8 @@ class AnnouncementController extends Controller
         $announcement->image = $byscryptAttachmentImage;
       }
       if (isset($request->file)) {
-        $byscryptAttachmentFile =  md5(str_random(24));
+        $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $request->editfile->getClientOriginalExtension();
+        // $byscryptAttachmentFile =  md5(str_random(24));
         $announcement->file = $byscryptAttachmentFile;
       }
       $save = Image::make($request->file('image'))->fit(400, 400, function ($constraint) {
@@ -97,7 +98,8 @@ class AnnouncementController extends Controller
           }
         }
         if (isset($request->editfile)) {
-          $byscryptAttachmentFile =  md5(str_random(64));
+          $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $request->editfile->getClientOriginalExtension();
+          // $byscryptAttachmentFile =  md5(str_random(64));
           $announcement->file = $byscryptAttachmentFile;
         }
         if ($announcement->save()) {
