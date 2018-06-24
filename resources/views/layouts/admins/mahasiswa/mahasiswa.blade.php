@@ -102,11 +102,13 @@
             <h1>Mahasiswa</h1>
           </div>
         </div>
+        {{-- @if (Auth::user()->role == 'admin'||Auth::user()->role == 'super')
         <div class="col-sm-6 hidden-xs">
           <div class="header-section">
             <button class="btn btn-rounded btn-warning pull-right" data-toggle="modal" data-target="#tambah-mahasiswa"><i class="fa fa-plus-circle"></i> Tambah Mahasiswa</button>
           </div>
         </div>
+        @endif --}}
       </div>
     </div>
     @if (session('info'))
@@ -169,7 +171,7 @@
           <form class="fieldset-form" action="{{ url('/mahasiswa')}}" method="post" enctype="multipart/form-data">
             {{ csrf_field() }}
             <fieldset>
-              <legend class="text-center" style="color: #33577A; font-size: 21px !important;">TAMBAH PENGUMUMAN</legend>
+              <legend class="text-center" style="color: #33577A; font-size: 21px !important;">TAMBAH MAHASISWA</legend>
               @foreach ($errors->add->all() as $error)
                 <div class="alert alert-danger display-show">
                   {{ $error }}
