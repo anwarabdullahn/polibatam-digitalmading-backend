@@ -23,6 +23,11 @@ $(function() {
   } );
 });
 $(function() {
+  $('#kuesionertable').DataTable({
+    "order": [[ 1, "desc" ]]
+  } );
+});
+$(function() {
   $('#bannertable').DataTable({
     "order": [[ 4, "asc" ]]
   } );

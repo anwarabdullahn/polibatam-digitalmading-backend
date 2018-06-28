@@ -124,7 +124,7 @@
     @endif
     <div class="block full">
       <div class="table-responsive">
-        <table id="mahasiswatable" class="table table-borderless table-hover">
+        <table id="kuesionertable" class="table table-borderless table-hover">
           <thead>
             <tr>
               <th class="text-center" style="width: 20px;">NO</th>
@@ -133,7 +133,7 @@
               <th class="text-center" style="width: 100px;">Jawaban Kedua</th>
               <th class="text-center" style="width: 100px;">Jawaban Ketiga</th>
               <th class="text-center" style="width: 100px;">Jawaban Keempat</th>
-              <th class="text-center" style="width: 100px;">Waktu Submit</th>
+              {{-- <th class="text-center" style="width: 100px;">Waktu Submit</th> --}}
               <th class="text-center" style="width: 50px;"></th>
             </tr>
           </thead>
@@ -146,7 +146,7 @@
                 <td class="text-center" style="width: 100px;"> {{ $kuesioner->jawaban2 }} </td>
                 <td class="text-center" style="width: 100px;"> {{ $kuesioner->jawaban3 }} </td>
                 <td class="text-center" style="width: 100px;"> {{ $kuesioner->jawaban4 }} </td>
-                <td class="text-center" style="width: 150px;"> {{ $kuesioner->created_at  }} </td>
+                {{-- <td class="text-center" style="width: 150px;"> {{ $kuesioner->created_at  }} </td> --}}
                 <td class="text-center" style="width: 50px;"><div class="btn-group pull-right" role="group">
                   <button type="button" class="hapus-kuesioner btn btn-inline btn-danger" data-toggle="modal" data-target="#hapus-kuesioner" data-hapus-name=" {{ $kuesioner->mahasiswa->name }} " data-hapus-id=" {{ $kuesioner->id }} "><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Hapus Pengumuman"></i> Hapus</button>
                 </div>
