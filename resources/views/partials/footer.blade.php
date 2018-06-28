@@ -23,9 +23,7 @@ $(function() {
   } );
 });
 $(function() {
-  $('#kuesionertable').DataTable({
-    "order": [[ 1, "desc" ]]
-  } );
+  $('#kuesionertable').DataTable(;
 });
 $(function() {
   $('#bannertable').DataTable({
