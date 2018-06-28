@@ -23,8 +23,7 @@ $(function() {
   } );
 });
 $(function() {
-  $('#kuesionertable').DataTable(;
-});
+  $('#kuesionertable').DataTable();
 $(function() {
   $('#bannertable').DataTable({
     "order": [[ 4, "asc" ]]
