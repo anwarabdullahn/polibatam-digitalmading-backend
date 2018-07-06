@@ -40,12 +40,15 @@
           <a href="#" class="sidebar-nav-menu"><i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-group sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Management Akun</span></a>
           <ul>
             @if (Auth::user()->role == 'super')
-              <li>
-                <a href="{{url('/ormawa')}}">Ormawa</a>
-              </li>
+            <li>
+              <a href="{{url('/admin')}}">Admin</a>
+            </li>
             @endif
             <li>
-              <a  class="active" href="{{url('/mahasiswa')}}">Mahasiswa</a>
+              <a href="{{url('/ormawa')}}">Ormawa</a>
+            </li>
+            <li>
+              <a class="active" href="{{url('/mahasiswa')}}">Mahasiswa</a>
             </li>
           </ul>
         </li>
@@ -99,16 +102,22 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="header-section">
-            <h1>Mahasiswa</h1>
+            <div class="container">
+                <div class="btn-group pull-left" role="group">
+                    <button type="button" class="upload-data btn btn-inline btn-info" data-toggle="modal" data-target="#upload-data" ><i class="fa fa-upload"></i> Upload Data</button>
+                    {{-- <a href="{{route('downloadData')}}" type="button" class="btn btn-inline btn-danger"><i class="fa fa-download"></i> Download Data</a> --}}
+                    <a href="https://drive.google.com/uc?authuser=0&id=1MW71nPuxZTCOHhoHiWBsrU8V7lhXdiVt&export=download" type="button" class="btn btn-inline btn-success"><i class="fa fa-download"></i> Download Format CSV</a>
+                  </div>
+            </div>
           </div>
         </div>
-        {{-- @if (Auth::user()->role == 'admin'||Auth::user()->role == 'super')
+        @if (Auth::user()->role == 'admin'||Auth::user()->role == 'super')
         <div class="col-sm-6 hidden-xs">
           <div class="header-section">
             <button class="btn btn-rounded btn-warning pull-right" data-toggle="modal" data-target="#tambah-mahasiswa"><i class="fa fa-plus-circle"></i> Tambah Mahasiswa</button>
           </div>
         </div>
-        @endif --}}
+        @endif
       </div>
     </div>
     @if (session('info'))
@@ -125,6 +134,7 @@
       </div>
     @endif
     <div class="block full">
+      <h1>Mahasiswa</h1>
       <div class="table-responsive">
         <table id="mahasiswatable" class="table table-borderless table-hover">
           <thead>
@@ -276,7 +286,29 @@
     </div>
   </div>
 </div>
-
+<div class="modal fade" id="upload-data">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-body">
+            <form class="fieldset-form" action="{{ url('/upload/mahasiswa')}}" method="post" enctype="multipart/form-data">
+              {{ csrf_field() }}
+              <fieldset>
+                <legend class="text-center" style="color: #33577A; font-size: 21px !important;">UPLOAD DATA MAHASISWA</legend>
+                <div class="col-md-12">
+                    <input name="dataUpload" type="file" accept=".csv" />
+                </div>
+                <br /><br />
+                <input type="hidden" id="input-hapus-id" name="hapus_id" value="">
+                <button type="button" class="btn btn-inline btn-primary pull-right" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-inline btn-secondary pull-right" >Upload</button>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 @include('partials.footer')
 
 @if (count($errors->add) > 0)

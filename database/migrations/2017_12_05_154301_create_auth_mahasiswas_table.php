@@ -20,7 +20,7 @@ class CreateAuthMahasiswasTable extends Migration
           $table->boolean('platfom')->default(0);
           $table->timestamps();
 
-          $table->foreign('id_mahasiswa')->references('id')->on('mahasiswas')->onUpdate('cascade');
+          $table->foreign('id_mahasiswa')->references('id')->on('mahasiswas')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

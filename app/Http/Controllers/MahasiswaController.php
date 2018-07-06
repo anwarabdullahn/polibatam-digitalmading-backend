@@ -10,6 +10,8 @@ use App\Http\Requests\Store\StoreAddMahasiswa;
 use Mail;
 use Validator;
 use App\Mail\MahasiswaEmailVerification;
+use DB;
+use Carbon;
 
 class MahasiswaController extends Controller
 {
@@ -166,5 +168,61 @@ class MahasiswaController extends Controller
         }return redirect()->route('mahasiswa')->with('gagal','Data Mahasiswa Gagal dihapus !!');
       }return redirect()->route('mahasiswa')->with('gagal','Data Mahasiswa Tidak ditemukan !!');
     }return redirect()->route('home')->with('gagal','Invalid Credential !!');
+  }
+
+  public function pushData(Request $request)
+  {
+    if(($handle = fopen($_FILES['dataUpload']['tmp_name'],"r")) !== FALSE){
+      fgetcsv($handle);
+      while(($data = fgetcsv($handle,100,",")) !== FALSE){
+        // $sama = Mahasiswa::
+        try {
+          $addMhs = DB::table('mahasiswas')->insert([
+            'nim'       => $data[0],
+            'name'      => $data[1],
+            'email'     => $data[2],
+            'password'  => bcrypt('123123'),
+            'verified'  => true,
+            'created_at'=> Carbon::now()->toDateTimeString(),
+            'updated_at'=> Carbon::now()->toDateTimeString(),
+          ]);
+        } catch(\Illuminate\Database\QueryException $e){
+            $errorCode = $e->errorInfo[1];
+            if($errorCode == '1062'){
+                echo('Error Message');
+            }
+        }
+      }
+      return redirect()->route('mahasiswa')->with('info','Data Mahasiswa Berhasil Ditambahkan !!');
+    }
+  }
+
+  public function downloadData()
+  {
+    $mahasiswas = DB::table('mahasiswas')->get();
+    $proData = "";
+
+    if(count($mahasiswas)>0){
+      $proData .='<table>
+      <tr>
+      <th>NIM</th>
+      <th>Name</th>
+      <th>Email</th>
+      </tr>';
+
+      foreach ($mahasiswas as $m){
+        $proData .='
+      <tr>
+      <td>'.$m->nim.'</td>
+      <td>'.$m->name.'</td>
+      <td>'.$m->email.'</td>
+      </tr>';
+      }
+      $proData .='<table>';
+    }
+    header("Content-Type: .xls");
+    header("Content-Disposition: attachment; filename=\"mahasiswa.xls\"");
+    header("Cache-Control: max-age=0");
+    echo $proData;
   }
 }

@@ -29,6 +29,9 @@ Route::post('/forget', 'MahasiswaController@forgetPassword');
 Route::get('file/{id}' , 'AuthAPI@getContent');
 Route::get('images/{id}' , 'AnnouncementCategoriesController@getContent');
 
+Route::post('upload/mahasiswa' , 'MahasiswaController@pushData')->name('pushData');
+Route::get('download/mahasiswa' , 'MahasiswaController@downloadData')->name('downloadData');
+
 Route::group(['middleware' => 'auth'], function(){
   Route::get('/home', 'HomeController@index')->name('home');
   Route::post('/profile', 'UserController@profileUpdate')->name('profile');
@@ -87,6 +90,15 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('', 'KuesionerController@index')->name('kuesioner');
     Route::post('', 'KuesionerController@updatePertanyaan');
     Route::post('/delete', 'KuesionerController@delete');
+    // Route::post('/status', 'BannerController@status');
+
+  });
+
+  Route::prefix('admin')->group(function() {
+    Route::get('', 'AdminController@index')->name('admin');
+    Route::post('', 'AdminController@create');
+    Route::post('/update', 'AdminController@update');
+    Route::post('/delete', 'AdminController@delete');
     // Route::post('/status', 'BannerController@status');
 
   });
