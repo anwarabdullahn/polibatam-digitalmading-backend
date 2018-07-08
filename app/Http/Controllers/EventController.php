@@ -42,16 +42,17 @@ class EventController extends Controller
     if (isset($request->image)) {
       $byscryptAttachmentFile =  md5(str_random(64));
       $event->image = $byscryptAttachmentFile;
+      $save = Image::make($request->file('image'))->fit(400, 400, function ($constraint) {
+        $constraint->upsize();
+      })->save(storage_path('app/public/event/images/'.$byscryptAttachmentFile));
       // dd($byscryptAttachmentFile);
     }
-    $save = Image::make($request->file('image'))->fit(400, 400, function ($constraint) {
-      $constraint->upsize();
-    })->save(storage_path('app/public/event/images/'.$byscryptAttachmentFile));
-    if ($save) {
+
+
       if ($event->save()) {
         return redirect()->route('event')->with('info','Event Berhasil Di Tambahkan');
       }
-    }
+
     return redirect()->route('event')->with('gagal','Event Gagal Di Tambahkan');
   }
 

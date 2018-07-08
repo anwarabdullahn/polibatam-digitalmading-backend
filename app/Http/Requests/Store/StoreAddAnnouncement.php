@@ -26,7 +26,6 @@ class StoreAddAnnouncement extends FormRequest
     return [
       'title'           => 'required',
       'id_category'     => 'required',
-      'image'           => 'required',
     ];
   }
 
@@ -35,7 +34,6 @@ class StoreAddAnnouncement extends FormRequest
     return [
       'title.required' => 'Judul Pengumuman dibutuhkan.',
       'id_category.required'  => 'Silahkan Pilih Kategori',
-      'image.required' => 'Thumnail Pengumuman dibutuhkan.',
     ];
   }
 

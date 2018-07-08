@@ -18,7 +18,7 @@ class CreateEventsTable extends Migration
           $table->string('title');
           $table->date('date');
           $table->longText('description');
-          $table->string('image');
+          $table->string('image')->default('feedimages.png');
           $table->integer('id_user')->unsigned();
           $table->boolean('status')->default(0);
           $table->timestamps();

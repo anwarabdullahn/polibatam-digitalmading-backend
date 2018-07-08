@@ -49,23 +49,24 @@ class AnnouncementController extends Controller
       if (isset($request->image)) {
         $byscryptAttachmentImage =  md5(str_random(64));
         $announcement->image = $byscryptAttachmentImage;
+
+        $save = Image::make($request->file('image'))->fit(400, 400, function ($constraint) {
+          $constraint->upsize();
+        })->save(storage_path('app/public/announcement/images/'.$byscryptAttachmentImage));
       }
       if (isset($request->file)) {
         $byscryptAttachmentFile =  md5(str_random(64)) . '.' . $request->editfile->getClientOriginalExtension();
         // $byscryptAttachmentFile =  md5(str_random(24));
         $announcement->file = $byscryptAttachmentFile;
       }
-      $save = Image::make($request->file('image'))->fit(400, 400, function ($constraint) {
-        $constraint->upsize();
-      })->save(storage_path('app/public/announcement/images/'.$byscryptAttachmentImage));
-      if ($save) {
+
         if ($announcement->save()) {
           if (isset($request->file)) {
             $request->file('file')->storeAs('public/files', $byscryptAttachmentFile);
             // $request->file('file')->storeAs('public/files' , $byscryptAttachmentFile );
           }return redirect()->route('announcement')->with('info','Announcement Berhasil Di Tambahkan');
         }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Tambahkan');
-      }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Tambahkan');
+
     }return redirect()->route('home')->with('gagal','Invalid Credential !!');
   }
 

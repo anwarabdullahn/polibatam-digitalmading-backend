@@ -17,7 +17,7 @@ class CreateAnnouncementsTable extends Migration
       $table->increments('id');
       $table->string('title');
       $table->longText('description')->nullable();
-      $table->string('image');
+      $table->string('image')->default('feedimages.png');
       $table->integer('id_user')->unsigned();
       $table->integer('id_category')->unsigned()->nullable();
       $table->boolean('status')->default(0);

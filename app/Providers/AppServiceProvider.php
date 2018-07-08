@@ -47,10 +47,14 @@ class AppServiceProvider extends ServiceProvider
     public function setDefaultPublicAsset() {
       $avatarDefault = Storage::disk('resources')->get('assets/defaults/avatar.jpg');
       $bgDefault = Storage::disk('resources')->get('assets/defaults/bg.jpg');
+      $feedDefault = Storage::disk('resources')->get('assets/defaults/feedimages.png');
       $csvDefault = Storage::disk('resources')->get('assets/defaults/DataFormat.csv');
 
       Storage::disk('local')->put('/public/uploads/avatars/avatar.jpg', $avatarDefault);
       Storage::disk('local')->put('/public/uploads/backgrounds/bg.jpg', $bgDefault);
+      Storage::disk('local')->put('/public/uploads/backgrounds/feedimages.png', $feedDefault);
+      Storage::disk('local')->put('/public/announcement/images/feedimages.png', $feedDefault);
+      Storage::disk('local')->put('/public/event/images/feedimages.png', $feedDefault);
       Storage::disk('local')->put('/public/files/DataFormat.csv', $csvDefault);
     }
 }

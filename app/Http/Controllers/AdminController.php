@@ -68,4 +68,14 @@ class AdminController extends Controller
       }return redirect()->route('admin')->with('gagal','Admin Tidak Ditemukan');
     }return redirect()->route('home')->with('gagal','Invalid Credential !!');
   }
+
+
+        // <resources>
+        //     <color name="colorPrimary">#8791B0</color>
+        //     <color name="colorPrimaryDark">#2C2F38</color>
+        //     <color name="colorAccent">#FF4081</color>
+        //     <color name="colorWhite">#FFF</color>
+        //     <color name="colorBlack">#000</color>
+        // </resources>
+
 }
