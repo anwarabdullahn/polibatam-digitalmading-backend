@@ -19,18 +19,31 @@ $(function() {
 });
 $(function() {
   $('#mahasiswatable').DataTable({
-    "order": [[ 4, "desc" ]]
+    "order": [[ 0, "desc" ]]
   } );
 });
 $(function() {
-  $('#kuesionertable').DataTable();
+  $('#kuesionertable').DataTable({
+    "order": [[ 0, "desc" ]]
+  } );
 });
 $(function() {
   $('#bannertable').DataTable({
-    "order": [[ 4, "asc" ]]
+    "order": [[ 0, "desc" ]]
   } );
 });
 $(function() {
   $('#example').DataTable();
 });
+$(function() {
+  $('#categorytable').DataTable({
+    "order": [[ 0, "desc" ]]
+  } );
+});
+$(function() {
+  $('#ormawatable').DataTable({
+    "order": [[ 0, "desc" ]]
+  } );
+});
+
 </script>

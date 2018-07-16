@@ -7,16 +7,20 @@ use Illuminate\Http\Request;
 use App\AuthMahasiswa;
 use App\Announcement;
 use App\AnnouncementCategories;
+use App\User;
+use App\Mahasiswa;
 
 use App\Transformers\AnnouncementTransformer;
 use App\Http\Requests\Store\StoreAddAnnouncement;
 use App\Http\Requests\Update\UpdateAnnouncementPost;
 use Illuminate\Support\Facades\Response;
+use App\Notifications\PushNotification;
 
 use Auth;
 use Storage;
 use Image;
 use File;
+use Notification;
 
 use App\Firebase\Push;
 use App\Firebase\Firebase;
@@ -151,24 +155,41 @@ class AnnouncementController extends Controller
         if ($announcement->save()) {
 
           // Firebase Push
-          $payload = array();
-          $payload['Announcement'] = $announcement->title;
-          $title = $announcement->title;
-          $message = $announcement->category->name.' - '.$announcement->user->name;
-          $push_type = 'topic';
+          // $payload = array();
+          // $payload['Announcement'] = $announcement->title;
+          // $title = $announcement->title;
+          // $message = $announcement->category->name.' - '.$announcement->user->name;
+          // $push_type = 'topic';
 
-          $this->push->setTitle($title);
-          $this->push->setMessage($message);
-          $this->push->setImage('');
-          $this->push->setIsBackground(FALSE);
-          $this->push->setPayload($payload);
+          // $this->push->setTitle($title);
+          // $this->push->setMessage($message);
+          // $this->push->setImage('');
+          // $this->push->setIsBackground(FALSE);
+          // $this->push->setPayload($payload);
 
-          $json = '';
-          $response = '';
+          // $json = '';
+          // $response = '';
 
-          $json = $this->push->getPush();
-          $response = $this->firebase->sendToTopic('global', $json);
+          // $json = $this->push->getPush();
+          // $response = $this->firebase->sendToTopic('global', $json);
           // End Firebase
+
+          // start email
+
+            $data = array(
+              'title'               => $announcement->title,
+              'author'              => $announcement->user->name,
+              'image'               => url('/announcement/images/'.$announcement->image),
+              'description'         => $announcement->description,
+              'category'            => $announcement->category->name,
+            );
+
+
+          $mahasiswa = Mahasiswa::all();
+
+          Notification::send($mahasiswa, new PushNotification($data));
+
+          // end email
 
           return redirect()->route('announcement')->with('info','Announcement Berhasil Di Ubah');
         }return redirect()->route('announcement')->with('gagal','Announcement Gagal Di Ubah');

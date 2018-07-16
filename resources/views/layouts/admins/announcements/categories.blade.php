@@ -127,7 +127,7 @@
     @endif
     <div class="block full">
       <div class="table-responsive">
-        <table id="example" class="table table-borderless table-hover">
+        <table id="categorytable" class="table table-borderless table-hover">
           <thead>
             <tr>
               <th class="text-center" style="width: 50px;">NO</th>

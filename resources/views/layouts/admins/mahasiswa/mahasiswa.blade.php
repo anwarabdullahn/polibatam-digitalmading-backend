@@ -296,6 +296,14 @@
               <fieldset>
                 <legend class="text-center" style="color: #33577A; font-size: 21px !important;">UPLOAD DATA MAHASISWA</legend>
                 <div class="col-md-12">
+                    <div class="alert alert-warning" role="alert">
+                        <b>CATATAN !!</b></br></br>
+                    <span>1 . Setiap data "NIM" dan "Email" mahasiswa adalah <i>Unique</i>, data dengan "NIM" dan "Email" ganda atau sama tidak akan tersimpan.</span></br></br>
+                    <span>2 . Setiap akun mahasiswa yang ditambahkan akan mendapatkan password default yaitu "123123".</span>
+                    </div>
+
+                </div>
+                <div class="col-md-12">
                     <input name="dataUpload" type="file" accept=".csv" />
                 </div>
                 <br /><br />
