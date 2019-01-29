@@ -13,7 +13,7 @@ Polibatam (Politeknik Negeri Batam) Digital Mading is my final project for my Un
 This repo contains the backend web server and api
 ![header pics](https://i.ibb.co/6HHMSx7/keloladata.png)
 You can also check the frontend for this apps:
-  * [Breakdance](http://breakdance.io) - HTML to Markdown converter
+  * [Frontend](https://github.com/anwarabdullahn/polibatam-digitalmading-frontend) - Polibatam Digital Mading Frontend
   
 ### License
 Anwar Abdullah N - 2017
